@@ -23,7 +23,9 @@ import com.great.service.RoleService;
 @Controller
 @RequestMapping("/admin")
 public class AdminAction {
-	//分页的类  蒋亚福到此一游 陈琛
+
+	//分页的类  蒋亚福到此一游   蒋亚福到此一游 蒋亚福到此一游 
+
 	private Page page;
 	@Resource // @AutoWired setUserService()
 	private AdminService adminservice;
