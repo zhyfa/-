@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.ParameterMapper">
+	<select id="getParameters" parameterType="com.great.bean.Parameter" resultType="com.great.bean.Parameter">
+		select * from T_PARAMETER
+		<where>
+			<if test="parameter_name!='' and parameter_name!=null">
+				and parameter_name like '%${parameter_name}%'
+			</if>
+			<if test="parameter_type!='' and parameter_type!=null">
+				and parameter_type like '%${parameter_type}%'
+			</if>
+			<if test="parameter_value!='' and parameter_value!=null">
+				and parameter_value = #{parameter_value}
+			</if>
+		</where>
+	</select>
+
+	<insert id="parameterAdd"
+		parameterType="com.great.bean.Parameter">
+		insert into
+		T_PARAMETER(parameter_id,parameter_name,parameter_type,parameter_value)
+		values(seq_t_parameter.nextval,#{parameter_name},#{parameter_type},#{parameter_value})
+	</insert>
+
+	<select id="checkParameter"
+		parameterType="com.great.bean.Parameter"
+		resultType="com.great.bean.Parameter">
+		select * from T_PARAMETER where
+		parameter_type=#{parameter_type} and
+		parameter_value=#{parameter_value}
+	</select>
+
+	<select id="getParameterById" parameterType="java.lang.Integer"
+		resultType="com.great.bean.Parameter">
+		select * from T_PARAMETER where
+		parameter_id=#{parameter_id}
+	</select>
+
+	<delete id="delParameter" parameterType="java.lang.Integer">
+		delete from T_PARAMETER
+		where parameter_id=#{parameter_id}
+	</delete>
+
+	<update id="updateParameter"
+		parameterType="com.great.bean.Parameter">
+		update T_PARAMETER
+		<set>
+<!-- 			<if test="parameter_name!=null and parameter_name!=''"> -->
+				parameter_name = #{parameter_name},
+<!-- 			</if> -->
+		</set>
+		where parameter_id = #{parameter_id}
+	</update>
+<select id="querybyadmin"  resultType="java.util.HashMap">
+		select * from T_PARAMETER where PARAMETER_TYPE='管理员状态' and PARAMETER_VALUE!=3
+	</select>
+</mapper>

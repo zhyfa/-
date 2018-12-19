@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.DrugMapper">
+<!-- 获取药品表的全部信息 -->
+  <select id="queryAll" resultType="java.util.HashMap">
+     select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c where a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID 
+  </select> 
+  <!-- 通过药品ID获取药品表的一条信息 -->
+  <select id="queryById" parameterType="int" resultType="java.util.HashMap">
+    select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c where a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID and a.drug_id=#{0}
+  </select> 
+  
+  <!-- 通过条件获取药品表的信息 -->
+  <select id="queryAllByCondition" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c 
+    <where>
+    	a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID
+    	<if test="drug_name != null and drug_name != '' ">and a.drug_name like '%${drug_name}%'</if>
+    	<if test="smalltype_id != null and smalltype_id != '' and smalltype_id!=0 ">and a.smalltype_id=#{smalltype_id}</if>
+    	<if test="illustrate != null and illustrate != '' ">and a.illustrate like '%${illustrate}%'</if>
+    </where>
+  </select> 
+  
+  <!--添加一个药品 -->
+   <insert id="addDrug" parameterType="com.great.bean.Drug">
+    insert into t_drug(drug_id,drug_name,smalltype_id,spec,drug_size,drug_unit,price,discount,psychotropics,use_method,drug_alias,illustrate,irradiated) values 
+  (seq_t_drug.nextval,#{drug_name},#{smalltype_id},#{spec},#{drug_size},#{drug_unit},#{price},#{discount},#{psychotropics},#{use_method},#{drug_alias},#{illustrate},#{irradiated})
+   </insert>
+   
+   <!--修改一个药品 -->
+   <update id="updateDrug" parameterType="com.great.bean.Drug">
+   		update t_drug set drug_name=#{drug_name},smalltype_id=#{smalltype_id},spec=#{spec},drug_size=#{drug_size},drug_unit=#{drug_unit},price=#{price},discount=#{discount},psychotropics=#{psychotropics},use_method=#{use_method},drug_alias=#{drug_alias},illustrate=#{illustrate},irradiated=#{irradiated} where drug_id=#{drug_id}
+   </update>
+   
+    <!--删除一个药品 -->
+	<update id="delDrug" parameterType="int">
+   		update t_drug set state=2 where drug_id=#{drug_id}
+   </update>
+   <!-- 获得所有药品信息 -->
+  <select id="getDrugs" resultType="com.great.bean.Drug">
+     select a.*,b.smalltype_name,c.bigtype_name from T_DRUG a,T_SMALLTYPE b,T_BIGTYPE c 
+      where a.smalltype_id=b.smalltype_id and b.father_id=c.bigtype_id order by a.cdate desc
+  </select>
+ 
+  <!-- 根据药品id获得药品 -->
+  <select id="getDrugByDrudId" resultType="com.great.bean.Drug">
+  	select a.*,b.smalltype_name,c.bigtype_name from T_DRUG a,T_SMALLTYPE b,T_BIGTYPE c
+  	  where a.smalltype_id=b.smalltype_id and b.father_id=c.bigtype_id and a.drug_id=#{drug_id} order by a.cdate desc
+  </select>
+  <!-- 根据id更改药品的药库最低量 -->
+  <update id="updateStockMin" parameterType="com.great.bean.Drug">
+  	update T_DRUG 
+  	<set>
+  		stock_min = #{stock_min}
+  	</set>
+  	where drug_id = #{drug_id}
+  </update>
+</mapper>

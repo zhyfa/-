@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.RoleMapper">   
+<!--     <resultMap type="com.great.bean.User" id="userResult"> -->
+<!--         <result property="id" column="id" jdbcType="INTEGER" javaType="java.lang.Integer" /> -->
+<!--         <result property="username" column="username" /> -->
+<!--         <result property="password" column="password" /> -->
+<!--     </resultMap> -->
+
+	<!--查询全部角色 -->
+     <select id="queryAll" resultType="java.util.HashMap">
+     	select ROLE_ID "roleId",ROLE_NAME "roleName" from t_role
+     </select>
+     
+     <!--查询符合条件的全部角色 -->
+     <select id="queryAllByRoleName" parameterType="java.lang.String" resultType="java.util.HashMap">
+     	select ROLE_ID "roleId",ROLE_NAME "roleName" from t_role
+     	<where> 
+     		<if test="roleName!=null and roleName!=''">
+				ROLE_NAME like '%${roleName}%'
+			</if>
+     	</where>
+     	
+     </select>
+     
+     <!--增加角色 -->
+     <insert id="addRole" parameterType="java.util.HashMap">
+     insert into t_role(ROLE_ID,ROLE_NAME) values(#{roleId},#{roleName})
+     </insert>
+     
+	<!-- 删除角色，通过角色ID,进行逻辑伪删除 -->
+	<update id="delRole" parameterType="int">
+		update t_role set STATE=2 where ROLE_ID=#{1}
+	</update>
+	
+	<!--修改角色名称，通过角色ID -->
+	<update id="updateRole" parameterType="com.great.bean.Role">
+		update t_role set ROLE_NAME=#{roleName} where ROLE_ID=#{roleId}
+	</update>
+     
+     <!--从系统表中获取新增角色的ID -->
+     <select id="creatRoleID" resultType="int">
+     	select SEQ_T_ROLE.NEXTVAL t_role from dual
+     </select>
+     
+       <!--通过角色ID获取角色名 -->
+     <select id="queryById" parameterType="int" resultType="String" >
+     	select ROLE_NAME from t_role where ROLE_ID=#{0}
+     </select>
+     
+
+
+</mapper>

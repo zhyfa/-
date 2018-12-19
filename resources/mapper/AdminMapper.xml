@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.AdminMapper">
+    
+	<!-- 登陆+对应菜单 -->
+  	 <resultMap type="com.great.bean.Admin" id="adminMap">
+  	 	<id property="role_id" column="role_id"/>
+  	 	<result property="admin_id" column="admin_id"/>
+  	 	<result property="admin_name" column="admin_name"/>
+  	 	<result property="admin_pwd" column="admin_pwd"/>
+  	 	<association property="role_name" column="role_id" javaType="java.lang.String" select="getRoleName"></association>
+  	 	<collection property="menus" ofType="com.great.bean.Menu" column="role_id" select="getMenus"></collection>
+  	 </resultMap>
+  	 <!-- 登陆 -->
+     <select id="adminLogin" parameterType="com.great.bean.Admin" resultMap="adminMap">
+     	select * from 
+     	 t_admin where ADMIN_NAME=#{admin_name} and ADMIN_PWD = #{admin_pwd}
+     </select>
+     <resultMap type="com.great.bean.Menu" id="menuMap">
+     	<id property="menu_id" column="menu_id"/>
+     	<result property="f_menu_id" column="f_menu_id"/>
+     	<result property="menu_con" column="menu_con"/>
+     	<collection property="menuChilds" ofType="com.great.bean.Menu" column="menu_id" select="getChilds"></collection>
+     </resultMap>
+      <!-- 根据角色id获得一级菜单 -->
+	 <select id="getMenus" parameterType="java.lang.Integer" resultMap="menuMap">
+	 	select * from T_MENU where F_MENU_ID=0 and MENU_ID in
+	 	(select MENU_ID from T_ROLE_MENU where ROLE_ID = #{role_id})
+	 </select>
+	 <!-- 根据一级菜单获得二级菜单 -->
+	 <select id="getChilds" parameterType="java.lang.Integer" resultType="com.great.bean.Menu">
+	 	select * from T_MENU where F_MENU_ID=#{menu_id}
+	 </select>
+	 <!-- 获得角色名字 -->
+	 <select id="getRoleName" parameterType="java.lang.Integer" resultType="java.lang.String">
+	 	select ROLE_NAME from T_ROLE where ROLE_ID=#{role_id}
+	 </select>
+	 
+	 <!-- 登录用户修改密码 -->
+	 <update id="alterPwd" parameterType="com.great.bean.Admin" >
+	 	update t_admin set ADMIN_PWD=#{admin_pwd} where ADMIN_ID=#{admin_id}
+	 </update>
+	 
+	  <!-- 查询所有用户 -->
+     <select  id="queryalladmin" resultType="java.util.Map" >
+	select b.ROLE_NAME,a.ROLE_ID,a.ADMIN_ID,a.ADMIN_NAME,a.ADMIN_PWD,a.ADMIN_STATE,a.ADMIN_CDATE from T_ADMIN a,T_ROLE b where a.ROLE_ID=b.ROLE_ID and a.ADMIN_STATE!=3
+	</select>
+	
+		<!-- 查询所有成员的总数 -->
+	<select id="queryCountAdmin" resultType="int">
+    	SELECT COUNT(0) FROM T_ADMIN where ADMIN_STATE!=3
+    	</select>
+    	
+    	<!-- 根据ID查找成员 -->
+	<select  id="queryadminbyid" parameterType="int" resultType="java.util.Map" >
+		select b.ROLE_NAME,a.ROLE_ID,a.ADMIN_ID,a.ADMIN_NAME,a.ADMIN_PWD,a.ADMIN_STATE,a.ADMIN_CDATE from T_ADMIN a,T_ROLE b where a.ROLE_ID=b.ROLE_ID and a.ADMIN_ID=#{_parmet}
+	</select>
+	     <!-- 查询分页成员 -->
+	     <select id="queryadmin" parameterType="com.great.bean.Page" resultType="java.util.HashMap">
+    	 SELECT A.* FROM (SELECT A.*,B.ROLE_NAME,rownum R FROM t_admin A,t_role B where a.role_id=b.role_id AND A.admin_state!=3)A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}</select>
+	     
+	     <!-- 删除admin -->
+	     <update id="deleteadmin" parameterType="java.lang.Integer">
+	     update T_ADMIN  
+	     <set>
+	     ADMIN_STATE=3
+	     </set>
+	     WHERE ADMIN_ID=#{adminId}
+	     </update>
+	 		<!-- 新增管理员 -->
+	 	<insert id="addadmin" parameterType="com.great.bean.Admin" >
+	 	insert into T_ADMIN(ADMIN_ID,ADMIN_NAME,ADMIN_PWD,ROLE_ID,ADMIN_STATE)VALUES(seq_t_admin.nextval,#{admin_name},#{admin_pwd},#{role_id},#{admin_state})
+	 	</insert>
+	 	  <!-- 修改admin -->
+	     <update id="updateadmin" parameterType="java.lang.Integer">
+	     update T_ADMIN  
+	     <set>
+	     ADMIN_NAME=#{admin_name},ADMIN_PWD=#{admin_pwd},ADMIN_STATE=#{admin_state},ROLE_ID=#{role_id},
+	     </set>
+	     WHERE ADMIN_ID=#{admin_id}
+	     </update>
+	     <!-- 校验姓名 -->
+	  <select  id="checkname" parameterType="String" resultType="java.util.Map" >
+		select b.ROLE_NAME,a.ROLE_ID,a.ADMIN_ID,a.ADMIN_NAME,a.ADMIN_PWD,a.ADMIN_STATE,a.ADMIN_CDATE from T_ADMIN a,T_ROLE b where a.ROLE_ID=b.ROLE_ID and a.ADMIN_NAME=#{_adminname}
+	</select>
+	<!-- 查询所有模糊搜索成员的总数 -->
+	<select id="queryCountAdminbysome"  parameterType="java.util.HashMap" resultType="int" >
+    	SELECT COUNT(0) FROM T_ADMIN 
+    	<where>
+		<if test="adminName!=null and adminname!=''">
+		 and admin_name like '%${adminName}%'
+		</if>
+		<if test="roleId!=0">
+		 and ROLE_ID= #{roleId}
+		</if>
+		<if test="adminState!=0">
+		 and ADMIN_STATE= #{adminState}
+		</if>
+		</where>
+		and ADMIN_STATE!=3
+    	</select>
+	<!-- 模糊搜索 -->
+	<select  id="queryadminbysome" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+			 SELECT A.* FROM (SELECT c.PARAMETER_NAME,A.*,B.ROLE_NAME,rownum R FROM t_admin A,t_role B,T_PARAMETER c 
+	 <where>
+		<if test="adminName!=null and adminname!=''">
+		 and A.admin_name like '%${adminName}%'
+		</if>
+		<if test="roleId!=0">
+		 and A.ROLE_ID = #{roleId}
+		</if>
+		<if test="adminState!=0">
+		 and A.ADMIN_STATE = #{adminState}
+		</if>
+		</where>
+		and a.role_id=b.role_id AND A.admin_state!=3 AND a.ADMIN_STATE=c.PARAMETER_VALUE and c.PARAMETER_TYPE='管理员状态')A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
+		
+	</select>
+	
+</mapper>
