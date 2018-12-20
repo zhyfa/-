@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import com.great.bean.AuditsDetail;
 import com.great.service.DrugService;
 import com.great.service.DrugTypeService;
 import com.great.service.FactoryService;
+import com.great.service.StockService;
 import com.great.until.creatImage;
 
 import net.sf.json.JSONArray;
@@ -42,6 +44,8 @@ public class AuditsManagement {
 	private DrugTypeService drugTypeService;
 	@Resource
 	private FactoryService factoryService;
+	@Resource
+	private StockService stockService;
 //	@Log(thing = "添加采购审计表")
 	@RequestMapping(value = "/purchase.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	 public ModelAndView toHomepage(HttpServletRequest request) {
@@ -122,6 +126,47 @@ public class AuditsManagement {
 	        os.close();
 		}
 	}
+	
+	// 进入采购图形统计页面
+		@RequestMapping(value = "/goStockChartJSP.action")
+		public ModelAndView goStockChartJSP() {
+			ModelAndView andView = new ModelAndView();
+			andView.setViewName("manage/stock_chart");
+			return andView;
+		}
+
+		// 获取这半年的采购药品名字及数量
+		@RequestMapping(value = "/getHalfYear.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+		public @ResponseBody List<Map<String, Object>> getHalfYear() {
+			List<Map<String, Object>> lists = stockService.getHalfYear();
+			return lists;
+		}
+
+		// 获取这个月的采购药品名字及数量
+		@RequestMapping(value = "/getMonth.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+		public @ResponseBody List<Map<String, Object>> getMonth() {
+			List<Map<String, Object>> lists = stockService.getMonth();
+			return lists;
+		}
+
+		// 获取这周的采购药品名字及数量
+		@RequestMapping(value = "/getWeek.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+		public @ResponseBody List<Map<String, Object>> getWeek() {
+			List<Map<String, Object>> lists = stockService.getWeek();
+			return lists;
+		}
+
+		// 获取时间段内采购药品名字及数量
+		@RequestMapping(value = "/getOrdersByTime.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+		public @ResponseBody List<Map<String, Object>> getOrdersByTime(String start, String end) {
+			System.out.println("start=" + start);
+			System.out.println("end=" + end);
+			Map<String, Object> map = new HashMap<>();
+			map.put("start", start);
+			map.put("end", end);
+			List<Map<String, Object>> lists = stockService.getOrdersByTime(map);
+			return lists;
+		}
 	
 	
 }

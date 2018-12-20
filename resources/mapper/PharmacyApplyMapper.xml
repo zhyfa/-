@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.PharmacyApplyMapper">   
+	 <!--增加数据 -->
+     <insert id="addPharmacyApply" parameterType="java.util.HashMap">
+     	insert into t_pharmacy_apply(admin_id1,drug_id,psychotropics,drug_number,state,ic) values(
+#{admin_id1},#{drug_id},#{psychotropics},#{drug_number},1,#{ic}
+)
+     </insert>
+     
+      <!--从系统表中获取新增角色的ID -->
+     <select id="creatIC" resultType="int">
+     	select SEQ_T_PHARMACY_APPLY.NEXTVAL t_pharmacy_apply from dual
+     </select>
+</mapper>

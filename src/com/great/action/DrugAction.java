@@ -94,6 +94,14 @@ public class DrugAction {
 		return str;
 	}
 
+	// 通过drug_id获取该药品的信息
+	@RequestMapping("/searchById.action")
+	public @ResponseBody Map<String, Object> searchById(int drug_id) {
+		System.out.println("drug_id=" + drug_id);
+		Map<String, Object> drug = drugService.queryById(drug_id);
+		return drug;
+	}
+
 	// 删除药品
 	// 未完成，ajax返回不了数据回去
 	@RequestMapping(value = "/delDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")

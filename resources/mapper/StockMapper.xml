@@ -13,4 +13,28 @@
 	  (select drug_id,sum(stock_number) stock_number from  T_STOCK where state=1 group by drug_id) a,T_DRUG b 
 	   where a.drug_id=b.drug_id 
 </select>
+
+<!-- 获取这半年的采购药品名字及数量 -->
+<select id="getHalfYear" resultType="java.util.HashMap">
+	select b.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(add_months(sysdate,-5),'mm') first_day from dual),'YYYY-MM-DD') and 
+				 to_char((select last_day(add_months(sysdate,-0)) last_day from dual),'YYYY-MM-DD') group by b.drug_name
+</select>
+
+<!-- 获取这一周的采购药品名字及数量 -->
+<select id="getWeek" resultType="java.util.HashMap">
+	select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(sysdate, 'iw') from dual),'YYYY-MM-DD') and 
+				 to_char((select trunc(sysdate, 'iw')+6 from dual),'YYYY-MM-DD') group by B.drug_name
+</select>
+
+<!-- 获取这一个月的采购药品名字及数量 -->
+<select id="getMonth" resultType="java.util.HashMap">
+select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(sysdate,'mm') from dual),'YYYY-MM-DD') and 
+				 to_char((select last_day(sysdate) from dual),'YYYY-MM-DD') group by B.drug_name
+</select>
+
+<!-- 获取时间段内的采购药品名字及数量 -->
+<select id="getOrdersByTime" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	select b.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between #{start} and 
+				 #{end} group by b.drug_name
+</select>
 </mapper>
