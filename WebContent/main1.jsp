@@ -9,33 +9,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 <meta charset="UTF-8">
 <script src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.form.js"></script>
 </head>
-<script type="text/javascript">
-$(document).ready(function(){
-	$.ajax({
-		type : "post",
-		url : "<%=basePath%>/stock/stockList.action",
-		//contentType : "application/json;charset=utf-8",
-		dataType : "JSON",
-		//data : $("#loginForm").serialize(),
-		success : function(data) {
-			var str = "<p style='color: red;'>";
-			for(var i=0;i<data.length;i++){
-				var stock = data[i];
-				if(stock.msg!=null){
-					str+=stock.drug_name+":"+stock.msg+"<br>";
-				}
-			}
-			str+="</p>";
-			$("#checkStock").append(str);
-		}
-	});
-});
-</script>
 <body>
-${sessionScope.admin.role_name }
-<div id="checkStock">
-<p style="color: red;">
-</div>
+<form id="uploadForm" enctype="multipart/form-data" method="post"> 
+	<input id="upfile" type="file" name="upfile">
+	<input type="button" value="导入" id="upLoad" name="btn">
+</form>
+<a href="<%=basePath%>/excelTest.jsp">导出</a>
 </body>
+<script type="text/javascript">
+$('#upLoad').click(function(){
+	var cacheVersion=$("#cacheVersion").val();
+    if(checkData()){  
+        $('#uploadForm').ajaxSubmit({    
+            url:'<%=basePath%>/creditInfo/upexcel.action',
+            data:{'cacheVersion':cacheVersion},
+            dataType: 'text'
+        });   
+    }  
+});  
+ 
+//JS校验form表单信息  
+function checkData(){  
+   var fileDir = $("#upfile").val();  
+   var suffix = fileDir.substr(fileDir.lastIndexOf("."));  
+   if("" == fileDir){  
+       alert("选择需要导入的Excel文件！");  
+       return false;  
+   }  
+   if(".xls" != suffix && ".xlsx" != suffix ){  
+       alert("选择Excel格式的文件导入！");  
+       return false;  
+   }  
+   return true;  
+}
+</script>
 </html>

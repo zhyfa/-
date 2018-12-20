@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.ExcelMapper">
+
+<select id="queryFactory" resultType="com.great.bean.Factory">
+	SELECT * FROM T_FACTORY
+</select>
+
+<insert id="addCgTail" parameterType="com.great.bean.AuditsDetail">
+insert into T_AUDITSDETAIL(DRUG_NAME,TOTAL,PER_PIECE,TOTAL_PRICE,FACTORY) VALUES(#{drug_name},#{total},#{per_piece},#{total},#{factory})
+</insert>
+</mapper>
