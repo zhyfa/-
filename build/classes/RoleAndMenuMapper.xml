@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.RoleAndMenuMapper">
+	<!-- 通过角色ID查询进行连表查询，查询该角色的名字，所拥有的查单（状态为1的） -->
+     <select id="quaryByID" parameterType="int" resultType="java.util.HashMap">
+     	select a.ROLE_NAME,b.MENU_NAME,c.menu_id from T_ROLE_MENU c ,T_ROLE a ,T_MENU b where c.ROLE_ID=a.ROLE_ID and c.MENU_ID=b.MENU_ID and c.ROLE_ID=#{1}
+     </select>
+     
+     <!-- 新增用户权限 -->
+     <insert id="addRoleMenu" parameterType="java.util.HashMap">
+  	 	insert into t_role_menu(role_id,menu_id) values(#{0},#{1})
+  	</insert>
+  	
+  	
+  	<!-- 删除角色，通过角色ID-->
+	<delete id="delRoleMenu" parameterType="int">
+		delete from t_role_menu where ROLE_ID=#{1}
+	</delete>
+</mapper>

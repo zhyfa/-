@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.DrugTypeMapper">
+	<!-- 查询所有的大类别 -->
+  <select id="firstType" resultType="java.util.HashMap">
+     select bigtype_id,bigtype_name from t_bigtype where state=1
+  </select> 
+  <!-- 通过大类别Id查询它所有的子类别 -->
+  <select id="secondTypeById" parameterType="int" resultType="java.util.HashMap">
+     SELECT A.smalltype_id,A.smalltype_name,B.bigtype_name FROM t_smalltype A,t_bigtype B WHERE b.bigtype_id = a.father_id AND a.state=1 AND b.bigtype_id=#{1}
+  </select>  
+
+	<!--添加一个一级目录 -->
+     <insert id="addFirstType" parameterType="String">
+     insert into t_bigtype(bigtype_id,bigtype_name) values(seq_t_bigtype.nextval,#{0})
+     </insert>
+     
+     <!--修改一个一级目录 -->
+     <insert id="updateFirstType" parameterType="java.util.HashMap">
+     	update t_bigtype set bigtype_name=#{bigtypeName} where bigtype_id=#{bigtypeId}
+     </insert>
+<!--      修改一个二级级目录 -->
+     <update id="updateSecondType" parameterType="java.util.HashMap">
+     	update t_smalltype 
+     	<set>
+     		<if test="smalltypeName !=null">smalltype_name=#{smalltypeName},</if>
+     		<if test="fatherId !=null">father_id=#{fatherId},</if>
+     	</set>
+     		where smalltype_id=#{samlltypeId}
+     </update>
+<!--     查询全部的二级目录，根据一级目录的名称排序 -->
+     <select id="secondType" parameterType="int" resultType="java.util.HashMap">
+     SELECT A.smalltype_id,A.smalltype_name,B.bigtype_name FROM t_smalltype A,t_bigtype B WHERE b.bigtype_id = a.father_id AND a.state=1 order by b.bigtype_name desc
+ 	 </select>  
+ 	 
+ 	 
+ 	  <!-- 通过Id查询它的信息 -->
+  <select id="typeById" parameterType="int" resultType="java.util.HashMap">
+     SELECT A.smalltype_id,A.smalltype_name,a.father_id,B.bigtype_name FROM t_smalltype A,t_bigtype B WHERE b.bigtype_id = a.father_id AND a.state=1 AND a.smalltype_id=#{1}
+  </select>  
+<!--   一般不用的，只有修改没有删除，删除一个二级目录 -->
+  <update id="delSecondTypeById" parameterType="int">
+  		update t_smalltype set state=2 where smalltype_id=#{1}
+  </update>
+  <!--添加一个二级目录 -->
+     <insert id="addSecondType" parameterType="java.util.HashMap">
+   		insert into t_smalltype(smalltype_id,smalltype_name,father_id) values(seq_t_smalltype.nextval,#{smalltype_name},#{father_id})
+     </insert>
+  
+  
+</mapper>

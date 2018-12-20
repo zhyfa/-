@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.StockMapper">
+
+<select id="getStocks" parameterType="com.great.bean.Stock" resultType="com.great.bean.Stock">
+	select a.*,b.drug_name,b.stock_min,c.parameter_name from T_STOCK a,T_DRUG b,T_PARAMETER c 
+	 where a.drug_id=b.drug_id and a.state=c.parameter_value and c.parameter_type='药库库存状态' 
+</select>
+
+<select id="checkStockNum" resultType="com.great.bean.Stock">
+	 select a.*,b.drug_name,b.stock_min from 
+	  (select drug_id,sum(stock_number) stock_number from  T_STOCK where state=1 group by drug_id) a,T_DRUG b 
+	   where a.drug_id=b.drug_id 
+</select>
+</mapper>
