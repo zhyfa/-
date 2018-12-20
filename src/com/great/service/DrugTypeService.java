@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
 import com.great.dao.DrugTypeMapper;
 
 @Service
@@ -40,6 +41,11 @@ public class DrugTypeService {
 	public List<Map<String, Object>> secondType() {
 		return drugTypeMapper.secondType();
 	}
+	// 查询全部的二级目录，根据一级目录的名称排序
+		public List<Map<String, Object>> newsecondType(Integer pageIndex,Integer NUMBER) {
+			PageHelper.startPage(pageIndex,NUMBER);
+			return drugTypeMapper.secondType();
+		}
 
 	// 修改一个二级目录的名称
 	public int updateSecondType(Map<String, Object> map) {
@@ -60,5 +66,4 @@ public class DrugTypeService {
 	public int addSecondType(Map<String, Object> map) {
 		return drugTypeMapper.addSecondType(map);
 	}
-
 }
