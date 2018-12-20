@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,6 @@ import com.great.bean.AuditsDetail;
 import com.great.service.DrugService;
 import com.great.service.DrugTypeService;
 import com.great.service.FactoryService;
-import com.great.until.ImageUtil;
 import com.great.until.creatImage;
 
 import net.sf.json.JSONArray;
