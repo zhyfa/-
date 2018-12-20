@@ -2,36 +2,39 @@ package com.great.bean;
 
 public class Inventory {
 	private Integer inventory_id;// number  primary key,--药房库存id
-	private Integer pharmacy_id;//  number,--药品id
+	private Integer drug_id;//  number,--药品id
 	private String production_date ;// date,--生产日期
-	private Integer minimum_inventory;//  number,--最少库存
+	private Integer inventory_number;// number,--药房药品数量
 	private Integer admin_id;//  number,--操作人
 	private Integer state;//  number default 1,--状态
 	private String cdate;//  date default sysdate--创建日期
+	
+	private String drug_name;//药品名字
+	private String admin_name;//操作人
+	private String parameter_name;//参数名字
+	private int spec;//单位
+	
+	
+	public int getSpec() {
+		return spec;
+	}
+	public void setSpec(int spec) {
+		this.spec = spec;
+	}
 	public Integer getInventory_id() {
 		return inventory_id;
 	}
 	public void setInventory_id(Integer inventory_id) {
 		this.inventory_id = inventory_id;
 	}
-	public Integer getPharmacy_id() {
-		return pharmacy_id;
-	}
-	public void setPharmacy_id(Integer pharmacy_id) {
-		this.pharmacy_id = pharmacy_id;
-	}
+	
 	public String getProduction_date() {
 		return production_date;
 	}
 	public void setProduction_date(String production_date) {
 		this.production_date = production_date;
 	}
-	public Integer getMinimum_inventory() {
-		return minimum_inventory;
-	}
-	public void setMinimum_inventory(Integer minimum_inventory) {
-		this.minimum_inventory = minimum_inventory;
-	}
+	
 	public Integer getAdmin_id() {
 		return admin_id;
 	}
@@ -50,12 +53,47 @@ public class Inventory {
 	public void setCdate(String cdate) {
 		this.cdate = cdate;
 	}
+	public Integer getInventory_number() {
+		return inventory_number;
+	}
+	public void setInventory_number(Integer inventory_number) {
+		this.inventory_number = inventory_number;
+	}
+	public Integer getDrug_id() {
+		return drug_id;
+	}
+	public void setDrug_id(Integer drug_id) {
+		this.drug_id = drug_id;
+	}
+	
+	public String getDrug_name() {
+		return drug_name;
+	}
+	public void setDrug_name(String drug_name) {
+		this.drug_name = drug_name;
+	}
+	public String getAdmin_name() {
+		return admin_name;
+	}
+	public void setAdmin_name(String admin_name) {
+		this.admin_name = admin_name;
+	}
+	public String getParameter_name() {
+		return parameter_name;
+	}
+	public void setParameter_name(String parameter_name) {
+		this.parameter_name = parameter_name;
+	}
 	@Override
 	public String toString() {
-		return "Inventory [inventory_id=" + inventory_id + ", pharmacy_id=" + pharmacy_id + ", production_date="
-				+ production_date + ", minimum_inventory=" + minimum_inventory + ", admin_id=" + admin_id + ", state="
-				+ state + ", cdate=" + cdate + "]";
+		return "Inventory [inventory_id=" + inventory_id + ", drug_id=" + drug_id + ", production_date="
+				+ production_date + ", inventory_number=" + inventory_number + ", admin_id=" + admin_id + ", state="
+				+ state + ", cdate=" + cdate + ", drug_name=" + drug_name + ", admin_name=" + admin_name
+				+ ", parameter_name=" + parameter_name + ", spec=" + spec + "]";
 	}
+	
+	
+	
 	
 	
 }
