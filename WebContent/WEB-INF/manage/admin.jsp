@@ -48,10 +48,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <td>职位</td>
       <td>${admin.ROLE_NAME}</td>
     </tr>
-    <tr>
-      <td>密码</td>
-      <td>${admin.ADMIN_PWD}</td>
-    </tr>
+    
      <tr>
       <td>状态</td>
 	    <c:if test="${admin.ADMIN_STATE==1}">

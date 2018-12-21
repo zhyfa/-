@@ -45,4 +45,13 @@ public interface DrugMapper {
 	 * @return int
 	 */
 	public int updateStockMin(Drug drug);
+	
+	//查询所有药品
+			public List<Map<String, Object>> getalldrug();
+			//二次查询
+			public List<Map<String, Object>> querybannedDrug(int drugid);
+			//查询总数
+			public int queryCountdrug(Map<String, Object> map);
+			//模糊查询
+			public List<Map<String, Object>> querypagedrug(Map<String, Object> map);
 }
