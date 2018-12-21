@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.SpecialDrugMapper"> 
+<!-- 特殊药入库明细   -->
+	<select id="queryAll" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select to_char(a.cdate,'YYYY-MM-DD') cdate, to_char(a.birthday,'YYYY-MM-DD') birthday,a.ic,b.admin_name admin1_name,c.admin_name admin2_name,d.drug_name,e.factory_name,a.drug_number
+		from t_pharmacy_apply a,t_admin b,t_admin c,t_drug d,t_factory e 
+		<where>
+			a.admin_id1=b.admin_id and a.admin_id2=c.admin_id and a.drug_id=d.drug_id and a.factory_id=e.factory_id and a.state=3 and a.psychotropics='是'
+			<if test="start != '' and start != null">
+				and to_char(a.cdate,'YYYY-MM-DD') between #{start} and #{end}
+			</if>
+			<if test="drug_name != '' and drug_name != null ">
+				and d.drug_name like '%${drug_name}%'
+			</if>
+		</where>
+		order by a.ic asc
+	</select>
+	
+<!-- 	查询销售表中特殊药的销售明细 -->
+	<select id="queryAllSpecialSale" resultType="java.util.HashMap">
+		select to_char(a.cdate,'YYYY-MM-DD') cdate,a.sold_num,to_char(a.birthday, 'YYYY-MM-DD') birthday,a.price,a.person,a.purpose,b.drug_name,c.admin_name,d.factory_name 
+		from t_sold a,t_drug b,t_admin c,t_factory d
+		where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.factory_id=d.factory_id and a.purpose is not null
+		order by a.person asc
+	</select>
+	
+<!-- 	特殊药药库存明细 -->
+	<select id="queryAllSpecialHave" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select c.factory_name,b.drug_name,to_char(a.production_date, 'YYYY-MM-DD') birthday,a.inventory_number
+		from t_inventory a,t_drug b,t_factory c
+		<where>
+			a.drug_id=b.drug_id and a.factory_id=c.factory_id and b.psychotropics is not null
+			<if test="drug_name != '' and drug_name != null ">
+				and b.drug_name like '%${drug_name}%'
+			</if>
+		</where>
+		order by b.drug_name asc
+	</select>
+
+</mapper>

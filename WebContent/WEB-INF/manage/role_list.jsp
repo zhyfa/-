@@ -32,25 +32,9 @@ a {
 </style>
 <script>
 $(document).ready(function(){
-	//显示所有的角色
-	//show();
+	
 });
 
-// function  show() {
-// 	$.ajax({
-<%-- 		url:"<%=basePath%>/role/queryAllRole.action", --%>
-// 		type: "POST",
-// 		data:'{}',
-// 		success : function(res){
-// 			var str='';
-// 			for(var i=0;i<res.length;i++){
-// 				var r=res[i];
-// 				str+="<tr><td>"+r.roleId+"</td><td>"+r.roleName+"</td><td><input type='button' value='修改' onclick='updateRole("+r.roleId+")'></td></tr>";
-// 			}
-// 			$("#roleTable").html(str);
-// 		}
-// 	});
-// }
 </script>
 </head>
 

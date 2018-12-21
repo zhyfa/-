@@ -127,7 +127,7 @@ function secondType() {
 		<a href="<%=basePath%>/drug/toDrugJSP.action?pageIndex=1&drug_name=${requestScope.drug_name}&smalltype_id=${requestScope.smalltype_id}&illustrate=${requestScope.illustrate}">首页</a>&nbsp;
 		<a href="<%=basePath%>/drug/toDrugJSP.action?pageIndex=${requestScope.page.pre}&drug_name=${requestScope.drug_name}&smalltype_id=${requestScope.smalltype_id}&illustrate=${requestScope.illustrate}">上一页</a>&nbsp;
 		<c:forEach items="${requestScope.page.prePages}" var="prePage">
-			<a href="<%=basePath%>/drug/toDrugJSP.action?pageIndex=${prePage}&roleName=${requestScope.roleName}">${prePage}</a>&nbsp;
+			<a href="<%=basePath%>/drug/toDrugJSP.action?pageIndex=${prePage}">${prePage}</a>&nbsp;
 		</c:forEach>
 		<a style="color: black;">${requestScope.page.page}</a>&nbsp;
 		<c:forEach items="${requestScope.page.nextPages}" var="nextPage">
