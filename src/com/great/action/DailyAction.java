@@ -101,6 +101,79 @@ public class DailyAction {
 			return 2;
 		}
 	}
+	//药房药品报损开始=====================================================================
+	@RequestMapping("/badDrug.action")
+	public ModelAndView badDrug(Integer pageIndex) {
+		if(pageIndex==null) {
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Drug> inventorys = inventoryService.getInventorys();
+		InfoPage page = new InfoPage(inventorys);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("inventorys", inventorys);
+		andView.addObject("page", page);
+		andView.setViewName("pharmacy/pharmacy_badDrug");
+		return andView;
+	}
+	//badDrugRequestBefore
+	@RequestMapping("/badDrugRequestBefore.action")
+	public ModelAndView badDrugRequestBefore(Integer drug_id) {
+		List<Inventory> inventorys = inventoryService.getInventoryssByDrugId(drug_id);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("inventorys", inventorys);
+		andView.setViewName("pharmacy/pharmacy_badDrugRequestBefore");
+		return andView;
+	}
+	
+	
+	@RequestMapping(value = "/badDrugRequest.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public int badDrugRequest(Integer inventory_id) {
+		int res = inventoryService.badDrugRequest(inventory_id);
+		if(res==1) {
+			return 1;
+		}else {
+			return 2;
+		}
+	}
+	//badDrugCheck  admin           报损审批
+	@RequestMapping("/badDrugCheck.action")
+	public ModelAndView badDrugCheck(Integer pageIndex) {
+		if(pageIndex==null) {
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Inventory> inventorys = inventoryService.getInventorysForAdmin();
+		InfoPage page = new InfoPage(inventorys);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("inventorys", inventorys);
+		andView.addObject("page", page);
+		andView.setViewName("manage/admin_badDrugCheck");
+		return andView;
+	}
+	//badDrugPass.action  badDrugNotPass.action
+	@RequestMapping(value = "/badDrugPass.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public int badDrugPass(Inventory inventory) {
+		int res = inventoryService.badDrugPass(inventory);
+		if(res==1) {
+			return 1;
+		}else {
+			return 2;
+		}
+	}
+	@RequestMapping(value = "/badDrugNotPass.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public int badDrugNotPass(Integer inventory_id) {
+		int res = inventoryService.badDrugNotPass(inventory_id);
+		if(res==1) {
+			return 1;
+		}else {
+			return 2;
+		}
+	}
+	//=====================药品报损   流程  结束
 	/**
 	 * cc 药品盘点
 	 * 

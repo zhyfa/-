@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-       <%
+        <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
 %>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath %>/js/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 </head>
 <body>
-<button onclick="javascript:history.back(-1);">返回</button>
 <table border="1">
 	<caption></caption>
 	<thead>
@@ -23,11 +25,13 @@
 		<th>生产日期</th>
 		<th>数量</th>
 		<th>状态</th>
-		<th>创建日期</th>
+<!-- 		<th>创建日期</th> -->
 		<th>操作</th>
 	</thead>
 	<tbody>
 		<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
+			<c:if test="${inventory.state!=3}">
+			
 			<tr>
 				<td>${st.count }</td>
 				<td>${inventory.inventory_id }</td>
@@ -36,12 +40,13 @@
 				<td>${inventory.production_date }</td>
 				<td>${inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
 				<td>${inventory.parameter_name }</td>
-				<td>${inventory.cdate }</td>
+<%-- 				<td>${inventory.cdate }</td> --%>
 				<td>
-					<button onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id })"  ${inventory.state!=1?'hidden':'' }>退库申请</button>
-					<button onclick="createReturnBackForm()" ${inventory.state!=4?'hidden':'' }>生成水印单</button>
+					<button onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id })"  ${inventory.state!=1?'hidden':'' }>报损申请</button>
+					<button onclick="createReturnBackForm()" ${inventory.state!=7?'hidden':'' }>生成报损水印单</button>
 				</td>
 			</tr>
+			</c:if>
 		</c:forEach>
 	</tbody>
 </table>
@@ -49,19 +54,21 @@
 </body>
 <script type="text/javascript">
 function returnBackToStockRequest(inventory_id,drug_id){
-	if(confirm("确认退库嘛？")){
+	
+	if(confirm("确认报损嘛？")){
 		$.ajax({
 			type : "post",
-			url : "<%=basePath%>/daily/returnBackToStockRequest.action",
+			url : "<%=basePath%>/daily/badDrugRequest.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
 			data : {"inventory_id":inventory_id},
 			success : function(res) {
+				alert(res);
 				if(res==1){
-					alert("申请成功");
-					window.location.href="<%=basePath%>/daily/getInventorys.action?drug_id="+drug_id;
+					alert("报损成功");
+					window.location.href="<%=basePath%>/daily/badDrugRequestBefore.action?drug_id="+drug_id;
 				}else{
-					alert("申请失败");
+					alert("报损失败");
 				}
 			}
 		});

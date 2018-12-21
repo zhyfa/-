@@ -23,11 +23,17 @@ public class InventoryService {
 	public List<Inventory> getInventorysByDrugId(Integer drug_id){
 		return inventoryMapper.getInventorysByDrugId(drug_id);
 	};
+	public List<Inventory> getInventoryssByDrugId(Integer drug_id){
+		return inventoryMapper.getInventoryssByDrugId(drug_id);
+	};
 	public int returnStockRequest(Integer inventory_id) {
 		return inventoryMapper.returnStockRequest(inventory_id);
 	};
 	public List<Inventory> getInventorysforStock(){
 		return inventoryMapper.getInventorysforStock();
+	};
+	public List<Inventory> getInventorysForAdmin(){
+		return inventoryMapper.getInventorysForAdmin();
 	};
 	@Transactional  
 	public int returnStockRequestPass(Inventory inventory) {
@@ -40,13 +46,18 @@ public class InventoryService {
 		return inventoryMapper.returnStockRequestNotPass(inventory_id);
 	};
 	//报损申请  
-	public int lossRequest(Integer inventory_id) {
-		return inventoryMapper.lossRequest(inventory_id);
+	public int badDrugRequest(Integer inventory_id) {
+		return inventoryMapper.badDrugRequest(inventory_id);
+		
 	};
-	public int lossRequestPass(Integer inventory_id) {
-		return inventoryMapper.lossRequestPass(inventory_id);
+	//报损申请    通过
+	public int badDrugPass(Inventory inventory) {
+		return inventoryMapper.badDrugPass(inventory.getInventory_id());
+		
 	};
-	public int lossRequestNotPass(Integer inventory_id) {
-		return inventoryMapper.lossRequestNotPass(inventory_id);
+	//报损申请   不通过
+	public int badDrugNotPass(Integer inventory_id) {
+		return inventoryMapper.badDrugNotPass(inventory_id);
+		
 	};
 }

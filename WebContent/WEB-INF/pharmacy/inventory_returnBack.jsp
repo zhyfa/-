@@ -31,7 +31,7 @@
 				<td>${inventory.drug_id }</td>
 				<td>${inventory.drug_name }</td>
 				<td>${inventory.drug_size }${inventory.drug_unit }/${inventory.spec==1?'盒':'瓶' }</td>
-				<td>${inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
+				<td>${inventory.inventory_number==null?0:inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
 				<td>
 					<button onclick="returnBack(${inventory.drug_id })">退库</button>
 				</td>
@@ -58,7 +58,6 @@
 </body>
 <script type="text/javascript">
 	function returnBack(drug_id){
-		alert(drug_id);
 		window.location.href="<%=basePath%>/daily/getInventorys.action?drug_id="+drug_id;
 	}
 </script>

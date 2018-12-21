@@ -1,9 +1,11 @@
 package com.great.bean;
 
+import java.sql.Date;
+
 public class Inventory {
 	private Integer inventory_id;// number  primary key,--药房库存id
 	private Integer drug_id;//  number,--药品id
-	private String production_date ;// date,--生产日期
+	private Date production_date ;// date,--生产日期
 	private Integer inventory_number;// number,--药房药品数量
 	private Integer admin_id;//  number,--操作人
 	private Integer state;//  number default 1,--状态
@@ -44,13 +46,14 @@ public class Inventory {
 		this.inventory_id = inventory_id;
 	}
 	
-	public String getProduction_date() {
+	
+	
+	public Date getProduction_date() {
 		return production_date;
 	}
-	public void setProduction_date(String production_date) {
+	public void setProduction_date(Date production_date) {
 		this.production_date = production_date;
 	}
-	
 	public Integer getAdmin_id() {
 		return admin_id;
 	}
@@ -100,12 +103,14 @@ public class Inventory {
 	public void setParameter_name(String parameter_name) {
 		this.parameter_name = parameter_name;
 	}
+	
 	@Override
 	public String toString() {
 		return "Inventory [inventory_id=" + inventory_id + ", drug_id=" + drug_id + ", production_date="
 				+ production_date + ", inventory_number=" + inventory_number + ", admin_id=" + admin_id + ", state="
 				+ state + ", cdate=" + cdate + ", drug_name=" + drug_name + ", admin_name=" + admin_name
-				+ ", parameter_name=" + parameter_name + ", spec=" + spec + "]";
+				+ ", parameter_name=" + parameter_name + ", msg=" + msg + ", inventory_min=" + inventory_min + ", spec="
+				+ spec + ", shiji=" + shiji + ", beizhu=" + beizhu + "]";
 	}
 	public String getShiji() {
 		return shiji;
