@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.LogMapper">
+<!-- 插入日志通用方法 -->
+	<insert id="addLog" parameterType="com.great.bean.MyLog">
+  	 	INSERT INTO T_LOG(LOG_ID,ADMIN_ID,LOG_OPERATION) values(SEQ_T_LOG.NEXTVAL,#{admin_id},#{log_operation})
+  	</insert>
+  	<!-- 查询所有日志的总数 -->
+	<select id="queryCountLog" resultType="int">
+    	SELECT COUNT(0) FROM T_LOG 
+    	</select>
+  	  <!-- 查询所有用户 -->
+	<select id="getallLog" parameterType="com.great.bean.Page" resultType="java.util.HashMap">
+    	SELECT A.* FROM (select b.ADMIN_NAME,b.ROLE_ID,c.ROLE_NAME,a.LOG_ID,a.ADMIN_ID,a.LOG_OPERATION,a.LOG_STATE,a.LOG_CDATE,rownum R from T_ADMIN B,T_LOG A,T_ROLE C where a.ADMIN_ID=b.ADMIN_ID and B.ROLE_ID=C.ROLE_ID)A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}</select>
+	       
+</mapper>

@@ -54,6 +54,7 @@
 </style>
 <body>
 	<p>
+<input type="button" value="查看采购图形表" onclick="getChart()">
 <form id="myForm">
 	<table class="infoTb" cellspacing="1">
 		<tr background-color="#E6E6FA">
@@ -322,6 +323,9 @@
             $("#totalPrice").val(totalP);
             console.log(totalP); 
         });
-        
+//进入采购图形统计页面
+function getChart(){
+	window.location.href="<%=basePath%>/stock/goStockChartJSP.action";
+}
     </script>
 </html>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.bean.InfoPage;
 import com.great.service.DrugTypeService;
 
 @Controller
@@ -30,11 +31,19 @@ public class DrugTypeAction {
 
 	// 另一个页面（测试）
 	@RequestMapping("/toOtherJsp.action")
-	public ModelAndView toOtherJsp() {
+	public ModelAndView toOtherJsp(Integer pageIndex) {
+		if(pageIndex==null) {
+			pageIndex=1;
+		}
+		List<Map<String, Object>> secondType = drugTypeService.newsecondType(pageIndex,InfoPage.NUMBER);
+		InfoPage page = new InfoPage(secondType);
 		ModelAndView andView = new ModelAndView();
+		andView.addObject("page", page);
+		andView.addObject("secondType", secondType);
 		andView.setViewName("drugLibrary/drug_type2");
 		return andView;
 	}
+	
 
 	// 1、查询药品的大类别
 	@RequestMapping(value = "/firstType.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
