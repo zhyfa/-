@@ -28,6 +28,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="<%=basePath%>/assets/x-admin/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
 	<script type="text/javascript"src="<%=basePath%>/assets/x-admin/js/jquery.md5.js"></script>
+	<script type="text/javascript">
+	function checkname(){
+		var adminname = $("#adminname").val();
+		if(adminname==""||adminname==null){
+		}else{
+		$.ajax({
+			type:"post",
+			url:"<%=basePath%>/admin/checkname.action",
+			//contentType : "application/json;charset=utf-8",
+			dataType:"JSON",
+			data:{"adminname":adminname},
+			success : function(data) {
+				if (data == '1') {
+					$("#checkname").text("√")
+				}
+				if (data == '2') {
+					$("#checkname").text("×")
+				}
+				
+			}
+		});
+		
+		}
+	}
+	</script>
 </head>
 
 
@@ -63,9 +88,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <td>状态</td>
       <td>
 	     <select name="admin_state" class="form-control" id="stateid" >
-					<option value=0>"未选择查询的状态"</option>
-					<option value=1>"正常使用的用户"</option>
-					<option value=2>"已禁用的用户"</option></select></td>
+					<c:forEach items="${requestScope.parameterlist}" var="parameter"
+						varStatus="sta">
+						<option value="${parameter.PARAMETER_VALUE}">${parameter.PARAMETER_NAME}</option>
+					</c:forEach></select></td>
     </tr>
      <tr>
      <td><input class="btn btn-primary" data-toggle="button" type="button" value="确认"  onclick="addadmin()"></td>
@@ -75,36 +101,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </form>
 </body>
 <script type="text/javascript">
-function checkname(){
-	var adminname = $("#adminname").val();
-	if(adminname==""|adminname==null){
-		return;
-	}
-	$.ajax({
-		type : "post",
-		url : "<%=basePath%>/admin/checkname.action",
-		dataType : "JSON",
-		data : {'adminname':adminname},
-		success : function(data) {
-			if(data=='1'){
-				$("#checkname").text("√");
-			}else(data=='2'){
-				$("#checkname").text("×");
-			}
-			
-		}
-	});
-	
-}
+
 
 
 function addadmin(){
-	var adminname =$("#adminname").val;
+	var adminname =$("#adminname").val();
 	var pwd = $("#adminpwd").val();
 	var password = $.md5(pwd);
+	var checkname = document.getElementById("checkname").innerText;
 	$("#adminpwd").val(password);
 	console.log(password);
-	var stateid =$("#stateid").val;
+	var stateid =$("#stateid").val();
 	if(adminname==null|adminname==""){
 		alert("请输入注册名称");
 		return;
@@ -113,13 +120,9 @@ function addadmin(){
 		alert("请输入密码");
 		return;
 	}
-	if(stateid==0){
-		alert("请选择状态");
-		return;
-	}
 	
 	if(checkname=="×"){
-		alert("请输入正确的姓名");
+		alert("该成员已存在，请输入正确的姓名");
 		return;
 	}
 	$.ajax({
@@ -130,10 +133,7 @@ function addadmin(){
 		success : function(data) {
 			if (data == '1') {
 				alert("添加成功");
-				//window.opener=null;
-				//window.open('','_self');
 				window.close();
-				//window.opener.parent.location
 				parent.window.location.href = "<%=basePath%>/admin/adminList.action?dqPage=1&pageTwo=1";
 				}else{
 					alert("添加失败");

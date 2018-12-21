@@ -19,10 +19,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 <script type="text/javascript"
 	src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="<%=basePath%>/css/jquery-ui.css">
 <script
 	src="<%=basePath%>/assets/bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet"
 	href="<%=basePath%>/assets/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet"
+	href="<%=basePath%>/css/bootstrap.css">
 <link rel="shortcut icon"
 	href="<%=basePath%>/assets/x-admin/favicon.ico"
 	type="image/x-icon" />
@@ -39,12 +43,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>/media/css/jquery.dataTables.css">
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery.min.js"></script>
-<script type="text/javascript" charset="utf8"
-	src="<%=basePath%>/media/js/jquery.js"></script>
 <script type="text/javascript" charset="utf8"
 	src="<%=basePath%>/media/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="<%=basePath%>/layer/mobile/layer.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="<%=basePath%>/layer/mobile/need/layer.css">
 
 </head>
 
@@ -74,19 +78,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</select> <input type="text" class="form-control" placeholder="请输入需要查询的姓名"
 					name="admin_name" id="adminname">
 			</div>
-			<input type="button" class="btn btn-primary" data-toggle="button"
-				value="查询" onclick="queryadmin()">
+			<input type="button" class="btn btn-primary" value="查询" onclick="queryadmin()">
 		</form>
 	</div>
 	<div id="adindiv">
 	<c:forEach items="${page.queryList}" var="admins" varStatus="sta">
-		<div class="row" style="margin-left: 50px">
+		<div class="row" style="margin-left: 50px;float:left">
 			<div class="col-sm-6 col-md-3">
-				<div class="thumbnail">
+				<div class="thumbnail" >
 					<img src="<%=basePath%>/image/doctor.png"
 						alt="通用的占位符缩略图">
 					<div class="caption">
-
 						<table class="table table-hover" id="${admins.ADMIN_ID}">
 							<thead>
 								<tr>
@@ -106,16 +108,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 						<div style="border: 1px solid color:red">
 							<p>
-								<a class="btn btn-primary" role="button"
-									onclick="x_admin_show('成员详情 ' ,'${pageContext.request.contextPath }/admin/queryadminbyid.action?adminid=${admins.ADMIN_ID}',600,400)"
-									href="javascript:;"> <i class="layui-icon">&#xe642;</i>查看详情
-								</a> <a  class="btn btn-default" role="button" onclick="delectadmin(${admins.ADMIN_ID})">删除用户</a> <br>
-
-								<a class="btn btn-primary" role="button"
-									onclick="x_admin_show('修改信息'  ,'${pageContext.request.contextPath }/admin/updaadminbefore.action?adminid=${admins.ADMIN_ID}',600,400)"
-									href="javascript:;"> <i class="layui-icon">&#xe642;</i>更改数据</a> 
-								<a  class="btn btn-default" role="button" onclick="turnoffadmin(${admins.ADMIN_ID})">禁用用户 </a>
-								</p>
+							<input class="btn btn-primary" type="button"  onclick="xiangxi(${admins.ADMIN_ID})" value="查看详情" >
+							<input class="btn btn-primary" type="button"  onclick="delectadmin(${admins.ADMIN_ID})" value="删除成员" >
+							<input class="btn btn-primary" type="button"  onclick="changeadmin(${admins.ADMIN_ID})" value="更改信息" >
+							</p>
 							</div>
 						</div>
 					</div>
@@ -123,23 +119,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</c:forEach>
 	</div>
+	<div id="changepage">
 	<ul class="pagination pagination-lg">
 		<li><a onclick="up()">&laquo;</a></li>
+		
 		<c:forEach items="${page.pageShu}" var="pageshu">
-			<li><a onclick="addTabs(this)">${pageshu}</a></li>
+			<li ><a onclick="addTabs(this)">${pageshu}</a></li>
 		</c:forEach>
+		
 		<li><a onclick="next()">&raquo;</a></li>
 		<li>共${page.totalPage}页，当前第${page.page}页</li>
 	</ul>
 	<input type="hidden" name="pageTwo" value="${page.pageTwo}" id="pageT">
 	<input type="hidden" value="${page.totalPageTwo}" id="totalPageTwo">
-
+	</div>
 </body>
 <script type="text/javascript">
+
        function addTabs(obj) {
+    	   console.log(obj);
            var page = (Number)($(obj).text());
            var pageTwo=(Number)($("#pageT").attr("value"));
-           window.location.href="<%=basePath%>/admin/adminList.action?dqPage="+page+"&pageTwo="+pageTwo;
+           console.log(page);
+           console.log(pageTwo);
+           this.allquery(page,pageTwo);
        }
        
        function next(){
@@ -151,7 +154,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		   pageTwo++;
     		   var page=(pageTwo-1)*5+1;
     		   alert(pageTwo);
-    		   window.location.href="<%=basePath%>/admin/adminList.action?dqPage="+page+"&pageTwo="+pageTwo;
+    		   this.allquery(page,pageTwo);
     	   }
     	   
        }
@@ -165,29 +168,68 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		   pageTwo--;
     		   var page=(pageTwo-1)*5+1;
     		   alert(pageTwo);
-    		   window.location.href="<%=basePath%>/admin/adminList.action?dqPage="+page+"&pageTwo="+pageTwo;
+    		   this.allquery(page,pageTwo);
     	   }
     	   
        }
+       
        function queryadmin(){
-    	   console.log("!!!!!!!!!!!")
-    	  
-	       	var stateid =JSON.parse($("#stateid").val());
-    	   console.log(stateid)
+	       	this.allquery(1,1);
+			}
+       
+       function xiangxi(adminid){
+    		alert(adminid);
+    		window.open ("<%=basePath%>/admin/queryadminbyid.action?adminid="+adminid, "newwindow", "height=800, width=600, top=200,left=500,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+    	}
+
+    	function changeadmin(adminid){
+    		layer.open({
+    			type: 2, 
+    			//title:["处理页面详情",'background-image: url(/csp/static/js/theme/default/layerTiltle.fw_03.png);'],
+    			title:["处理页面详情"],
+    			area: ['50%', '80%'],
+    			maxmin:true,
+    			scrollbar: false ,
+    			content:['<%=basePath%>/admin/updaadminbefore.action?adminid='+adminid,'yes'],
+    			end: function () {
+                location.reload();
+            }
+    		});
+
+<%--     		window.open ("<%=basePath%>/admin/updaadminbefore.action?adminid="+adminid, "newwindow", "height=800, width=600, top=200,left=500,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no") --%>
+    		
+    	}
+       function delectadmin(adminid){
+    	   $.ajax({
+				type : "post",
+				url : "<%=basePath%>/admin/admindelete.action",
+				dataType : "JSON",
+				data : {'adminid':adminid},
+				success : function(data) {
+					if(data=="1"){
+						window.alert("删除成功");
+						window.location.href = "<%=basePath%>/admin/adminList.action?dqPage=1&pageTwo=1";
+					}if(data=="2"){
+						window.alert("删除失败");
+					}
+					
+				}
+    	   });
+       }
+       function allquery(page,pagetwo){
+    		var stateid =JSON.parse($("#stateid").val());
 	    	var role_id =JSON.parse($("#role_id").val());
-    	   console.log(role_id)
 	    	var adminname =$("#adminname").val();
-    	   console.log(adminname)
     	   $.ajax({
 				type : "post",
 				url : "<%=basePath%>/admin/queryadmin.action",
 				dataType : "JSON",
-				data : {"admin_name":adminname,"role_id":role_id,"admin_state":stateid,"dqpage":1,"pageTwo":1},
+				data : {"admin_name":adminname,"role_id":role_id,"admin_state":stateid,"dqpage":page,"pageTwo":pagetwo},
 				success : function(data) {
 					var str="";
 					 
 		                 for(var i=0;i<data.queryList.length;i++) {
-		                str+=  "<div class='row' style='margin-left: 50px'>"+
+		                str+= "<div class='row' style='margin-left:50px;float:left'>"+
 		        			"<div class='col-sm-6 col-md-3'>"+
 		        				"<div class='thumbnail'>"+
 		        				"<img src='<%=basePath%>/image/doctor.png' alt='通用的占位符缩略图'>"+
@@ -211,15 +253,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		        						"<div style='border: 1px solid color:red'>"+
 		        							"<p>"+
-		        								"<a class='btn btn-primary' role='button' "+
-		        									" onclick='x_admin_show('成员详情 ','//admin///queryadminbyid.action?adminid="+data.queryList[i].ADMIN_ID+"',600,400)'"+
-		        									" href='javascript:;''> <i class='layui-icon'>&#xe642;</i>查看详情 </a> "+
-		        								"<a  class='btn btn-default' role='button' onclick='delectadmin("+data.queryList[i].ADMIN_ID+")'>删除用户 </a>"+
-
-		        								"<a class='btn btn-primary' role='button'"+
-		        									"onclick='x_admin_show('修改信息','////admin////updaadminbefore.action?adminid=data.queryList[i].ADMIN_ID',600,400)'"+
-		        									"href='javascript:;'> <i class='layui-icon'>&#xe642;</i>更改数据</a> "+
-		        								"<a  class='btn btn-default' role='button' onclick='turnoffadmin("+data.queryList[i].ADMIN_ID+")'>禁用用户 </a>"+
+		        							"<input class='btn btn-primary' type='button'  onclick='xiangxi("+data.queryList[i].ADMIN_ID+")' value='查看详情' >"+
+		        							"<input class='btn btn-primary' type='button'  onclick='delectadmin("+data.queryList[i].ADMIN_ID+")' value='删除成员' >"+
+		        							"<input class='btn btn-primary' type='button'  onclick='changeadmin("+data.queryList[i].ADMIN_ID+")' value='更改信息' >"+						
 		        								"</p>"+
 		        							"</div>"+
 		        						"</div>"+
@@ -228,30 +264,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        			"</div>"
 		                 }
 		                    
-		                    
-
 		           $("#adindiv").html(str); 
+		           
+		           var str1="";
+		           var str2="";
+		           str1+="<ul class='pagination pagination-lg'>"+
+		   		"<li><a onclick='up()'>&laquo;</a></li>"
+		   		
+		   		for(var a=0 ;a<data.pageShu.length;a++){
+		   			str2+="<li><a onclick='addTabs(this)'>"+data.pageShu[a]+"</a></li>"
+		   		}
+		   		str1=str2+str1+"<li><a onclick='next()'>&raquo;</a></li>"+
+		   		"<li>共"+data.totalPage+"页，当前第"+data.page+"页</li>"+
+		   	"</ul>"+
+		   	"<input type='hidden' name='pageTwo' value='"+data.pageTwo+"' id='pageT'>"+
+		   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
+		         
+		    $("#changepage").html(str1); 
+		   	console.log(str1)
 				},
 			});
-			}
-       
-       function delectadmin(adminid){
-    	   $.ajax({
-				type : "post",
-				url : "<%=basePath%>/admin/admindelete.action",
-				dataType : "JSON",
-				data : {'adminid':adminid},
-				success : function(data) {
-					if(data=="1"){
-						window.alert("删除成功");
-						window.location.href = "<%=basePath%>/admin/adminList.action?dqPage=1&pageTwo=1";
-					}if(data=="2"){
-						window.alert("删除失败");
-					}
-					
-				}
-    	   });
        }
+       
        
    </script>
 </html>

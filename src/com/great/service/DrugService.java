@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
+import com.great.bean.Page;
 import com.great.dao.DrugMapper;
 
 @Service
@@ -77,5 +78,24 @@ public class DrugService {
 	public int updateStockMin(Drug drug) {
 		return drugMapper.updateStockMin(drug);
 	}
-
+	//查询所有的药品
+			public List<Map<String, Object>> getalldrug() {
+				// TODO Auto-generated method stub
+				return drugMapper.getalldrug();
+			}
+			//二次查询
+			public List<Map<String, Object>> querybannedDrug(int drugid) {
+				// TODO Auto-generated method stub
+				return drugMapper.querybannedDrug(drugid);
+			}
+			//查询总数
+			public int queryCountdrug(Map<String, Object> map) {
+				// TODO Auto-generated method stub
+				return drugMapper.queryCountdrug(map);
+			}
+			//查询分页列表
+			public List<Map<String, Object>> querypagedrug(Map<String, Object> map) {
+				// TODO Auto-generated method stub
+				return drugMapper.querypagedrug(map);
+			};
 }
