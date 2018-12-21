@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
+import com.great.bean.Inventory;
 import com.great.bean.ReturnGood;
 import com.great.bean.Stock;
 import com.great.dao.StockMapper;
@@ -58,6 +59,14 @@ public class StockService {
 		 */
 		public List<Stock> checkStockNum() {
 			return stockMapper.checkStockNum();
+		};
+		/**
+		 * jyf
+		 * 
+		 * @return
+		 */
+		public List<Inventory> checkInventoryNum() {
+			return stockMapper.checkInventoryNum();
 		};
 
 		/**

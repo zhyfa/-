@@ -56,7 +56,14 @@
   	</set>
   	where drug_id = #{drug_id}
   </update>
-  
+  <!-- 根据id更改药品的药房最低量 -->
+  <update id="updateInventoryMin" parameterType="com.great.bean.Drug">
+  	update T_DRUG 
+  	<set>
+  		inventory_min = #{inventory_min}
+  	</set>
+  	where drug_id = #{drug_id}
+  </update>
   <!--  查找所有药品-->
    <select id="getalldrug" resultType="java.util.HashMap">
      select * from T_DRUG 

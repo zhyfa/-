@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.great.bean.Drug;
+import com.great.bean.Inventory;
 import com.great.bean.ReturnGood;
 import com.great.bean.Stock;
 
@@ -36,6 +37,11 @@ public interface StockMapper {
 	 * @return
 	 */
 	public List<Stock> checkStockNum();
+	/**
+	 * jyf
+	 * @return
+	 */
+	public List<Inventory> checkInventoryNum();
 	/**
 	 * jyf
 	 * @return

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.great.bean.Drug;
 import com.great.bean.Inventory;
@@ -28,13 +29,24 @@ public class InventoryService {
 	public List<Inventory> getInventorysforStock(){
 		return inventoryMapper.getInventorysforStock();
 	};
-	
-	public int returnStockRequestPass(Integer inventory_id) {
-		return inventoryMapper.returnStockRequestPass(inventory_id);
+	@Transactional  
+	public int returnStockRequestPass(Inventory inventory) {
+		int res = inventoryMapper.returnStockRequestPass(inventory.getInventory_id());
+		int res1 = inventoryMapper.pharmacyReturnAdd(inventory);
+		return 1;
 		
 	};
 	public int returnStockRequestNotPass(Integer inventory_id) {
 		return inventoryMapper.returnStockRequestNotPass(inventory_id);
-		
+	};
+	//报损申请  
+	public int lossRequest(Integer inventory_id) {
+		return inventoryMapper.lossRequest(inventory_id);
+	};
+	public int lossRequestPass(Integer inventory_id) {
+		return inventoryMapper.lossRequestPass(inventory_id);
+	};
+	public int lossRequestNotPass(Integer inventory_id) {
+		return inventoryMapper.lossRequestNotPass(inventory_id);
 	};
 }

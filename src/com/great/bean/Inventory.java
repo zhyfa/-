@@ -12,10 +12,25 @@ public class Inventory {
 	private String drug_name;//药品名字
 	private String admin_name;//操作人
 	private String parameter_name;//参数名字
+	private String msg;//不足提示信息
+	private Integer inventory_min;//药房最低量
+	
 	private int spec;//单位
 	private String shiji;//导出excel时预留实际数量的列
 	private String beizhu;//导出excel时预留备注的列
 	
+	public Integer getInventory_min() {
+		return inventory_min;
+	}
+	public void setInventory_min(Integer inventory_min) {
+		this.inventory_min = inventory_min;
+	}
+	public String getMsg() {
+		return msg;
+	}
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
 	public int getSpec() {
 		return spec;
 	}

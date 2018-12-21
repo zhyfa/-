@@ -13,7 +13,7 @@
 	<select id="getInventorysByDrugId" parameterType="java.lang.Integer"  resultType="com.great.bean.Inventory">
 		select a.*,b.drug_name,b.spec,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
          where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
-          and a.drug_id=#{_parameter} order by a.cdate desc
+          and a.drug_id=#{_parameter} order by a.production_date desc
 	</select>
 	<!-- jyf 获得药房 库存记录 退库申请 -->
 	<update id="returnStockRequest" parameterType="java.lang.Integer">
@@ -29,12 +29,26 @@
 	<update id="returnStockRequestPass" parameterType="java.lang.Integer">
 		update t_inventory <set>state=4</set> where inventory_id=#{_parameter}
 	</update>
-<!-- 	<insert id="pharmacyReturnAdd" parameterType=""> -->
-	
-<!-- 	</insert> -->
+	<insert id="pharmacyReturnAdd" parameterType="com.great.bean.Inventory">
+		insert into t_pharmacy_return(inventory_id,admin_id,drug_id,drug_number,birthday) 
+		 values (#{inventory_id},#{admin_id},#{drug_id},#{inventory_number},#{production_date})
+	</insert>
 	
 	<!-- jyf 获得药房 库存记录 退库申请   不通过-->
 	<update id="returnStockRequestNotPass" parameterType="java.lang.Integer">
 		update t_inventory <set>state=5</set> where inventory_id=#{_parameter}
+	</update>
+	
+	<!-- jyf 获得药房 库存记录 报损申请 -->
+	<update id="lossRequest" parameterType="java.lang.Integer">
+		update t_inventory <set>state=6</set> where inventory_id=#{_parameter}
+	</update>
+	<!-- jyf 获得药房 库存记录  报损申请   通过-->
+	<update id="lossRequestPass" parameterType="java.lang.Integer">
+		update t_inventory <set>state=7</set> where inventory_id=#{_parameter}
+	</update>
+	<!-- jyf 获得药房 库存记录 报损申请   不通过-->
+	<update id="lossRequestNotPass" parameterType="java.lang.Integer">
+		update t_inventory <set>state=8</set> where inventory_id=#{_parameter}
 	</update>
 </mapper>

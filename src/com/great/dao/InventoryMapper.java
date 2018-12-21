@@ -14,11 +14,18 @@ public interface InventoryMapper {
 	
 	public List<Inventory> getInventorysByDrugId(Integer drug_id);
 	
-	public int returnStockRequest(Integer inventory_id);
-	
 	public List<Inventory> getInventorysforStock();
 	
+	//退库申请
+	public int returnStockRequest(Integer inventory_id);
 	public int returnStockRequestPass(Integer inventory_id);
+	public int pharmacyReturnAdd(Inventory inventory);
+	
 	public int returnStockRequestNotPass(Integer inventory_id);
+	
+	//lossRequest  报损申请
+	public int lossRequest(Integer inventory_id);
+	public int lossRequestPass(Integer inventory_id);
+	public int lossRequestNotPass(Integer inventory_id);
 	//===================jyf结束
 }

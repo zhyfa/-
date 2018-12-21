@@ -84,8 +84,8 @@ public class DailyAction {
 		return andView;
 	}
 	@RequestMapping(value = "/returnBackToStockPass.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-	public @ResponseBody int returnBackToStockPass(Integer inventory_id) {
-		int res = inventoryService.returnStockRequestPass(inventory_id);
+	public @ResponseBody int returnBackToStockPass(Inventory inventory) {
+		int res = inventoryService.returnStockRequestPass(inventory);
 		if(res==1) {
 			return 1;
 		}else {

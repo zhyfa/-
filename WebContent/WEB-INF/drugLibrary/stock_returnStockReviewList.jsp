@@ -38,7 +38,7 @@
 					<td>${inventory.parameter_name }</td>
 					<td>${inventory.cdate }</td>
 					<td>
-						<button onclick="returnBackToStockPass(${inventory.inventory_id })" ${inventory.state!=3?'hidden':'' }>审核通过</button>
+						<button onclick="returnBackToStockPass(${inventory.inventory_id },${inventory.drug_id },${inventory.admin_id },${inventory.inventory_number },'${inventory.production_date }')" ${inventory.state!=3?'hidden':'' }>审核通过</button>
 						<button onclick="returnBackToStockNotPass(${inventory.inventory_id })"  ${inventory.state!=3?'hidden':'' }>审核不通过</button>
 						<button onclick="createReturnBackForm()" ${inventory.state!=4?'hidden':'' }>生成水印单</button>
 					</td>
@@ -65,17 +65,15 @@
 <%-- ${requestScope.page } --%>
 </body>
 <script type="text/javascript">
-function returnBackToStockPass(inventory_id){
-	alert(inventory_id);
+function returnBackToStockPass(inventory_id,drug_id,admin_id,inventory_number,production_date){
 	if(confirm("确认审核通过嘛？")){
 		$.ajax({
 			type : "post",
 			url : "<%=basePath%>/daily/returnBackToStockPass.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"inventory_id":inventory_id},
+			data : {"inventory_id":inventory_id,"drug_id":drug_id,"admin_id":admin_id,"inventory_number":inventory_number,"production_date":production_date},
 			success : function(res) {
-				alert(res);
 				if(res==1){
 					alert("通过成功");
 					window.location.href="<%=basePath%>/daily/returnStockReviewList.action";
@@ -88,7 +86,6 @@ function returnBackToStockPass(inventory_id){
 	
 }
 function returnBackToStockNotPass(inventory_id){
-	alert(inventory_id);
 	if(confirm("确认驳回申请嘛？")){
 		$.ajax({
 			type : "post",
@@ -97,7 +94,6 @@ function returnBackToStockNotPass(inventory_id){
 			dataType : "JSON",
 			data : {"inventory_id":inventory_id},
 			success : function(res) {
-				alert(res);
 				if(res==1){
 					alert("驳回成功");
 					window.location.href="<%=basePath%>/daily/returnStockReviewList.action";

@@ -78,6 +78,9 @@ public class DrugService {
 	public int updateStockMin(Drug drug) {
 		return drugMapper.updateStockMin(drug);
 	}
+	public int updateInventoryMin(Drug drug) {
+		return drugMapper.updateInventoryMin(drug);
+	}
 	//查询所有的药品
 			public List<Map<String, Object>> getalldrug() {
 				// TODO Auto-generated method stub

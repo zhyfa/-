@@ -45,6 +45,7 @@ public interface DrugMapper {
 	 * @return int
 	 */
 	public int updateStockMin(Drug drug);
+	public int updateInventoryMin(Drug drug);
 	
 	//查询所有药品
 			public List<Map<String, Object>> getalldrug();

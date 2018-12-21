@@ -82,11 +82,11 @@
 <script type="text/javascript">
 function updateStockMinBefore(drug_id){
 <%-- 	<%=basePath%>/drug/updateStockMinBefore.action?drug_id=drug_id --%>
-var that = this; 
+// var that = this; 
 //多窗口模式，层叠置顶
 layer.open({
   type: 2 //此处以iframe举例
-  ,title: '修改密码'
+  ,title: '设置药库低限'
   ,area: ['600px', '450px']
   ,shade: 0
   ,maxmin: true

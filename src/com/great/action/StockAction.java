@@ -16,6 +16,7 @@ import com.github.pagehelper.PageHelper;
 import com.great.bean.Admin;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
+import com.great.bean.Inventory;
 import com.great.bean.ReturnGood;
 import com.great.bean.Stock;
 import com.great.service.StockService;
@@ -33,18 +34,26 @@ public class StockAction {
 	// stockList.action  
 	@RequestMapping(value = "/stockList.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public List<Stock> getStocks(HttpSession session) {
+	public List getStocks(HttpSession session) {
 		Admin admin = (Admin) session.getAttribute("admin");
-		if(admin.getRole_id()!=2) {
-			return null;
-		};
-		List<Stock> stocks = stockService.checkStockNum();
-		for(Stock stock:stocks) {
-			if(stock.getStock_number()<=stock.getStock_min()) {
-				stock.setMsg("不足！");
+		if(admin.getRole_id()==2) {
+			List<Stock> stocks = stockService.checkStockNum();
+			for(Stock stock:stocks) {
+				if(stock.getStock_number()<=stock.getStock_min()) {
+					stock.setMsg("不足！");
+				}
 			}
+			return stocks;
+		}else if(admin.getRole_id()==3) {
+			List<Inventory> inventorys = stockService.checkInventoryNum();
+			for(Inventory inventory:inventorys) {
+				if(inventory.getInventory_number()<=inventory.getInventory_min()) {
+					inventory.setMsg("不足！");
+				}
+			}
+			return inventorys;
 		}
-		return stocks;
+		return null;
 	}
 	/**
 	 * jyf
