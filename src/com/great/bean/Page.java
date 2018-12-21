@@ -29,7 +29,7 @@ public class Page {
 			pageShu.add((pageTwo-1)*countTwo+i);
 			}
 		}else{
-			for(int i=(pageTwo-1)*countTwo+1;i<=totalPage;i++){
+			for(int i=(pageTwo-1)*countTwo+1;i<=total;i++){
 				pageShu.add(i);
 			}
 			totalPageTwo=totalPage%countTwo==0?totalPage/countTwo:totalPage/countTwo+1;

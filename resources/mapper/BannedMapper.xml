@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.BannedMapper">
+     	<!-- 新增配伍禁忌-->
+	 	<insert id="addBanned" parameterType="com.great.bean.Banned" >
+	 	insert into T_BANNED(DRUG_ID,DRUG_ID1)VALUES(#{pharmacy_id},#{pharmacy_id1})
+	 	</insert>
+	 	<select id="queryall"  resultType="java.util.Map">
+	 	select A.*, B.drug_name drug_name1 from T_DRUG B ,(select A.*,B.drug_name from T_BANNED A,T_DRUG B WHERE  A.DRUG_ID=B.DRUG_ID )A where B.drug_id=A.DRUG_ID1
+	 	 </select>
+	 	 
+	 	 <delete id="delBanned" parameterType="com.great.bean.Banned">
+       delete from T_BANNED where DRUG_ID=#{pharmacy_id} AND DRUG_ID1=#{pharmacy_id1}
+	   </delete>
+	 	 
+</mapper>

@@ -13,4 +13,5 @@ public interface LogMapper {
 	
 		public List<Map<String, Object>> getallLog(Page page);
 		public int queryCountLog();
+		
 }

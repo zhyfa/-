@@ -7,7 +7,7 @@ public class Drug implements Serializable{
 	private Integer drug_id;// number primary key,--药品id
 	private String drug_name;// varchar2(20),--药品名字
 	private Integer smalltype_id;// number,--小类别
-	private int spec;// varchar2(20),--规格
+	private int spec;// varchar2(20),--规格 1:盒  2：瓶
 	private Integer drug_size;// number,--一个规格中有多少的单位（颗、毫升、包，付）
 	private String drug_unit;// varchar2(50),--单位（颗、包，付）（毫升）
 	private Integer price;// number,--售价
@@ -26,17 +26,24 @@ public class Drug implements Serializable{
 	private Integer stock_min;// number,--药库最少库存，
 	private Integer inventory_min;// number,--药房最少库存
 	
+	
+	
+	private Integer stock_number;//药库库存数量
+	private Integer inventory_number;//药房库存数量
+	
 	private String bigtype_name;//大类别名字
 	private String smalltype_name;//小类别名字
 	public Drug() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
+
 	public Drug(Integer drug_id, String drug_name, Integer smalltype_id, int spec, Integer drug_size, String drug_unit,
 			Integer price, Integer discount, String psychotropics, String medical_code, String use_method,
 			String drug_alias, String illustrate, String irradiated, Integer state, String cdate, Integer stock_min,
-			Integer inventory_min, String bigtype_name, String smalltype_name) {
+			Integer inventory_min, Integer stock_number, Integer inventory_number, String bigtype_name,
+			String smalltype_name) {
 		super();
 		this.drug_id = drug_id;
 		this.drug_name = drug_name;
@@ -56,9 +63,29 @@ public class Drug implements Serializable{
 		this.cdate = cdate;
 		this.stock_min = stock_min;
 		this.inventory_min = inventory_min;
+		this.stock_number = stock_number;
+		this.inventory_number = inventory_number;
 		this.bigtype_name = bigtype_name;
 		this.smalltype_name = smalltype_name;
 	}
+
+	public Integer getInventory_number() {
+		return inventory_number;
+	}
+
+	public void setInventory_number(Integer inventory_number) {
+		this.inventory_number = inventory_number;
+	}
+
+	public Integer getStock_number() {
+		return stock_number;
+	}
+
+
+	public void setStock_number(Integer stock_number) {
+		this.stock_number = stock_number;
+	}
+
 
 	public Integer getStock_min() {
 		return stock_min;
@@ -194,6 +221,7 @@ public class Drug implements Serializable{
 		this.cdate = cdate;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Drug [drug_id=" + drug_id + ", drug_name=" + drug_name + ", smalltype_id=" + smalltype_id + ", spec="
@@ -201,8 +229,14 @@ public class Drug implements Serializable{
 				+ discount + ", psychotropics=" + psychotropics + ", medical_code=" + medical_code + ", use_method="
 				+ use_method + ", drug_alias=" + drug_alias + ", illustrate=" + illustrate + ", irradiated="
 				+ irradiated + ", state=" + state + ", cdate=" + cdate + ", stock_min=" + stock_min + ", inventory_min="
-				+ inventory_min + ", bigtype_name=" + bigtype_name + ", smalltype_name=" + smalltype_name + "]";
+				+ inventory_min + ", stock_number=" + stock_number + ", inventory_number=" + inventory_number
+				+ ", bigtype_name=" + bigtype_name + ", smalltype_name=" + smalltype_name + "]";
 	}
+
+
+	
+
+	
 
 	
 	

@@ -21,7 +21,7 @@
 #page {
 	position: absolute;
 	left: 200px;
-	top: 300px;
+	top: 350px;
 }
 </style>
 </head>
