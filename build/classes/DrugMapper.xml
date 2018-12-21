@@ -56,4 +56,36 @@
   	</set>
   	where drug_id = #{drug_id}
   </update>
+  
+  <!--  查找所有药品-->
+   <select id="getalldrug" resultType="java.util.HashMap">
+     select * from T_DRUG 
+  </select>  
+  
+   <!--  二次查找所有药品-->
+   <select id="querybannedDrug"   parameterType="int" resultType="java.util.HashMap">
+       select * from T_DRUG where DRUG_ID not in( select DRUG_ID1 from t_banned where DRUG_ID =#{_id}) and DRUG_ID !=#{_id}
+      </select>  
+      <!--查询禁忌表总数  -->
+      <select id="queryCountdrug"  parameterType="java.util.HashMap" resultType="int" >
+    	SELECT COUNT(0) FROM T_BANNED 
+    	<where>
+		<if test="drugId!=0">
+		 and DRUG_ID=#{drugId} OR DRUG_ID1=#{drugId}
+		</if>
+		</where>
+    	</select>
+    	<!-- 模糊搜索 -->
+    	<select  id="querypagedrug" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+		 select s.* from(SELECT g.drug_id drug_id,u1.drug_name drug_name,g.drug_id1 drug_ID1,u2.drug_name drug_name1,rownum R FROM T_DRUG u1  JOIN T_BANNED g ON u1.DRUG_ID = g.DRUG_ID 
+LEFT JOIN T_DRUG u2 ON u2.DRUG_ID= g.DRUG_ID1 
+ 	<where>
+		<if test="drugId!=0">
+		and g.DRUG_ID=#{drugId} or  g.DRUG_ID1=#{drugId}
+		</if>
+		</where>
+		)S where S.R&gt;=#{StartCount} AND S.R&lt;=#{endCount}
+		
+	</select>
+    	
 </mapper>
