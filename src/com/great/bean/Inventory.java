@@ -13,7 +13,8 @@ public class Inventory {
 	private String admin_name;//操作人
 	private String parameter_name;//参数名字
 	private int spec;//单位
-	
+	private String shiji;//导出excel时预留实际数量的列
+	private String beizhu;//导出excel时预留备注的列
 	
 	public int getSpec() {
 		return spec;
@@ -90,6 +91,18 @@ public class Inventory {
 				+ production_date + ", inventory_number=" + inventory_number + ", admin_id=" + admin_id + ", state="
 				+ state + ", cdate=" + cdate + ", drug_name=" + drug_name + ", admin_name=" + admin_name
 				+ ", parameter_name=" + parameter_name + ", spec=" + spec + "]";
+	}
+	public String getShiji() {
+		return shiji;
+	}
+	public void setShiji(String shiji) {
+		this.shiji = shiji;
+	}
+	public String getBeizhu() {
+		return beizhu;
+	}
+	public void setBeizhu(String beizhu) {
+		this.beizhu = beizhu;
 	}
 	
 	

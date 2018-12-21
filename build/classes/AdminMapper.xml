@@ -54,12 +54,12 @@
     	
     	<!-- 根据ID查找成员 -->
 	<select  id="queryadminbyid" parameterType="int" resultType="java.util.Map" >
-		select b.ROLE_NAME,a.ROLE_ID,a.ADMIN_ID,a.ADMIN_NAME,a.ADMIN_PWD,a.ADMIN_STATE,a.ADMIN_CDATE from T_ADMIN a,T_ROLE b where a.ROLE_ID=b.ROLE_ID and a.ADMIN_ID=#{_parmet}
-	</select>
+		select c.PARAMETER_NAME,b.ROLE_NAME,a.ROLE_ID,a.ADMIN_ID,a.ADMIN_NAME,a.ADMIN_PWD,a.ADMIN_STATE,a.ADMIN_CDATE from T_ADMIN a,T_ROLE b,T_PARAMETER c where a.ADMIN_STATE=c.PARAMETER_VALUE and c.PARAMETER_TYPE='管理员状态' and a.ROLE_ID=b.ROLE_ID and a.ADMIN_ID=#{_parmet}
+		</select>
 	     <!-- 查询分页成员 -->
 	     <select id="queryadmin" parameterType="com.great.bean.Page" resultType="java.util.HashMap">
-    	 SELECT A.* FROM (SELECT A.*,B.ROLE_NAME,rownum R FROM t_admin A,t_role B where a.role_id=b.role_id AND A.admin_state!=3)A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}</select>
-	     
+    	 SELECT A.* FROM (SELECT c.PARAMETER_NAME,A.*,B.ROLE_NAME,rownum R FROM t_admin A,t_role B,T_PARAMETER c where a.role_id=b.role_id AND A.admin_state!=3 AND a.ADMIN_STATE=c.PARAMETER_VALUE and c.PARAMETER_TYPE='管理员状态')A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}</select>
+	      
 	     <!-- 删除admin -->
 	     <update id="deleteadmin" parameterType="java.lang.Integer">
 	     update T_ADMIN  
@@ -117,5 +117,6 @@
 		and a.role_id=b.role_id AND A.admin_state!=3 AND a.ADMIN_STATE=c.PARAMETER_VALUE and c.PARAMETER_TYPE='管理员状态')A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
 		
 	</select>
+	
 	
 </mapper>

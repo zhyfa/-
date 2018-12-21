@@ -101,4 +101,15 @@ public class DailyAction {
 			return 2;
 		}
 	}
+	/**
+	 * cc 药品盘点
+	 * 
+	 */
+	@RequestMapping(value = "/check.action")
+	public ModelAndView checkDaily() {
+		ModelAndView mav=new ModelAndView();
+		mav.setViewName("drugLibrary/checkDaily");
+		return mav;
+	}
+	
 }
