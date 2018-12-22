@@ -11,13 +11,13 @@
 insert into T_AUDITSDETAIL(DRUG_NAME,TOTAL,PER_PIECE,TOTAL_PRICE,FACTORY) VALUES(#{drug_name},#{total},#{per_piece},#{total},#{factory})
 </insert>
 <select id="queryDaily" resultType="com.great.bean.Inventory">
-	select a.*,b.inventory_number from t_drug a,
-       (select drug_id,sum(inventory_number) inventory_number from t_inventory group by drug_id) b 
+	select a.*,b.production_date,b.INVENTORY_NUMBER from t_drug a,
+       (select * from t_inventory) b 
           where a.drug_id=b.drug_id and a.state=1
 </select>
 
 <insert id="addCheck" parameterType="com.great.bean.Check">
-insert into T_CHECK(DRUG_NAME,SYSTEM_QUANTITY,REAL_QUANTITY,DIFFERENCE) VALUES(#{drug_name},#{system_quantity},#{real_quantity},#{difference})
+insert into T_CHECK(DRUG_NAME,SYSTEM_QUANTITY,PRODUCTION_DATE,REAL_QUANTITY,DIFFERENCE) VALUES(#{drug_name},#{system_quantity},#{production_date},#{real_quantity},#{difference})
 </insert>
 
 <select id="queryCount" resultType="int">

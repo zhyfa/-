@@ -3,6 +3,7 @@ package com.great.bean;
 public class Check {
 	private String drug_name;//药品名字
 	private Integer system_quantity;//系统数量
+	private String production_date;//生产批号
 	private Integer real_quantity;//盘点实际数量
 	private Integer difference;//差异数额
 	public String getDrug_name() {
@@ -28,6 +29,12 @@ public class Check {
 	}
 	public void setDifference(Integer difference) {
 		this.difference = difference;
+	}
+	public String getProduction_date() {
+		return production_date;
+	}
+	public void setProduction_date(String production_date) {
+		this.production_date = production_date;
 	}
 	
 	

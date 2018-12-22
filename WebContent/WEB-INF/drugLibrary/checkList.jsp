@@ -32,6 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<tr>
 				<th>药品名称</th>
 				<th>系统数量</th>
+				<th>生产批号</th>
 				<th>实际盘点数量</th>
 				<th>差值</th>
 				<th>操作</th>
@@ -41,8 +42,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<tr>
 				<td><span>${user1.drug_name }</span></td>
 				<td><span>${user1.system_quantity}</span></td>
+				<td><span>${user1.production_date}</span></td>
 				<td><span>${user1.real_quantity}</span></td>
-				<td><span>${user1.difference}</span></td>
+				<td><span style="color:<cc:if test="${user1.difference>0}">red</cc:if><cc:if test="${user1.difference<0}">green</cc:if>">${user1.difference}</span></td>
 				<td><input type="button" value="盘盈/盘亏" class="btn btn-warning"></td>
 				</cc:forEach>
 				</table>

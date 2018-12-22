@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Inventory {
 	private Integer inventory_id;// number  primary key,--药房库存id
 	private Integer drug_id;//  number,--药品id
-	private Date production_date ;// date,--生产日期
+	private String production_date ;// date,--生产日期
 	private Integer inventory_number;// number,--药房药品数量
 	private Integer admin_id;//  number,--操作人
 	private Integer state;//  number default 1,--状态
@@ -48,10 +48,10 @@ public class Inventory {
 	
 	
 	
-	public Date getProduction_date() {
+	public String getProduction_date() {
 		return production_date;
 	}
-	public void setProduction_date(Date production_date) {
+	public void setProduction_date(String production_date) {
 		this.production_date = production_date;
 	}
 	public Integer getAdmin_id() {
