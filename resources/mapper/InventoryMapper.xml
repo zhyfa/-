@@ -5,26 +5,38 @@
 
     <!-- jyf 获得药房 库存数量 -->
 	<select id="getInventorys" resultType="com.great.bean.Drug">
-	select a.*,b.inventory_number from t_drug a,
-       (select drug_id,sum(inventory_number) inventory_number from t_inventory group by drug_id) b 
-          where a.drug_id=b.drug_id and a.state=1
+	select a.*,b.inventory_number from t_drug a left join
+       (select drug_id,sum(inventory_number) inventory_number from t_inventory where state in(1) group by drug_id) b 
+          on a.drug_id=b.drug_id
 	</select>
-	<!-- jyf 获得药房 库存记录 根据 id -->
+	<!-- jyf 获得药房 库存记录 根据 id  给药房 退药库  用的-->
 	<select id="getInventorysByDrugId" parameterType="java.lang.Integer"  resultType="com.great.bean.Inventory">
 		select a.*,b.drug_name,b.spec,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
          where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
-          and a.drug_id=#{_parameter} order by a.production_date desc
+          and a.drug_id=#{_parameter} and a.state in (1,3,4,5) order by a.production_date desc
+	</select>
+	<!-- jyf 获得药房 库存记录 根据 id 给报损用的 -->
+	<select id="getInventoryssByDrugId" parameterType="java.lang.Integer"  resultType="com.great.bean.Inventory">
+		select a.*,b.drug_name,b.spec,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
+         where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
+          and a.drug_id=#{_parameter} and a.state in (1,6,7,8) order by a.production_date desc
+	</select>
+	<!-- jyf 获得药房 库存记录 admin审核 -->
+	<select id="getInventorysForAdmin"  resultType="com.great.bean.Inventory">
+		select a.*,b.drug_name,b.spec,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
+         where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
+          and a.state in (6,7,8) order by a.production_date desc
+	</select>
+	<!-- jyf 获得药房库存 记录 s 给药库审核用 -->
+	<select id="getInventorysforStock" resultType="com.great.bean.Inventory">
+		select a.*,b.drug_name,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
+ 		 where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
+ 		  and a.state in (3,4,5)
 	</select>
 	<!-- jyf 获得药房 库存记录 退库申请 -->
 	<update id="returnStockRequest" parameterType="java.lang.Integer">
 		update t_inventory <set>state=3</set> where inventory_id=#{_parameter}
 	</update>
-	<!-- jyf 获得药房库存 记录 s -->
-	<select id="getInventorysforStock" resultType="com.great.bean.Inventory">
-		select a.*,b.drug_name,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
- 		 where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
- 		  and a.state!=1 and a.state!=2
-	</select>
 	<!-- jyf 获得药库  库存记录 退库申请  通过 -->
 	<update id="returnStockRequestPass" parameterType="java.lang.Integer">
 		update t_inventory <set>state=4</set> where inventory_id=#{_parameter}
@@ -40,15 +52,15 @@
 	</update>
 	
 	<!-- jyf 获得药房 库存记录 报损申请 -->
-	<update id="lossRequest" parameterType="java.lang.Integer">
+	<update id="badDrugRequest" parameterType="java.lang.Integer">
 		update t_inventory <set>state=6</set> where inventory_id=#{_parameter}
 	</update>
 	<!-- jyf 获得药房 库存记录  报损申请   通过-->
-	<update id="lossRequestPass" parameterType="java.lang.Integer">
+	<update id="badDrugPass" parameterType="java.lang.Integer">
 		update t_inventory <set>state=7</set> where inventory_id=#{_parameter}
 	</update>
 	<!-- jyf 获得药房 库存记录 报损申请   不通过-->
-	<update id="lossRequestNotPass" parameterType="java.lang.Integer">
+	<update id="badDrugNotPass" parameterType="java.lang.Integer">
 		update t_inventory <set>state=8</set> where inventory_id=#{_parameter}
 	</update>
 </mapper>
