@@ -42,12 +42,12 @@
 	<tbody>
 		<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
 			<!-- var demo = {"active","success","warning","danger"}; -->
-			<tr class="warning">
+			<tr class="danger">
 				<td>${st.count }</td>
 				<td>${inventory.drug_id }</td>
 				<td>${inventory.drug_name }</td>
 				<td>${inventory.drug_size }${inventory.drug_unit }/${inventory.spec==1?'盒':'瓶' }</td>
-				<td>${inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
+				<td>${inventory.inventory_number==null?0:inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
 				<td>
 					<button onclick="returnBack(${inventory.drug_id })">报损</button>
 				</td>

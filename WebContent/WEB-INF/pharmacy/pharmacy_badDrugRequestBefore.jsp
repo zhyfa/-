@@ -15,8 +15,9 @@
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 </head>
 <body>
-<table border="1">
-	<caption></caption>
+<button onclick="javascript:history.back(-1);">返回</button>
+<table border="1" class="table">
+	<caption>报损</caption>
 	<thead>
 		<th>序号</th>
 		<th>药房库存id</th>
@@ -30,9 +31,8 @@
 	</thead>
 	<tbody>
 		<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
-			<c:if test="${inventory.state!=3}">
-			
-			<tr>
+			<!-- var demo = {"active","success","warning","danger"}; -->
+			<tr class="danger">
 				<td>${st.count }</td>
 				<td>${inventory.inventory_id }</td>
 				<td>${inventory.drug_id }</td>
@@ -46,7 +46,6 @@
 					<button onclick="createReturnBackForm()" ${inventory.state!=7?'hidden':'' }>生成报损水印单</button>
 				</td>
 			</tr>
-			</c:if>
 		</c:forEach>
 	</tbody>
 </table>

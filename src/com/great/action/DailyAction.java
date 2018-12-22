@@ -14,7 +14,6 @@ import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
-import com.great.bean.Parameter;
 import com.great.service.InventoryService;
 
 @Controller
@@ -32,8 +31,8 @@ public class DailyAction {
 		if(pageIndex==null) {
 			pageIndex=1;
 		}
-		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
-		List<Drug> inventorys = inventoryService.getInventorys();
+		//PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Drug> inventorys = inventoryService.getInventorys(pageIndex,InfoPage.NUMBER);
 		InfoPage page = new InfoPage(inventorys); 
 		ModelAndView andView = new ModelAndView();
 		andView.addObject("inventorys", inventorys);
@@ -107,8 +106,8 @@ public class DailyAction {
 		if(pageIndex==null) {
 			pageIndex=1;
 		}
-		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
-		List<Drug> inventorys = inventoryService.getInventorys();
+		//PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Drug> inventorys = inventoryService.getInventorys(pageIndex,InfoPage.NUMBER);
 		InfoPage page = new InfoPage(inventorys);
 		ModelAndView andView = new ModelAndView();
 		andView.addObject("inventorys", inventorys);

@@ -9,10 +9,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+
+<style type="text/css">
+#page {
+	position: absolute;
+	left: 200px;
+	top: 350px;
+}
+</style>
 </head>
 <body>
-<table border="1">
+<table border="1" class="table">
 	<caption>药房退库</caption>
 	<thead>
 		<tr>
@@ -26,7 +39,8 @@
 	</thead>
 	<tbody>
 		<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
-			<tr>
+			<!-- var demo = {"active","success","warning","danger"}; -->
+			<tr class="active">
 				<td>${st.count }</td>
 				<td>${inventory.drug_id }</td>
 				<td>${inventory.drug_name }</td>

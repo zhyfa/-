@@ -43,8 +43,8 @@ select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.dr
 <!-- 蒋亚福 效验药房药品数量是否足够 -->
 <select id="checkInventoryNum" resultType="com.great.bean.Inventory">
 	 select a.*,b.drug_name,b.inventory_min from 
-	  (select drug_id,sum(inventory_number) inventory_number from  T_INVENTORY where state=1 group by drug_id) a,T_DRUG b 
-	   where a.drug_id=b.drug_id 
+	  (select drug_id,sum(inventory_number) inventory_number from  T_INVENTORY where state=1 group by drug_id) a right join T_DRUG b 
+	   on a.drug_id=b.drug_id 
 </select>
 <!-- 蒋亚福 根据药品id得到药库的记录 进行退货操作 -->
 <select id="getStocksByDrugId" parameterType="java.lang.Integer" resultType="com.great.bean.Stock"> 

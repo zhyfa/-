@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
+import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
 import com.great.dao.InventoryMapper;
 
@@ -16,8 +18,10 @@ public class InventoryService {
 	@Autowired
 	private InventoryMapper inventoryMapper;
 	
-	public List<Drug> getInventorys() {
-		return inventoryMapper.getInventorys();
+	public List<Drug> getInventorys(Integer pageIndex,Integer NUMBER) {
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Drug> inventorys = inventoryMapper.getInventorys();
+		return inventorys;
 		
 	};
 	public List<Inventory> getInventorysByDrugId(Integer drug_id){
