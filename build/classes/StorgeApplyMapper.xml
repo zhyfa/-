@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.StorgeApplyMapper">
+	<insert id="addStorgeApply" parameterType="com.great.bean.StorgeApply" >
+		INSERT INTO T_STORGEAPPLY (STORGE_ID, STORGE_TOTAL, TYPE_TOTAL,SUBMIT_DATE, ADMIN_ID, STAT) 
+		VALUES (#{storge_id}, #{storge_total}, #{type_total}, sysdate, #{admin_id}, 2)
+	</insert>
+	<select id="queryStorgeApply" resultType="java.util.HashMap" >
+		select * from T_STORGEAPPLY where stat=2 or stat=3
+	</select>
+	<update id="updateStorgeApply" parameterType="com.great.bean.StorgeApply">
+		update T_STORGEAPPLY set stat=#{stat} where storge_id=#{storge_id}
+	</update>
+</mapper>

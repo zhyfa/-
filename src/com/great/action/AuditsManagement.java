@@ -18,16 +18,22 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
 import com.great.bean.AuditsDetail;
+import com.great.bean.InfoPage;
+import com.great.bean.Purchase;
+import com.great.service.AuditsDetailService;
 import com.great.service.DrugService;
 import com.great.service.DrugTypeService;
 import com.great.service.FactoryService;
+import com.great.service.PurchaseService;
 import com.great.service.StockService;
 import com.great.until.creatImage;
 
@@ -46,49 +52,108 @@ public class AuditsManagement {
 	private FactoryService factoryService;
 	@Resource
 	private StockService stockService;
-//	@Log(thing = "添加采购审计表")
-	@RequestMapping(value = "/purchase.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
-	 public ModelAndView toHomepage(HttpServletRequest request) {
-		List<Map<String, Object>> secondType = drugTypeService.secondType();
-		request.setAttribute("secondType", secondType);
-		List<Map<String, Object>> factoris = factoryService.factoris();
-		request.setAttribute("factoris", factoris);
-		List<Map<String, Object>>  drugList = drugService.queryAll();
-		/*String jsonStr = JSONArray.fromObject(drugList).toString();
-		JSONArray ja = JSONArray.fromObject(jsonStr); 
-		System.out.println(ja);*/
-		request.setAttribute("drugList", drugList);
+	@Resource
+	private AuditsDetailService auditsDetailService;
+	@Resource
+	private PurchaseService purchaseService;
+	//菜单进入审批单填写页
+		@RequestMapping(value = "/purchase.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+		 public ModelAndView toHomepage(HttpServletRequest request) {
+			List<Map<String, Object>> secondType = drugTypeService.secondType();
+			request.setAttribute("secondType", secondType);
+			List<Map<String, Object>> factoris = factoryService.factoris();
+			request.setAttribute("factoris", factoris);
+			List<Map<String, Object>>  drugList = drugService.queryAll();
+			request.setAttribute("drugList", drugList);
+		 	ModelAndView mav = new ModelAndView();
+		 	mav.setViewName("drugLibrary/storge_add");
+			return mav;
+		}
+		//提交审批单
+		@Transactional
+		@RequestMapping(value = "/submitAudits.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody String submitAudits(String auditsdetail_id, int admin_id) {
+			Purchase purchase = new Purchase();
+			String pharmary_total = auditsDetailService.getTotalPrice(auditsdetail_id);
+			purchase.setPharmary_total(pharmary_total);
+			purchase.setAdmin_id(admin_id);
+			int pharmary_number = auditsDetailService.getTotalDrug(auditsdetail_id);
+			purchase.setAuditsdetail_id(auditsdetail_id);
+			purchase.setPharmary_number(pharmary_number);
+			int result = purchaseService.addPruchase(purchase);
+			int result1 = auditsDetailService.updateDetail(auditsdetail_id);
+			String str = result > 0 ? "0" : "1";
+			return str;
+		}
+		//根据药名显示药品信息
+		@RequestMapping(value = "/showDrugId.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody List<Map<String,Object>> showDrugId(String drug_name) throws UnsupportedEncodingException  {
+			List<Map<String, Object>> drugList = drugService.queryByName(drug_name);
+			return drugList;
+		}
+		//根据药品id显示药品信息
+		@RequestMapping(value = "/showDrugDetail.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody Map<String,Object> showDrugDetail(int drug_id) throws UnsupportedEncodingException  {
+			Map<String, Object> drug = drugService.queryById(drug_id);
+			return drug;
+		}
+		//添加明细
+		@Transactional
+		@RequestMapping(value = "/addOrder.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody ArrayList<Map> addOrder(@RequestBody String order) throws UnsupportedEncodingException {
+			//AuditsDetail
+			order=URLDecoder.decode(order, "UTF-8");
+			order = order.substring(0,order.length() - 1);
+			String[] temp=order.split(" ");
+			JSONArray jsonArray=JSONArray.fromObject(temp);
+			JSONObject  myJson = JSONObject.fromObject(order);
+			Map m=myJson;
+			String auditsdetail_id = (String) m.get("auditsdetail_id");
+			List<Map> details = auditsDetailService.queryDetail(auditsdetail_id);
+			if(details!=null) {
+				auditsDetailService.deleteDetail(auditsdetail_id);
+			}
+			System.out.println("auditsdetail_id="+auditsdetail_id);
+			orders.add(m);
+			int count2 = auditsDetailService.addDetail(orders);
+			System.out.println("orders.size()="+orders.size());
+			System.out.println(orders);
+			return orders;
+		}
+		//菜单进入审批列表
+		@RequestMapping(value = "/apurchaseUpdate.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+		 public ModelAndView apurchaseUpdate(HttpServletRequest request,Integer pageIndex) {
+			if(pageIndex==null) {
+				pageIndex=1;
+			}
+			PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+			List<Map<String,Object>> purchaseList = purchaseService.queryPurchase();
+			InfoPage page = new InfoPage(purchaseList);
+		 	ModelAndView mav = new ModelAndView();
+		 	mav.addObject("purchaseList", purchaseList);
+		 	mav.addObject("page", page);
+		 	mav.setViewName("manage/audits_check");
+			return mav;
+		}
 		
-	 	ModelAndView mav = new ModelAndView();
-	 	mav.setViewName("manage/storge_add");
-		return mav;
-	}
-	@RequestMapping(value = "/add_storge.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-	 public ModelAndView add_storge(HttpServletRequest request,HttpSession session,AuditsDetail detail) {
-		
-		
-		
-	 	ModelAndView mav = new ModelAndView();
-	 	mav.setViewName("manage/storge_add");
-		return mav;
-	}
-	
-	@RequestMapping(value = "/addOrder.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-	public @ResponseBody String addOrder(@RequestBody String order) throws UnsupportedEncodingException {
-		//AuditsDetail
-		order=URLDecoder.decode(order, "UTF-8");
-		order = order.substring(0,order.length() - 1);
-		System.out.println("order="+order);
-		String[] temp=order.split(",");
-		JSONArray jsonArray=JSONArray.fromObject(temp);
-		
-		JSONObject  myJson = JSONObject.fromObject(order);
-
-		Map m=myJson;
-		orders.add(m);
-		return null;
-	}
-	
+		//同意采购审批
+		@Transactional
+		@RequestMapping(value = "/passPurchase.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody String passPurchase(String auditsdetail_id) {
+			int result = purchaseService.passPurchase(auditsdetail_id);
+			int result2 = auditsDetailService.passDetail(auditsdetail_id);
+			String str = result > 0 ? "0" : "1";
+			return str;
+		}
+		//驳回采购审批
+			@Transactional
+			@RequestMapping(value = "/returnPurchase.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+			public @ResponseBody String returnPurchase(String auditsdetail_id) {
+				int result = purchaseService.returnPurchase(auditsdetail_id);
+				int result2 = auditsDetailService.returnDetail(auditsdetail_id);
+				String str = result > 0 ? "0" : "1";
+				return str;
+			}
 	@RequestMapping("/creatImage.action")
 	public ModelAndView creatImage(String sy) {
 		cgdSy=sy;
@@ -104,7 +169,7 @@ public class AuditsManagement {
 			contents[0]= "采购单";
 			contents[1]="药品名称    单价    数量    总价    生产厂家";
 			for(int i=0;i<orders.size();i++) {
-				contents[i+2]=(String) orders.get(i).get("drug_name")+"      "+(String) orders.get(i).get("price")+"      "+(String) orders.get(i).get("total")+"      "+(String) orders.get(i).get("totalPrice")+"       "+(String) orders.get(i).get("factory");
+				contents[i+2]=(String) orders.get(i).get("drug_name")+"      "+(String) orders.get(i).get("price")+"      "+(String) orders.get(i).get("total")+"      "+(String) orders.get(i).get("total_price")+"       "+(String) orders.get(i).get("factory");
 			}
 			int[] sizes = new int[24];
 	    	sizes[0] = 6;
@@ -114,12 +179,12 @@ public class AuditsManagement {
 			try {
 				creatImage.createImage(contents, sizes,
 						"E:/MyEclipseWorkSpace/CreditTraffic/WebRoot",
-						"C:/Users/ASUS/Desktop/1.jpg");
+						"C:/Users/user/Desktop/1.jpg");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-			BufferedImage buff=creatImage.markImageByText(cgdSy,"C:/Users/ASUS/Desktop/1.jpg","C:/Users/ASUS/Desktop/2.jpg",90);
+			BufferedImage buff=creatImage.markImageByText(cgdSy,"C:/Users/user/Desktop/1.jpg","C:/Users/user/Desktop/2.jpg",90);
 			response.setContentType("image/jpg");
 	        OutputStream os = response.getOutputStream();
 	        ImageIO.write(buff, "jpg", os);

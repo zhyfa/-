@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.PurchaseMapper">
+	<insert id="addPruchase" parameterType="com.great.bean.Purchase">
+		INSERT INTO T_PURCHASE (AUDITSDETAIL_ID, PHARMARY_NUMBER,PHARMARY_TOTAL, PURCHASE_DATE, ADMIN_ID,STAT) VALUES 
+		(#{auditsdetail_id}, #{pharmary_number}, #{pharmary_total},sysdate,#{admin_id},2)
+	</insert>
+	<select id="queryPurchase" resultType="java.util.HashMap">
+		select * from (SELECT a.* , B.PARAMETER_VALUE,b.PARAMETER_NAME,C.ADMIN_NAME FROM T_PURCHASE A, T_PARAMETER B,T_ADMIN C WHERE A.ADMIN_ID=C.ADMIN_ID and a.stat=b.parameter_value and B.PARAMETER_TYPE='采购单状态' AND b.parameter_value!=1 order by a.purchase_date) 
+		<where>
+			parameter_value!=6 
+			<if test="parameter_name!='' and parameter_name!=null">
+				and parameter_name like '%${parameter_name}%'
+			</if>
+			<if test="admin_name='' and admin_name!=null">
+				and admin_name like '%${admin_name}%'
+			</if>
+			<if test="purchase_date!='' and purchase_date!=null">
+				and purchase_date = #{purchase_date}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 更新审核表状态为已通过审核 -->
+	<update id="passPurchase" parameterType="java.lang.String">
+		update T_PURCHASE SET STAT=3, CHECK_DATE=sysdate WHERE AUDITSDETAIL_ID=#{auditsdetail_id}
+	</update>
+	<!--更新审核表状态为被驳回-->
+  <update id="returnPurchase" parameterType="java.lang.String" >
+  		update T_PURCHASE SET STAT=7, CHECK_DATE=sysdate WHERE AUDITSDETAIL_ID=#{auditsdetail_id}
+  </update>
+  
+  <!--更新审核表库存的采购状态-->
+  <update id="updateStock" parameterType="com.great.bean.Purchase" >
+  		update T_PURCHASE SET STAT=#{stat}, CHECK_DATE=sysdate WHERE AUDITSDETAIL_ID=#{auditsdetail_id}
+  </update>
+  <!--查询已审核通过，但入库未完成的审批单-->
+	<select id="getUnfinishedPurchase" resultType="java.util.HashMap">
+		SELECT a.* , B.PARAMETER_VALUE,b.PARAMETER_NAME,C.ADMIN_NAME FROM T_PURCHASE A, T_PARAMETER B,T_ADMIN C WHERE A.ADMIN_ID=C.ADMIN_ID and a.stat=b.parameter_value and B.PARAMETER_TYPE='采购单状态' AND b.parameter_value=3 and b.parameter_value!=5 order by a.purchase_date
+	</select>
+	<!--根据审批单id查询审批表-->
+	<select id="queryPurchaseById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from t_purchase where AUDITSDETAIL_ID=#{auditsdetail_id}
+	</select>
+</mapper>

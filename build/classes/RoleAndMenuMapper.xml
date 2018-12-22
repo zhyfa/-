@@ -12,7 +12,6 @@
   	 	insert into t_role_menu(role_id,menu_id) values(#{0},#{1})
   	</insert>
   	
-  	
   	<!-- 删除角色，通过角色ID-->
 	<delete id="delRoleMenu" parameterType="int">
 		delete from t_role_menu where ROLE_ID=#{1}

@@ -18,7 +18,7 @@ public class AuditsDetail implements Serializable{
 	private Integer price;
 	private String sicks;
 	private String factory;
-	private String total;
+	private Integer total;
 	private String irradiated;
 	private Integer admin_id;
 	private String total_price;
@@ -30,7 +30,7 @@ public class AuditsDetail implements Serializable{
 	}
 	
 	public AuditsDetail(String auditsdetail_id, Integer drug_id, String drug_name, String psycho, String drug_type,
-			String spec, String drug_unit, Integer per_piece, Integer price, String sicks, String factory, String total,
+			String spec, String drug_unit, Integer per_piece, Integer price, String sicks, String factory, Integer total,
 			String irradiated, Integer admin_id, String total_price, String cdate, Integer stat) {
 		super();
 		this.auditsdetail_id = auditsdetail_id;
@@ -132,11 +132,11 @@ public class AuditsDetail implements Serializable{
 		this.admin_id = admin_id;
 	}
 	
-	public String getTotal() {
+	public Integer getTotal() {
 		return total;
 	}
 
-	public void setTotal(String total) {
+	public void setTotal(Integer total) {
 		this.total = total;
 	}
 

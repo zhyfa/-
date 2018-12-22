@@ -51,7 +51,7 @@ public class ExcelService {
 			List<Object> ob = listob.get(i);
 			AuditsDetail auditsDetail = new AuditsDetail();
 			auditsDetail.setDrug_name(String.valueOf(ob.get(0)));
-			auditsDetail.setTotal(String.valueOf(ob.get(1)));
+			auditsDetail.setTotal(Integer.valueOf((String)ob.get(1)));
 			auditsDetail.setPer_piece(Integer.valueOf((String) ob.get(2)));
 //	            BigDecimal bd=new BigDecimal(String.valueOf(ob.get(3)));   
 			auditsDetail.setTotal_price(String.valueOf(ob.get(3)));

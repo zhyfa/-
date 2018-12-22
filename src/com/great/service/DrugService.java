@@ -22,7 +22,10 @@ public class DrugService {
 	public List<Map<String, Object>> queryAll(){
 		return drugMapper.queryAll();
 	}
-
+	// 通过药品名称获取药品表的一条信息
+		public List<Map<String, Object>> queryByName(String drug_name){
+			return drugMapper.queryByName(drug_name);
+		}
 	// 通过药品ID获取药品表的一条信息
 	public Map<String, Object> queryById(int drug_id){
 		return drugMapper.queryById(drug_id);

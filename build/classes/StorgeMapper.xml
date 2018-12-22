@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.StorgeMapper">
+<!-- 提交入库审批单 -->
+	<insert id="addStorge" parameterType="java.util.HashMap" >
+		INSERT INTO T_STORGE (STORGE_ID, AUDITSDETAIL_ID, ADMIN_ID, DRUG_ID,DRUG_NAME, STORGE_NUMBER, FACTORY_NAME, PRODUCTION_DATE, PRODUCTION_ID, SUBMIT_DATE, STAT) 
+		VALUES('${storge_id}','${auditsdetail_id}',${admin_id},${drug_id},'${drug_name}',${storge_number},'${factory}',to_date('${production_date}','MM/DD/YYYY'),'${production_id}',sysdate,1)
+	</insert>
+	<!-- 查询审批单 -->
+	<select id="queryStorge" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from t_storge where storge_id=#{storge_id}
+	</select>
+	<!-- 删除审批单 -->
+	<delete id="deleteStorge" parameterType="java.lang.String">
+		delete from t_storge where storge_id=#{storge_id}
+	</delete>
+	<!-- 统计申请入库总量 -->
+	<select id="getStorgeTotal" parameterType="java.lang.String" resultType="int">
+		select sum(storge_number) from t_storge where storge_id=#{storge_id}
+	</select>
+	<!-- 统计申请入库药品总量 -->
+	<select id="getDrugtypeTotal" parameterType="java.lang.String" resultType="int">
+		select count(drug_id) from t_storge where storge_id=#{storge_id}
+	</select>
+	<!-- 更新入库单状态 -->
+	<update id="updateStorge" parameterType="com.great.bean.Storge" >
+		update t_storge set stat=#{stat} where storge_id=#{storge_id}
+	</update>
+</mapper>

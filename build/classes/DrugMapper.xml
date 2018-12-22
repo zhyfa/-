@@ -85,14 +85,16 @@
     	<!-- 模糊搜索 -->
     	<select  id="querypagedrug" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
 		 select s.* from(SELECT g.drug_id drug_id,u1.drug_name drug_name,g.drug_id1 drug_ID1,u2.drug_name drug_name1,rownum R FROM T_DRUG u1  JOIN T_BANNED g ON u1.DRUG_ID = g.DRUG_ID 
-LEFT JOIN T_DRUG u2 ON u2.DRUG_ID= g.DRUG_ID1 
+		LEFT JOIN T_DRUG u2 ON u2.DRUG_ID= g.DRUG_ID1 
  	<where>
 		<if test="drugId!=0">
 		and g.DRUG_ID=#{drugId} or  g.DRUG_ID1=#{drugId}
 		</if>
 		</where>
 		)S where S.R&gt;=#{StartCount} AND S.R&lt;=#{endCount}
-		
 	</select>
-    	
+     <!-- 通过药品名称获取药品表的一条信息 -->
+	  <select id="queryByName" parameterType="java.lang.String" resultType="java.util.HashMap">
+	    select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c where a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID and a.drug_name=#{drug_name}
+	  </select> 	
 </mapper>

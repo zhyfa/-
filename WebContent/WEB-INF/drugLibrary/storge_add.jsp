@@ -56,76 +56,56 @@
 	<p>
 <input type="button" value="查看采购图形表" onclick="getChart()">
 <form id="myForm">
+	<input type="hidden" value="${sessionScope.admin.admin_id}" name="admin_id" id="admin_id">
 	<table class="infoTb" cellspacing="1">
+	
 		<tr background-color="#E6E6FA">
 			<th>编号：</th>
-			<td colspan="7"><input type="text" id="count" /></td>
+			<td colspan="7"><input type="text" id="auditsdetail_id" name="auditsdetail_id"/></td>
 		</tr>
 		<tr>
-		<th>药品编号：</th>
-	       <td><input type="text" id="drug_id" name="drug_id" list="drug_ids"/> 
-	         <datalist id="drug_ids">
-	          <c:forEach items="${requestScope.drugList}" var="drugs">
-					<option value="${drugs.DRUG_ID}">${drugs.DRUG_ID}</option>
-				</c:forEach>
-	         </datalist>
-	         </td>
-			<th>药品名称：</th>
+		<th>药品名称：</th>
 	        <td>
-	        	 <input type="text" id="drug_name" list="drug_names" name="drug_name" />
+	        	 <input type="text" id="drug_name" name="drug_name" list="drug_names"/>
 	         <datalist id="drug_names">
 	          	<c:forEach items="${requestScope.drugList}" var="drugs">
 					<option value="${drugs.DRUG_NAME}">${drugs.DRUG_NAME}</option>
 				</c:forEach>
 	         </datalist>
 	        </td>
+		<th>药品编号：</th>
+			<td>
+				<select id="drug_id" name="drug_id" onchange="chooseId()"></select>
+			</td>
 	     	<th>是否特殊药品：</th>
 	       	<td>
-	       		<select id="psycho" name="psycho">
-					<option value="否">否</option>
-					<option value="是">是</option>
-					</select>
+	       		<input id="psycho" name="psycho" readonly="readonly" value="">
 	       	</td>
 			<th>药品种类：</th>    
 	        <td>
-	        	<select id="durg_type" name="durg_type">
-					<option value="">请选择</option>
-					<c:forEach items="${requestScope.secondType}" var="type">
-						<option value="${type.SMALLTYPE_ID}" >${type.SMALLTYPE_NAME}</option>
-					</c:forEach>
-				</select>
+	        	<input id="drug_type" name="drug_type" readonly="readonly" value="">
 			</td>
 			</tr>
 			<tr>
 	         <th>  规格：</th>
 	        	<td>
-			    <select id="spec" name="spec">
-					<option value="瓶">瓶</option>
-					<option value="盒">盒</option>
-					<option value="包">付</option>
-			    	<option value=""> </option>
-				</select>
+			    <input id="spec" name="spec" readonly="readonly" value="">
 				</td>
 			<th>单位：</th>
 			<td>
-				<select id="drug_unit" name="drug_unit">
-					<option value="颗">颗</option>
-					<option value="包">包</option>
-					<option value="付">付</option>
-					<option value="毫升">毫升</option>
-				</select>
+				<input id="drug_unit" name="drug_unit" readonly="readonly" value="">
 			</td>
 			<th>  单位数量：</th>
-	        <td><input type="text" id="per_piece" name="per_piece"/></td>
+	        <td><input type="text" id="per_piece" name="per_piece" value="" readonly="readonly"/></td>
 			<th>单价：</th>
 			<td><input type="text" id="price" name="price"/></td>
 		</tr>
 	    <tr>
 			<th>主治症状：</th>
-			<td><input type="text" id="sicks" name="sicks"/><br></td>
+			<td><input type="text" id="sicks" name="sicks" value="" readonly="readonly"/></td>
 	         	<th> 生产厂家：</th>
 	    <td><select id="factory" name="factory">
-			<option>请选择</option>
+			<option value="">请选择</option>
 			<c:forEach items="${requestScope.factoris}" var="fac">
 				<option value="${fac.FACTORY_NAME}" >${fac.FACTORY_NAME}</option>
 			</c:forEach>
@@ -133,7 +113,7 @@
 		</td>
 		<th>保质期：</th>
 		<td >
-			<input type="text" id="irradiated" list="invals" name="iraradiated">
+			<input type="text" id="irradiated" list="invals" name="irradiated">
 			 <datalist id="invals">
 			 	<option value="一个月"></option>
 			 	<option value="三个月"></option>
@@ -143,14 +123,14 @@
 			 	<option value="两年"></option>
 			 </datalist>
 			</td>
-			<th>采购总量</th>
+			<th>采购数量</th>
 			<td>
 				<input type="text" id="total" name="total">
 			</td>
 	    </tr>
 	    <tr>
 	    	<th>总价</th>
-	    	<td colspan="7"><input type="text" id="totalPrice" name="totalPrice"></td>
+	    	<td colspan="7"><input type="text" id="total_price" name="total_price"  readonly="readonly"></td>
 	    </tr>
 	    </table>
 	    </p>
@@ -158,7 +138,7 @@
 <div class="table_toolbar">
                 <input type="button"  onclick="DelRow();" value="删除"> 
                 <input type="button" onclick="AddRow();" value="添加">
-                <input type="button" value="保存" onclick="getTableContent()">
+                <input type="button" value="提交" onclick="submitForm()">
                 <input type="button" value="生成采购单" onclick="submitTable()">
             </div>
             <div class="">
@@ -179,7 +159,7 @@
 							<th>主治症状</th>
 							<th>生产厂家</th>
 							<th>保质期</th>
-							<th>总量</th>
+							<th>数量</th>
 							<th>总价</th>
                         </tr>
                     </thead>
@@ -191,23 +171,11 @@
 <script type="text/javascript">
         //添加行
         function AddRow() {
-        	$.ajax({
-        		type:"POST",
-        		url:"<%=basePath%>/stock/addOrder.action",
-        		data:JSON.stringify($("#myForm").serializeJSON()),
-    			//contentType:"application/json",
-    			dataType:"json",
-        		success : function(res){
-        			alert("tianjiachenggong");
-        		},
-        		error:function(res){
-        			alert("shibai");
-        		}
-        	});
+        	var detail =$("#auditsdetail_id").val();
         	var id = $("#drug_id").val();
 			var name = $("#drug_name").val();
 			var psycho = $("#psycho").val();
-			var drugType = $("#durg_type").val();
+			var drugType = $("#drug_type").val();
 			var spec = $("#spec").val();
 			var drugUnit = $("#drug_unit").val();
 			var perPiece = $("#per_piece").val();
@@ -216,9 +184,46 @@
 			var factory = $("#factory").val();
 			var irradiated =$("#irradiated").val();
 			var total =$("#total").val();
-			var totalPrice=$("#totalPrice").val();
+			var totalPrice=$("#total_price").val();
 			var totalP = price*total
             var newRowNumber = $("#tab1>tbody>tr").length+1;
+			var reg = /^[0-9]*$/;
+        	if(!reg.test(price) || price==""){
+        		alert("请数字为整数的单价");
+        		return false;
+        	}
+        	if(price.length>8){
+        		alert("数值最大为99999999");
+        		return false;
+        	}
+        	if(factory==""){
+        		alert("请选择厂家");
+        		return false;
+        	}
+        	if(total==""){
+        		alert("请输入采购数量");
+        		return false;
+        	}
+        	if(irradiated==""){
+        		alert("请输入药品保质期");
+        		return false;
+        	}
+        	$.ajax({
+        		type:"POST",
+        		url:"<%=basePath%>/stock/addOrder.action",
+        		data:JSON.stringify($("#myForm").serializeJSON()),
+    			//contentType:"application/json",
+    			dataType:"json",
+        		success : function(res){
+        			$('#myForm')[0].reset();
+        			$('#auditsdetail_id').val(detail);
+        			alert("tianjiachenggong");
+        		},
+        		error:function(res){
+        			alert("shibai");
+        		}
+        	});
+        	
             $("#tab1>tbody").append(
             		"<tr><td><input type='checkbox' class='checkBox' name='dateItem' /></td><td>"
             		+ newRowNumber +
@@ -262,24 +267,26 @@
                 $("#tab1>tbody>tr:eq("+i+")>td:eq(1)").html(i+1);
             }
          }
-        function getTableContent(){
-            var mytable = document.getElementById("tab1");
-            var data = [];
-            var rows = $("#tab1>tbody>tr").length;
-            var cells=11;
-           
-            for(var i=1; i<rows+1; i++){
-              for(var j=0; j<12; j++){
-                if(!data[i]){
-                  data[i] = new Array();
-                }
-                data[i][j] = mytable.rows[i].cells[j].innerHTML;
-              }
-            }
-            console.log(data);
-            return data;
-          }
         
+        //提交审批表
+        function submitForm(){
+        	$.ajax({
+    			url:"<%=basePath%>/stock/submitAudits.action",
+    			type: "POST",
+    			data:{
+    				"auditsdetail_id":$("#auditsdetail_id").val(),
+    				"admin_id":$("#admin_id").val(),
+    				},
+    				success : function(res){
+    				if(res=='0'){
+    					alert("提交成功，请联系管理员进行审核");
+    				}else{
+    					alert("提交失败失败");
+    				}
+    			}
+    		});
+        }
+        //导出水印审批单
         function submitTable(){
         	var sy=prompt("请输入水印内容");
         	if(sy!=null&&sy!=""){
@@ -305,22 +312,86 @@
             });
         	}
           }
+        //根据药名显示信息
+        $("#drug_name").on("blur",function(){
+        	var drug_name=$("#drug_name").val();
+        	console.log(drug_name);
+        	$.ajax({
+        		type:"post",
+        		   url:"<%=basePath%>/stock/showDrugId.action",
+        		   data:{"drug_name":drug_name},
+        		   dataType:"json",
+        		   success:function(res){
+        			   var drugList=res;
+        			   console.log(drugList.length);
+        			   
+        			   var str="";
+        			   if(drugList.length==1){
+        				   for(var i=0;i<drugList.length;i++){
+            				   str+="<option value='"+drugList[i].DRUG_ID+"'>"+drugList[i].DRUG_ID+"</option>";
+        				  	$("#psycho").val(drugList[i].PSYCHOTROPICS);
+        					$("#drug_type").val(drugList[i].SMALLTYPE_NAME);
+        					if(drugList[i].SPEC==1){
+        					$("#spec").val("盒");
+        					}else{
+        						$("#spec").val("瓶");
+        					}
+        					$("#drug_unit").val(drugList[i].DRUG_UNIT);
+        					$("#per_piece").val(drugList[i].DRUG_SIZE);
+        					$("#sicks").val(drugList[i].ILLUSTRATE);
+            			   }
+        				   $("#drug_id").html(str);
+        			   }else{
+        			   for(var i=0;i<drugList.length;i++){
+        				   str+="<option value='"+drugList[i].DRUG_ID+"'>"+drugList[i].DRUG_ID+"</option>";
+        			   }
+        			   $("#drug_id").html("<option>请选择</option>"+str);
+        			   }
+        		   }
+        	});
+        	
+        }); 
+        //根据id显示药品信息
+        function chooseId(){
+        	$.ajax({
+    			url:"<%=basePath%>/stock/showDrugDetail.action",
+    			type: "POST",
+    			data:{
+    				"drug_id":$("#drug_id").val(),
+    				},
+    				success : function(res){
+    				var drug = res;
+    				$("#psycho").val(drug.PSYCHOTROPICS);
+					$("#drug_type").val(drug.SMALLTYPE_NAME);
+					if(drug.SPEC==1){
+					$("#spec").val("盒");
+					}else{
+						$("#spec").val("瓶");
+					}
+					$("#drug_unit").val(drug.DRUG_UNIT);
+					$("#per_piece").val(drug.DRUG_SIZE);
+					$("#sicks").val(drug.ILLUSTRATE);
+    			}
+    		});
+        }
+        //计算总价
         $("#total").on("blur",function(){ 
             var total =$("#total").val();
             console.log(total);
             var price = $("#price").val();
             console.log(price);
             var totalP =total*price;
-            $("#totalPrice").val(totalP);
+            $("#total_price").val(totalP);
             console.log(totalP); 
         });
+      //计算总价
         $("#price").on("blur",function(){ 
             var total =$("#total").val();
             console.log(total);
             var price = $("#price").val();
             console.log(price);
             var totalP =total*price;
-            $("#totalPrice").val(totalP);
+            $("#total_price").val(totalP);
             console.log(totalP); 
         });
 //进入采购图形统计页面
