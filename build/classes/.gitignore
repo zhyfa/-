@@ -21,3 +21,7 @@
 /spring.xml
 /springmvc.xml
 /LossReportMapper.xml
+/AuditsDetailMapper.xml
+/PruchaseMapper.xml
+/StorgeApplyMapper.xml
+/StorgeMapper.xml

@@ -1,5 +1,8 @@
 package com.great.action;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
+import com.great.bean.Overdue;
 import com.great.service.DrugService;
+import com.great.service.InventoryService;
 
 @Controller
 @RequestMapping("/earlyWaring") 
 public class EarlyWaringAction {
 	@Autowired
 	private DrugService drugService;
-	
+	@Autowired
+	private InventoryService inventoryService;
 	/**
 	 * jyf药房设置药品最底限量  预警用的
 	 */
@@ -52,5 +59,30 @@ public class EarlyWaringAction {
 		}else {
 			return 2;
 		}
+	}
+	/**
+	 * 预警  过期
+	 */
+	@RequestMapping("/overdue.action") 
+	public ModelAndView overdue(Integer pageIndex) {
+		if(pageIndex==null) {
+			pageIndex=1;
+		}
+		DateFormat  df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+        Date date = new Date();//df.format(new Date());// new Date()为获取当前系统时间
+        
+       // PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Overdue> overdues = inventoryService.getOverdues();
+		//InfoPage page = new InfoPage(overdues);
+		for(Overdue overdue:overdues) {
+			if(overdue.getNowDate().getTime()<=date.getTime()) {
+				overdue.setMsg("过期了");
+			}
+		}
+		ModelAndView andView = new ModelAndView();
+		andView.setViewName("pharmacy/pharmacy_overdue");
+		andView.addObject("overdues", overdues);
+		//andView.addObject("page", page);
+		return andView;
 	}
 }

@@ -63,4 +63,9 @@
 	<update id="badDrugNotPass" parameterType="java.lang.Integer">
 		update t_inventory <set>state=8</set> where inventory_id=#{_parameter}
 	</update>
-</mapper>
+	<!-- jyf 药房 过期 -->
+	<select id="getOverdues" resultType="com.great.bean.Overdue">
+		select a.inventory_id,a.drug_id,b.drug_name,a.production_date,b.irradiated,(a.production_date+b.irradiated*30) nowDate 
+		   from t_inventory a,t_drug b where a.drug_id = b.drug_id 
+	</select>
+	</mapper>

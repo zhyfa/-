@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
+import com.great.bean.Overdue;
 import com.great.dao.InventoryMapper;
 
 @Service
@@ -63,5 +64,8 @@ public class InventoryService {
 	public int badDrugNotPass(Integer inventory_id) {
 		return inventoryMapper.badDrugNotPass(inventory_id);
 		
+	};
+	public List<Overdue> getOverdues(){//药房 药品 过期检测
+		return inventoryMapper.getOverdues();
 	};
 }

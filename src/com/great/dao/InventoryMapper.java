@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.great.bean.Drug;
 import com.great.bean.Inventory;
+import com.great.bean.Overdue;
 @Repository
 public interface InventoryMapper {
 	
@@ -29,5 +30,7 @@ public interface InventoryMapper {
 	public int badDrugRequest(Integer inventory_id);
 	public int badDrugPass(Integer inventory_id);
 	public int badDrugNotPass(Integer inventory_id);
+	
+	public List<Overdue> getOverdues();//药房 药品 过期检测
 	//===================jyf结束
 }
