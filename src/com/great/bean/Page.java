@@ -9,8 +9,9 @@ public class Page {
 	private int total;//记录总数
 	private int totalPage;//总页数
 	private int page;//当前页
-	public static int count=4;//每页显示记录数
+	public static int count=5;//每页显示记录数
 	private List<Map<String, Object>> queryList;//查询出的数据
+	private List<Check> queryCheck;//盘点表数据
 	private int StartCount;//记录开始
 	private int endCount;//记录结束
 	private List<Integer> pageShu;//下标数组
@@ -24,16 +25,16 @@ public class Page {
 		totalPage=total%count==0?total/count:total/count+1;
 		StartCount=(page-1)*count+1;
 		endCount=page*count;
-		if(totalPage>=pageTwo*countTwo){
+		if(total>=pageTwo*countTwo*count){
 		for(int i=1;i<=countTwo;i++){
 			pageShu.add((pageTwo-1)*countTwo+i);
 			}
 		}else{
-			for(int i=(pageTwo-1)*countTwo+1;i<=total;i++){
+			for(int i=(pageTwo-1)*countTwo+1;i<=totalPage;i++){
 				pageShu.add(i);
 			}
-			totalPageTwo=totalPage%countTwo==0?totalPage/countTwo:totalPage/countTwo+1;
 		}
+		totalPageTwo=totalPage%countTwo==0?totalPage/countTwo:totalPage/countTwo+1;
 	}
 	public int getTotalPage() {
 		return totalPage;
@@ -94,6 +95,12 @@ public class Page {
 	}
 	public void setTotalPageTwo(int totalPageTwo) {
 		this.totalPageTwo = totalPageTwo;
+	}
+	public List<Check> getQueryCheck() {
+		return queryCheck;
+	}
+	public void setQueryCheck(List<Check> queryCheck) {
+		this.queryCheck = queryCheck;
 	}
 	
 	

@@ -21,6 +21,7 @@ import com.great.bean.Check;
 import com.great.bean.ExcelBean;
 import com.great.bean.Factory;
 import com.great.bean.Inventory;
+import com.great.bean.Page;
 import com.great.dao.ExcelMapper;
 import com.great.until.ExcelUtils;
 
@@ -92,5 +93,13 @@ public class ExcelService {
 		for (int i = 0; i < checkList.size(); i++) {
 			excelMapper.addCheck(checkList.get(i));
 		}
+	}
+	
+	public List<Check> checkDaily(Page page){
+		return excelMapper.checkDaily(page);
+	}
+	
+	public int queryCount() {
+		return excelMapper.queryCount();
 	}
 }

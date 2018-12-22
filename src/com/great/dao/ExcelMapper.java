@@ -8,6 +8,7 @@ import com.great.bean.AuditsDetail;
 import com.great.bean.Check;
 import com.great.bean.Factory;
 import com.great.bean.Inventory;
+import com.great.bean.Page;
 
 @Repository
 public interface ExcelMapper {
@@ -19,4 +20,8 @@ public interface ExcelMapper {
 	public List<Inventory> queryDaily();
 	//导入盘点表Excel
 	public int addCheck(Check check);
+	//显示盘点列表
+	public List<Check> checkDaily(Page page);
+	//查询记录总条数
+	public int queryCount();
 }

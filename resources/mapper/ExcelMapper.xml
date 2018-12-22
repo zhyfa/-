@@ -19,4 +19,13 @@ insert into T_AUDITSDETAIL(DRUG_NAME,TOTAL,PER_PIECE,TOTAL_PRICE,FACTORY) VALUES
 <insert id="addCheck" parameterType="com.great.bean.Check">
 insert into T_CHECK(DRUG_NAME,SYSTEM_QUANTITY,REAL_QUANTITY,DIFFERENCE) VALUES(#{drug_name},#{system_quantity},#{real_quantity},#{difference})
 </insert>
+
+<select id="queryCount" resultType="int">
+	SELECT COUNT(0) FROM T_CHECK
+</select>
+
+<select id="checkDaily" parameterType="com.great.bean.Page" resultType="com.great.bean.Check">
+	SELECT * FROM (SELECT A.*,ROWNUM R FROM T_CHECK A) A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
+</select>
+
 </mapper>

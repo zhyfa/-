@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -27,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.bean.Check;
+import com.great.bean.Page;
 import com.great.service.ExcelService;
 import com.great.service.InventoryService;
 @Controller
@@ -135,7 +138,9 @@ public class ExcelAction {
 		andView.setViewName("manage/role_add");
 		return andView;
 	}
-	
+	/**
+	 * cc 导入药品盘点表
+	 */
 	@RequestMapping(value = "/checkexcel.action")
 	public void checkexcel(HttpServletRequest request,HttpServletResponse response,HttpSession session) throws Exception {  
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;    
@@ -154,4 +159,22 @@ public class ExcelAction {
         out.flush();  
         out.close();  
     }
+	/**
+	 * cc 显示盘点明细列表
+	 */
+	@RequestMapping(value = "/checkDaily.action")
+	public ModelAndView checkDaily(int dqPage,int pageTwo) {
+		ModelAndView mav=new ModelAndView();
+		Page page=new Page();
+		page.setPageTwo(pageTwo);
+		page.setPage(dqPage);
+		page.setTotal(excelService.queryCount());
+		page.csh();
+		List<Check> checkList=excelService.checkDaily(page);
+		page.setQueryCheck(checkList);
+		mav.addObject("page", page);
+		mav.setViewName("drugLibrary/checkList");
+		return mav;
+	}
+	
 }

@@ -31,7 +31,11 @@ $('#upLoad').click(function(){
         $('#uploadForm').ajaxSubmit({    
             url:'<%=basePath%>/creditInfo/checkexcel.action',
             data:{'cacheVersion':cacheVersion},
-            dataType: 'text'
+            dataType: 'text',
+            success:function(data){
+            	alert(data);
+            	window.location.href="<%=basePath%>/creditInfo/checkDaily.action?dqPage=1&pageTwo=1";
+            }
         });   
     }  
 });  
