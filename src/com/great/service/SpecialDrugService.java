@@ -32,8 +32,13 @@ public class SpecialDrugService {
 //		return specialDrugMapper.queryAll();
 //	}
 	
-	public List<Map<String, Object>> queryAllSpecialSale(){
-		return specialDrugMapper.queryAllSpecialSale();
+	public List<Map<String, Object>> queryAllSpecialSale(Integer pageIndex, Integer NUMBER, String drug_name, String start, String end){
+		PageHelper.startPage(pageIndex,NUMBER);
+		Map<String, Object> map=new HashMap<>();
+		map.put("drug_name", drug_name);
+		map.put("start", start);
+		map.put("end", end);
+		return specialDrugMapper.queryAllSpecialSale(map);
 	};
 	
 	public List<Map<String, Object>> queryAllSpecialHave(Integer pageIndex, Integer NUMBER, String drug_name){

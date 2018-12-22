@@ -2,7 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.StockMapper">
+<!-- 通过药库的全部药品名称 -->
+<select id="getAllDrugName" resultType="java.util.HashMap">
+	select distinct b.drug_name,a.drug_id from t_stock a,t_drug b
+	where a.drug_id=b.drug_id
+</select>
 
+<!-- 通过drug_id查询药库库存表中该药品ID的生产日期，厂家还有相对应的库存量 -->
+<select id="getMegByDrugId" parameterType="int" resultType="java.util.HashMap">
+	select b.psychotropics,a.stock_number,to_char(a.birthday,'YYYY-MM-DD') birthday,b.drug_name,c.factory_name from t_stock a,t_drug b,t_factory c
+	where a.drug_id=b.drug_id and a.factory_id=c.factory_id and a.drug_id=#{0} order by a.birthday asc,c.factory_name desc
+</select>
+
+<!-- 通过drug_id查询药库库存表中该ID的库存量 -->
+<select id="drugNumById" parameterType="int" resultType="int">
+	select sum(stock_number) allnumber from t_stock where drug_id=#{0}
+</select>
 
 
 <!-- 获取这半年的采购药品名字及数量 -->

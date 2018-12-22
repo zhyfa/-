@@ -19,10 +19,18 @@
 	</select>
 	
 <!-- 	查询销售表中特殊药的销售明细 -->
-	<select id="queryAllSpecialSale" resultType="java.util.HashMap">
+	<select id="queryAllSpecialSale" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		select to_char(a.cdate,'YYYY-MM-DD') cdate,a.sold_num,to_char(a.birthday, 'YYYY-MM-DD') birthday,a.price,a.person,a.purpose,b.drug_name,c.admin_name,d.factory_name 
 		from t_sold a,t_drug b,t_admin c,t_factory d
-		where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.factory_id=d.factory_id and a.purpose is not null
+		<where>
+			a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.factory_id=d.factory_id and a.purpose is not null
+			<if test="start != '' and start != null">
+				and to_char(a.cdate,'YYYY-MM-DD') between #{start} and #{end}
+			</if>
+			<if test="drug_name != '' and drug_name != null ">
+				and b.drug_name like '%${drug_name}%'
+			</if>
+		</where>
 		order by a.person asc
 	</select>
 	

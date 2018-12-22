@@ -42,8 +42,6 @@ $(document).ready(function(){
 		$("#end").attr("max",year+"-"+month+"-"+date);
 	});
 	
-	document.getElementById('start').valueAsDate=${requestScope.start};
-	document.getElementById('end').valueAsDate=${requestScope.end};
 });
 </script>
 <style>
@@ -58,7 +56,7 @@ $(document).ready(function(){
 <input type="submit" value="搜索"><br />
 </form>
 	<table class="table table-bordered">
-	<caption>特殊药品入库明细表</caption>
+	<caption style="text-align:center"><h4>特殊药品入库明细表</h4></caption>
 	<thead>
 	<tr>
 			<th>序号</th>

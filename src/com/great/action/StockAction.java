@@ -1,6 +1,7 @@
 package com.great.action;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,6 +27,31 @@ import com.great.service.StockService;
 public class StockAction {
 	@Autowired
 	private StockService stockService;
+	
+	//进入药房药品审核页面
+		@RequestMapping("/auditing.action")
+		public ModelAndView toPharmacyApplyJSP() {
+			ModelAndView andView = new ModelAndView();
+			List<Map<String, Object>> drugNames=stockService.getAllDrugName();
+			andView.addObject("drugNames",drugNames);
+			andView.setViewName("drugLibrary/pharmacy_apply_add");
+			return andView;
+		}
+		
+		
+		// 通过drug_id查询药库库存表中该ID的库存量
+		@RequestMapping(value = "/drugNumById.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+		public @ResponseBody int drugNumById(int drug_id) {
+			int result = stockService.drugNumById(drug_id);
+			return result;
+		}
+
+		// 通过drug_id查询药库库存表中该药品ID的生产日期，厂家还有相对应的库存量
+		@RequestMapping(value = "/getMegByDrugId.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+		public @ResponseBody List<Map<String, Object>> getMegByDrugId(int drug_id) {
+			List<Map<String, Object>> meg = stockService.getMegByDrugId(drug_id);
+			return meg;
+		}
 /**
  * jyf
  * @return

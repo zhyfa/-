@@ -13,4 +13,14 @@
      <select id="creatIC" resultType="int">
      	select SEQ_T_PHARMACY_APPLY.NEXTVAL t_pharmacy_apply from dual
      </select>
+     
+     <!--获取申请药品表中的ic和cdate -->
+     <select id="applyList" resultType="java.util.HashMap">
+     	select distinct ic,to_char(cdate,'YYYY-MM-DD') cdate from t_pharmacy_apply where state=1
+     </select>
+<!--      进入该IC编号的具体申请明细页面 -->
+	<select id="applyListByIc" parameterType="int" resultType="java.util.HashMap">
+     	select a.psychotropics,a.drug_number,to_char(a.cdate,'YYYY-MM-DD hh:mm:ss') cdate,b.admin_name,c.drug_name from t_pharmacy_apply a,t_admin b,t_drug c 
+		where a.admin_id1=b.admin_id and a.drug_id=c.drug_id and a.ic=#{0}
+     </select>
 </mapper>

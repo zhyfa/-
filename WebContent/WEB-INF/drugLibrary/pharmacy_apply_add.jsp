@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <base href="<%=basePath%>">
-<title>药房申请药品页面</title>
+<title>药库生成药房申请药品页面</title>
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport"
@@ -100,28 +100,36 @@ table {
 }
 </style>
 <body>
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往申请列表页</a>
 	<p>
 	<form id="myForm">
 		<table class="infoTb" cellspacing="1">
-			<tr background-color="#E6E6FA">
-				<th>编号：</th>
-				<td colspan="7"><input type="text" id="count" name="count" /></td>
-			</tr>
 			<tr>
 				<th>药品名称：</th>
 				<td><select id="drug_name" name="drug_name">
 						<option value="">请选择</option>
-						<c:forEach items="${requestScope.drugList}" var="drugs">
+						<c:forEach items="${requestScope.drugNames}" var="drugs">
 							<option value="${drugs.DRUG_ID}">${drugs.DRUG_NAME}</option>
 						</c:forEach>
 				</select></td>
-				<th>药品ID：</th>
-				<td><input type="text" id="drug_id" name="drug_id" readonly="readonly" />
 				<th>是否特殊药品：</th>
 				<td><input type="text" id="psycho" name="psychotropics" readonly="readonly" /> 
+				<th>生产厂家</th>
+				<td>
+					<select id="factory_id" name="factory_id">
+					
+					</select>
+				</td>
+				<th>生产日期</th>
+				<td>
+					<select id="birthday" name="birthday">
+					
+					</select>
+				</td>
 				<th>申请总量</th>
 				<td><input type="text" id="total" name="drug_number"></td>
-				
+				<th>药库该药品库存总量</th>
+				<td><input type="text" id="allnumber" name="allnumber" readonly="readonly"></td>
 			</tr>
 		</table>
 		</p>
@@ -129,8 +137,6 @@ table {
 	<div class="table_toolbar">
 		<input type="button" onclick="DelRow();" value="删除"> <input
 			type="button" onclick="AddRow();" value="添加">
-		<!--                 <input type="button" value="保存" onclick="getTableContent()"> -->
-		<!--                 <input type="button" value="提交申请" onclick="submitTable()"> -->
 		<input type="button" value="提交申请" onclick="add()">
 	</div>
 	<div class="">
@@ -143,9 +149,10 @@ table {
 					</td>
 					<th>序号</th>
 					<th>药品名称</th>
-					<th>药品ID</th>
 					<th>是否特殊药品</th>
-					<th>总量</th>
+					<th>生产厂家</th>
+					<th>生产日期</th>
+					<th>申请总量</th>
 				</tr>
 			</thead>
 			<tbody id="tbody"></tbody>
@@ -158,6 +165,35 @@ table {
 <script type="text/javascript">
 		var list1=new Array();
 		var list2=new Array();
+		
+		//药品名发现改变时，搜索该新的药名的看它是否特殊药,填充工厂下拉框
+  	  $( "#drug_name" ).change(function(){
+  	    	if($("#drug_name").val()!=''||$("#drug_name").val()!=null){
+  	    		$("#psycho").html("")
+  	    		$("#total").html("")
+  	    		$("#factory_id").html("<option>请选择</option>")
+  	    		searchById();
+  	   	 	}
+  		})
+  function searchById() {
+      	//通过ID查询该药品在库房药品表中的工厂数据
+  		  $.ajax({
+  				type:"post",
+  				url:"<%=basePath%>/stock/getMegByDrugId.action",
+  				data:{"drug_id":$( "#drug_name" ).val()},
+  				success:function(data){
+  					alert(data);
+  					console.log(data);
+  					var str="";
+  					$("#psycho").html(data[0].PSYCHOTROPICS)
+//   					for(var i=0;i<data.lenght;i++){
+//   						str+="<option>"
+//   					}
+  				}
+  			});
+  		
+	}
+		
         //添加行
         function AddRow() {        	
 			var obj=document.getElementById('drug_name');
@@ -221,29 +257,7 @@ table {
             return data;
           }
         
-        
-        //提交
-        function submitTable(){
-        	//var data = getTableContent();
-        	//console.log("提交"+data);
-        	$.ajax({
-    			url : "<%=basePath%>/pharmacyApply/addPharmacyApply.action",
-    			type: "POST",
-    			data:"{}",
-    			success : function(res) {
-    				if(res==0){
-    					alert("添加成功");
-    				}
-    				if(res==1){
-    					alert("添加失败");
-    				}
-    				//删除成功或是失败都需要跳回列表页
-    				//window.location.href="<%=basePath%>/drug/toDrugJSP.action"
-    			}
-    		});
-        	
-        }
-        
+ 
         
         function creatImage(){
         	var rowCount = $("#tab1>tbody>tr").length;
@@ -261,11 +275,9 @@ table {
               a.push({i:state[i]});
               var b=JSON.stringify(a)
         }
-              console.log(b+"");
         	$.ajax({
         		type:"post",
         		url:"<%=basePath%>/exportTable/exportTable.action",
-//         		contentType: "application/json; charset=UTF-8",
         		dataType:"JSON",
         		data:b,
         		success:function(data){
@@ -273,24 +285,7 @@ table {
         		}
         	});
         }
-        //药品名发现改变时，搜索该新的药名的看它是否特殊药
-    	  $( "#drug_name" ).change(function(){
-    	    	if($("#drug_name").val()!=''||$("#drug_name").val()!=null){
-    	    		$("#psycho").html("")
-    	    		searchById();
-    	   	 	}
-    		})
-    function searchById() {
-    		  $.ajax({
-    				type:"post",
-    				url:"<%=basePath%>/drug/searchById.action",
-    				data:{"drug_id":$( "#drug_name" ).val()},
-    				success:function(data){
-    						$("#psycho").val(data.PSYCHOTROPICS);
-    						$("#drug_id").val(data.DRUG_ID);
-    				}
-    			});
-	}
+        
         
         
      function add() {
@@ -308,7 +303,6 @@ table {
     		date.psychotropics  = tr.childNodes[4].innerHTML;
     		date.drug_number  = tr.childNodes[5].innerHTML;
     		//将table表对象转换成数组装成json放在数组里
-    		//console.log(date);
     		JSONtext+="]"+JSON.stringify(date);
     		}
     		console.log(JSON.stringify(date));
@@ -323,6 +317,8 @@ table {
 				if(res==1){
 					alert("添加失败");
 				}
+				//跳转至药房端的申请药品列表页
+				window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action";
 			}
 		})
 	}

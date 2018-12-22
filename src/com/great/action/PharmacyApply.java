@@ -44,7 +44,7 @@ public class PharmacyApply {
 		List<Map<String, Object>> drugList = drugService.queryAll();
 		andView.addObject("secondType", secondType);
 		andView.addObject("drugList", drugList);
-		andView.setViewName("pharmacy/pharmacy_apply");
+		andView.setViewName("pharmacy/pharmacy_apply_add");
 		return andView;
 	}
 
@@ -53,7 +53,7 @@ public class PharmacyApply {
 		// 获取session中的药房人员ID
 		Admin admin = (Admin) request.getSession().getAttribute("admin");
 		int admin_id1 = admin.getAdmin_id();
-		
+
 		// 获取要加入的数据的IC字段的值
 		int ic = pharmacyApplyService.creatIC();
 
@@ -64,7 +64,7 @@ public class PharmacyApply {
 		for (int i = 1; i < temp.length; i++) {
 			JSONObject myJson = JSONObject.fromObject(temp[i]);
 			Map m = myJson;
-			
+
 			m.put("admin_id1", admin_id1);
 			m.put("ic", ic);
 
@@ -75,4 +75,26 @@ public class PharmacyApply {
 		String str = result > 0 ? "0" : "1";
 		return str;
 	}
+
+	// 进入申请药品列表页，按照IC排序
+	// 获取申请药品表中的ic和cdate
+	@RequestMapping(value = "/pharmacy_apply_list.action")
+	public ModelAndView pharmacy_apply_list() {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList();
+		andView.addObject("applyList", applyList);
+		andView.setViewName("pharmacy/pharmacy_apply_list");
+		return andView;
+	}
+
+	// 进入该IC编号的具体申请明细页面
+	@RequestMapping(value = "/pharmacy_apply_detaile.action")
+	public ModelAndView pharmacy_apply_detaile(int ic) {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyListByIc(ic);
+		andView.addObject("applyList", applyList);
+		andView.setViewName("pharmacy/pharmacy_apply_detaile");
+		return andView;
+	}
+
 }

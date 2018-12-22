@@ -29,15 +29,32 @@
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 </head>
-<style>
-
-</style>
+<script>
+$(document).ready(function(){
+	$(function(){
+		//得到今天的日期
+		var date_now=new Date();
+		//得到该日期所在年份
+		var year=date_now.getFullYear();
+		var month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
+		var date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
+		$("#start").attr("max",year+"-"+month+"-"+date);
+		$("#end").attr("max",year+"-"+month+"-"+date);
+	});
+	
+});
+</script>
 <body>
-<form action="">
-
+<br />
+<form id="myForm" action="<%=basePath%>/specialDrugs/registration.action" method="post" onsubmit="return check()">
+查询销售起始时间：<input type="date" id="start" name="start" value="${requestScope.start}" >&nbsp;&nbsp;
+查询销售终止时间：<input type="date" id="end" name="end" value="${requestScope.end}">&nbsp;&nbsp;
+药品名字：<input type="text" name="drug_name" id="drug_name" value='${requestScope.drug_name}'>&nbsp;
+<input type="submit" value="搜索"><br />
 </form>
+<br />
 	<table class="table table-bordered">
-	<caption>特殊药品销售明细表</caption>
+	<caption style="text-align:center"><h4>特殊药品销售明细表</h4></caption>
 	<thead>
 		<tr>
 			<th>序号</th>
@@ -67,11 +84,44 @@
 					<td>${s.CDATE}</td>
 				</tr>
 		</c:forEach>
-			
 	</tbody>
 </table>
+一共有：${requestScope.page.count}条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		${requestScope.page.page }/${requestScope.page.all}页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="<%=basePath%>/specialDrugs/registration.action?pageIndex=1&drug_name=${requestScope.drug_name}&start=${requestScope.start}&end=${requestScope.end}">首页</a>&nbsp;
+		<a href="<%=basePath%>/specialDrugs/registration.action?pageIndex=${requestScope.page.pre}&drug_name=${requestScope.drug_name}&start=${requestScope.start}&end=${requestScope.end}">上一页</a>&nbsp;
+		<c:forEach items="${requestScope.page.prePages}" var="prePage">
+			<a href="<%=basePath%>/specialDrugs/registration.action?pageIndex=${prePage}">${prePage}</a>&nbsp;
+		</c:forEach>
+		<a style="color: black;">${requestScope.page.page}</a>&nbsp;
+		<c:forEach items="${requestScope.page.nextPages}" var="nextPage">
+			<a href="<%=basePath%>/specialDrugs/registration.action?pageIndex=${nextPage}&">${nextPage}</a>&nbsp;
+		</c:forEach>
+		<a href="<%=basePath%>/specialDrugs/registration.action?pageIndex=${requestScope.page.next}&drug_name=${requestScope.drug_name}&start=${requestScope.start}&end=${requestScope.end}">下一页</a>&nbsp;
+		<a href="<%=basePath%>/specialDrugs/registration.action?pageIndex=${requestScope.page.all}&drug_name=${requestScope.drug_name}&start=${requestScope.start}&end=${requestScope.end}">末页</a>&nbsp;
+
 </body>
 <script type="text/javascript">
-
+$("#end").blur(function () {
+    if($("#start").val()!=""){
+    	var startTime=$("#start").val();
+    	var start=new Date(startTime.replace("-", "/").replace("-", "/"));
+    	var endTime=$("#end").val();
+    	var end=new Date(endTime.replace("-", "/").replace("-", "/"));
+    	if(end<start){
+    		alert("终止时间应该在开始时间之后");
+    		$("#end").val("");
+    	}
+    }
+});
+function check() {
+	if($("#start").val()!="" || $("#end").val()!=""){
+		if($("#start").val()!="" && $("#end").val()!=""){
+			return true;
+		}
+		alert("请确定要搜索的时间段");
+		return false;
+	}
+}
 </script>
 </html>
