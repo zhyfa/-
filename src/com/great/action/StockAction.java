@@ -39,6 +39,9 @@ public class StockAction {
 		if(admin.getRole_id()==2) {
 			List<Stock> stocks = stockService.checkStockNum();
 			for(Stock stock:stocks) {
+				if(stock.getStock_number()==null) {
+					stock.setStock_number(0);
+				}
 				if(stock.getStock_number()<=stock.getStock_min()) {
 					stock.setMsg("不足！");
 				}
@@ -47,6 +50,9 @@ public class StockAction {
 		}else if(admin.getRole_id()==3) {
 			List<Inventory> inventorys = stockService.checkInventoryNum();
 			for(Inventory inventory:inventorys) {
+				if(inventory.getInventory_number()==null) {
+					inventory.setInventory_number(0);
+				}
 				if(inventory.getInventory_number()<=inventory.getInventory_min()) {
 					inventory.setMsg("不足！");
 				}

@@ -10,10 +10,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath %>/js/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 </head>
+<style type="text/css">
+#page {
+	position: absolute;
+	left: 200px;
+	top: 350px;
+}
+</style>
 <body>
-<table border="1">
+<table border="1" class="table">
 	<caption>审核退库</caption>
 	<thead>
 		<th>序号</th>
@@ -28,7 +37,8 @@
 	</thead>
 	<tbody>
 			<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
-				<tr>
+			<!-- var demo = {"active","success","warning","danger"}; -->
+				<tr class="active">
 					<td>${st.count }</td>
 					<td>${inventory.inventory_id }</td>
 					<td>${inventory.drug_id }</td>

@@ -10,12 +10,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath %>/js/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 </head>
 
 <body>
 <button onclick="javascript:history.back(-1);">返回</button>
-	<table border="1" >
+	<table border="1" class="table">
 		<caption>退货</caption>
 		<thead>
 			<th>序号</th>
@@ -30,7 +32,8 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${requestScope.stocks }" var="stock" varStatus="st">
-				<tr>
+				<!-- var demo = {"active","success","warning","danger"}; -->
+				<tr class="active">
 					<td>${st.count }</td>
 					<td>${stock.drug_id }</td>
 					<td>${stock.drug_name }</td>
@@ -39,7 +42,7 @@
 					<td>${stock.admin_name }</td>
 					<td>${stock.factory_name }</td>
 					<td>${stock.parameter_name }</td>
-					<td width="100">
+					<td width="150">
 						<button onclick="returnGood(${stock.stock_id },${stock.drug_id },${stock.stock_number })" ${stock.state!=1?'hidden':'' }>退货</button>
 						<button onclick="returnGoodForm(${stock.stock_id })" ${stock.state!=3?'hidden':'' }>生成退货单</button>
 					</td>
