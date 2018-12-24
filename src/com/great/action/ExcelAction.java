@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.great.bean.Check;
+import com.great.bean.Medical;
 import com.great.bean.Page;
 import com.great.service.ExcelService;
 import com.great.service.InventoryService;
@@ -174,6 +175,52 @@ public class ExcelAction {
 		page.setQueryCheck(checkList);
 		mav.addObject("page", page);
 		mav.setViewName("drugLibrary/checkList");
+		return mav;
+	}
+	
+	/**
+	 * cc 导入本地医保药品基表
+	 */
+	@RequestMapping(value = "/medical.action")
+	public void medicalexcel(HttpServletRequest request,HttpServletResponse response,HttpSession session) throws Exception {  
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;    
+        MultipartFile file = multipartRequest.getFile("upfile");  
+        if(file.isEmpty()){  
+            throw new Exception("文件不存在！");  
+        }  
+        
+        InputStream in = file.getInputStream();
+        excelService.medicalexcel(in,file);
+        in.close();
+        PrintWriter out = null;  
+        response.setCharacterEncoding("utf-8");  //防止ajax接受到的中文信息乱码  
+        out = response.getWriter();  
+        out.print("文件导入成功！");  
+        out.flush();  
+        out.close();  
+    }
+	
+	@RequestMapping(value = "/medicalList.action")
+	public ModelAndView medicalList(int dqPage,int pageTwo) {
+		ModelAndView mav=new ModelAndView();
+		mav.setViewName("drugLibrary/medicalList");
+		Page page=new Page();
+		page.setPageTwo(pageTwo);
+		page.setPage(dqPage);
+		page.setTotal(excelService.queryCountOne());
+		page.csh();
+		List<Medical> medicalList=excelService.medicalList(page);
+		page.setQueryMedical(medicalList);
+		mav.addObject("page", page);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/updateMedical.action")
+	public ModelAndView updateMedical() {
+		excelService.updateMedical();
+		ModelAndView mav=new ModelAndView();
+		mav.setViewName("admin/succes");
+		mav.addObject("message", "同步医保信息成功！");
 		return mav;
 	}
 	

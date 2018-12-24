@@ -8,6 +8,7 @@ import com.great.bean.AuditsDetail;
 import com.great.bean.Check;
 import com.great.bean.Factory;
 import com.great.bean.Inventory;
+import com.great.bean.Medical;
 import com.great.bean.Page;
 
 @Repository
@@ -24,4 +25,13 @@ public interface ExcelMapper {
 	public List<Check> checkDaily(Page page);
 	//查询记录总条数
 	public int queryCount();
+	public int medicalexcel(Medical medical);
+	//查询医保基表总条数
+	public int queryCountOne();
+	//显示医保列表
+	public List<Medical> medicalList(Page page);
+	//导入前删除原医保列表信息
+	public int deleteMedical();
+	//更新本地药库医保药信息
+	public int updateMedical();
 }

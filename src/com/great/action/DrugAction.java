@@ -269,4 +269,14 @@ public class DrugAction {
 						return"2";
 					}
 				}
+				
+				//跳转配置医保药品界面
+				@RequestMapping("medical.action")
+				public ModelAndView medical() {
+					ModelAndView mav=new ModelAndView();
+					mav.setViewName("drugLibrary/medical");
+					return mav;
+				}
+				
+				
 }

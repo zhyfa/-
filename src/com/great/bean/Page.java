@@ -12,6 +12,7 @@ public class Page {
 	public static int count=5;//每页显示记录数
 	private List<Map<String, Object>> queryList;//查询出的数据
 	private List<Check> queryCheck;//盘点表数据
+	private List<Medical> queryMedical;//盘点表数据
 	private int StartCount;//记录开始
 	private int endCount;//记录结束
 	private List<Integer> pageShu;//下标数组
@@ -101,6 +102,12 @@ public class Page {
 	}
 	public void setQueryCheck(List<Check> queryCheck) {
 		this.queryCheck = queryCheck;
+	}
+	public List<Medical> getQueryMedical() {
+		return queryMedical;
+	}
+	public void setQueryMedical(List<Medical> queryMedical) {
+		this.queryMedical = queryMedical;
 	}
 	
 	

@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.great.bean.AuditsDetail;
@@ -21,6 +22,7 @@ import com.great.bean.Check;
 import com.great.bean.ExcelBean;
 import com.great.bean.Factory;
 import com.great.bean.Inventory;
+import com.great.bean.Medical;
 import com.great.bean.Page;
 import com.great.dao.ExcelMapper;
 import com.great.until.ExcelUtils;
@@ -103,5 +105,35 @@ public class ExcelService {
 	
 	public int queryCount() {
 		return excelMapper.queryCount();
+	}
+	//事务操作
+	@Transactional
+	public void medicalexcel(InputStream in, MultipartFile file) throws Exception {
+		List<List<Object>> listob = ExcelUtils.getBankListByExcel(in, file.getOriginalFilename());
+		List<Medical> medicalList = new ArrayList<Medical>();
+		for (int i = 0; i < listob.size(); i++) {
+			List<Object> ob = listob.get(i);
+			Medical medical = new Medical();
+			medical.setMedical_city(String.valueOf(ob.get(0)));
+			medical.setMedical_id(Integer.valueOf((String) ob.get(1)));
+			medical.setDrug_name(String.valueOf(ob.get(2)));
+			medicalList.add(medical);
+		}
+		    excelMapper.deleteMedical();
+		for (int i = 0; i < medicalList.size(); i++) {
+			excelMapper.medicalexcel(medicalList.get(i));
+		}
+	}
+	
+	public int queryCountOne() {
+		return excelMapper.queryCountOne();
+	}
+	
+	public List<Medical> medicalList(Page page){
+		return excelMapper.medicalList(page);
+	}
+	
+	public int updateMedical() {
+		return excelMapper.updateMedical();
 	}
 }

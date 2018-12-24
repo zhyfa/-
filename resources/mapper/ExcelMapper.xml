@@ -27,5 +27,24 @@ insert into T_CHECK(CHECK_ID,DRUG_NAME,SYSTEM_QUANTITY,PRODUCTION_DATE,REAL_QUAN
 <select id="checkDaily" parameterType="com.great.bean.Page" resultType="com.great.bean.Check">
 	SELECT A.* FROM (SELECT A.*,ROWNUM r FROM (SELECT A.* FROM T_CHECK A order by a.DIFFERENCE) A) A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
 </select>
+<insert id="medicalexcel" parameterType="com.great.bean.Medical">
+	insert into T_Medical(MEDICAL_ID,DRUG_NAME,MEDICAL_CITY) VALUES(#{medical_id},#{drug_name},#{medical_city})
+</insert>
+
+<select id="queryCountOne" resultType="int">
+	SELECT COUNT(0) FROM T_MEDICAL
+</select>
+
+<select id="medicalList" parameterType="com.great.bean.Page" resultType="com.great.bean.Medical">
+	SELECT A.* FROM (SELECT A.*,ROWNUM r FROM (SELECT A.* FROM T_Medical A order by a.MEDICAL_ID) A) A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
+</select>
+
+<delete id="deleteMedical">
+	DELETE T_Medical
+</delete>
+
+<update id="updateMedical">
+update t_drug set MEDICAL_CODE='医保药' where DRUG_NAME in (select DRUG_NAME from t_medical)
+</update>
 
 </mapper>
