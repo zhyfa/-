@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.DrugMapper">
+<!-- 通过药品名字获取id -->
+  <select id="getDrugId" parameterType="String" resultType="int">
+     select drug_id from t_drug where drug_name=#{drug_name}
+  </select> 
+
+
 <!-- 获取药品表的全部信息 -->
   <select id="queryAll" resultType="java.util.HashMap">
      select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c where a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID 

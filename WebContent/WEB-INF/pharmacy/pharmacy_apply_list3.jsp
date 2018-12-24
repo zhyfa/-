@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <base href="<%=basePath%>">
-<title>药房某次申请药品的详细页面</title>
+<title>药房申请药品页面</title>
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport"
@@ -42,39 +42,18 @@
 </head>
 	
 <body>
-	<br />
-	<input type="button" onclick="exportTable()" value="导出Excel表格">
-	<table class="table table-bordered">
-	<caption style="text-align:center"><h4>1药房某次申请药品的详细页面</h4></caption>
-	<thead>
-	<tr>
-			<th>序号</th>
-			<th>药品名称</th>
-			<th>是否特殊药</th>
-			<th>申请数量</th>
-			<th>申请时间</th>
-			<th>申请者</th>
-		</tr>
-	</thead>
-	<tbody id="specialDrugs">
-			<c:forEach items="${requestScope.applyList}" var="s" varStatus="st">
-			<tr>
-					<td>${st.count}</td>
-					<td>${s.DRUG_NAME}</td>
-					<td>${s.PSYCHOTROPICS}</td>
-					<td>${s.DRUG_NUMBER}</td>
-					<td>${s.CDATE}</td>
-					<td>${s.ADMIN_NAME}</td>
-				</tr>
-		</c:forEach>
-		
-	</tbody>
-</table>
-	
+	<c:forEach items="${requestScope.applyList}" var="r" varStatus="st">
+		<div class="myResult"><br/>
+			<span id="cdate">${r.CDATE}</span><br >
+			<a href="#" onclick="seeDetaile(${r.IC})"><h3>申请编号${r.IC}</h3></a>
+		</div>
+	</c:forEach>
 </body>
 <script type="text/javascript">
-	function exportTable() {
-		alert("导出Excel表格");
-	}
+//进入该IC编号的具体申请明细
+function seeDetaile(ic) {
+	window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_detaile3.action?ic="+ic;
+	window.event.returnValue=false;
+}
 </script>
 </html>

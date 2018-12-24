@@ -18,16 +18,25 @@ public class DrugService {
 	@Autowired
 	private DrugMapper drugMapper;
 
+	// 通过药品名字获取id
+	public int getDrugId(String drug_name) {
+//		Map<String, Object> map=new HashMap<>();
+//		map.put("drug_name", drug_name);
+		return drugMapper.getDrugId(drug_name);
+	};
+
 	// 获取药品表的全部信息
-	public List<Map<String, Object>> queryAll(){
+	public List<Map<String, Object>> queryAll() {
 		return drugMapper.queryAll();
 	}
+
 	// 通过药品名称获取药品表的一条信息
-		public List<Map<String, Object>> queryByName(String drug_name){
-			return drugMapper.queryByName(drug_name);
-		}
+	public List<Map<String, Object>> queryByName(String drug_name) {
+		return drugMapper.queryByName(drug_name);
+	}
+
 	// 通过药品ID获取药品表的一条信息
-	public Map<String, Object> queryById(int drug_id){
+	public Map<String, Object> queryById(int drug_id) {
 		return drugMapper.queryById(drug_id);
 	}
 
@@ -46,62 +55,73 @@ public class DrugService {
 		return drugMapper.delDrug(drug_id);
 	}
 
-	public List<Map<String, Object>> queryAllByCondition(Integer pageIndex,Integer NUMBER,String drug_name,Integer smalltype_id,String illustrate) {
+	public List<Map<String, Object>> queryAllByCondition(Integer pageIndex, Integer NUMBER, String drug_name,
+			Integer smalltype_id, String illustrate) {
 		// TODO Auto-generated method stub
-		PageHelper.startPage(pageIndex,NUMBER);
-		Map<String, Object> map=new HashMap<>();
+		PageHelper.startPage(pageIndex, NUMBER);
+		Map<String, Object> map = new HashMap<>();
 		map.put("drug_name", drug_name);
 		map.put("smalltype_id", smalltype_id);
 		map.put("illustrate", illustrate);
 		return drugMapper.queryAllByCondition(map);
 	}
+
 	/**
 	 * jyf
-	 * @param 
+	 * 
+	 * @param
 	 * @return Drugs
 	 */
-	public List<Drug> getDrugs(Integer pageIndex,Integer NUMBER) {
+	public List<Drug> getDrugs(Integer pageIndex, Integer NUMBER) {
 		PageHelper.startPage(pageIndex, NUMBER);
 		return drugMapper.getDrugs();
 	}
+
 	/**
 	 * jyf
+	 * 
 	 * @param drug_id
 	 * @return Drug
 	 */
 	public Drug getDrugByDrudId(Integer drug_id) {
 		return drugMapper.getDrugByDrudId(drug_id);
 	};
+
 	/**
-	 * jyf
-	 * 更改药库最低量库存
+	 * jyf 更改药库最低量库存
+	 * 
 	 * @param drug
 	 * @return int
 	 */
 	public int updateStockMin(Drug drug) {
 		return drugMapper.updateStockMin(drug);
 	}
+
 	public int updateInventoryMin(Drug drug) {
 		return drugMapper.updateInventoryMin(drug);
 	}
-	//查询所有的药品
-			public List<Map<String, Object>> getalldrug() {
-				// TODO Auto-generated method stub
-				return drugMapper.getalldrug();
-			}
-			//二次查询
-			public List<Map<String, Object>> querybannedDrug(int drugid) {
-				// TODO Auto-generated method stub
-				return drugMapper.querybannedDrug(drugid);
-			}
-			//查询总数
-			public int queryCountdrug(Map<String, Object> map) {
-				// TODO Auto-generated method stub
-				return drugMapper.queryCountdrug(map);
-			}
-			//查询分页列表
-			public List<Map<String, Object>> querypagedrug(Map<String, Object> map) {
-				// TODO Auto-generated method stub
-				return drugMapper.querypagedrug(map);
-			};
+
+	// 查询所有的药品
+	public List<Map<String, Object>> getalldrug() {
+		// TODO Auto-generated method stub
+		return drugMapper.getalldrug();
+	}
+
+	// 二次查询
+	public List<Map<String, Object>> querybannedDrug(int drugid) {
+		// TODO Auto-generated method stub
+		return drugMapper.querybannedDrug(drugid);
+	}
+
+	// 查询总数
+	public int queryCountdrug(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return drugMapper.queryCountdrug(map);
+	}
+
+	// 查询分页列表
+	public List<Map<String, Object>> querypagedrug(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return drugMapper.querypagedrug(map);
+	};
 }

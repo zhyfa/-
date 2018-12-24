@@ -1,6 +1,7 @@
 package com.great.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,14 @@ import com.great.bean.Inventory;
 import com.great.bean.Overdue;
 @Repository
 public interface InventoryMapper {
+	
+	//通过drug_id,birthday,factory_id定位到药房药品表的某一行,看是否存在
+	public Map<String, Object> checkRow(Map<String, Object> map);
+	//新增一条数据
+	public int addRow(Map<String, Object> map);
+	//通过drug_id,birthday,factory_id定位到药房药品表的某一行，修改它的值
+	public void updateByApply(Map<String, Object> map);
+	
 	
 	//===================jyf开始
 	public List<Drug> getInventorys();
@@ -33,4 +42,5 @@ public interface InventoryMapper {
 	
 	public List<Overdue> getOverdues();//药房 药品 过期检测
 	//===================jyf结束
+	
 }

@@ -2,16 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.StockMapper">
+<!-- 把获取的值通过drug_id,birthday,factory_id定位到药库药品表的某一行的值减少drug_number数量 -->
+<update id="updateByApply" parameterType="java.util.HashMap">
+	update t_stock set stock_number=stock_number-#{DRUG_NUMBER} 
+	where to_char(birthday,'YYYY-MM-DD')=#{BIRTHDAY} and factory_id=#{FACTORY_ID} and drug_id=#{DRUG_ID}
+</update>
+
+
+<!-- 通过drug_id，factory_id,birthday查询药库库存表中该药品的库存总量-->
+<select id="getDrugNum" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	select stock_number FROM t_stock 
+	where factory_id=#{factory_id} and drug_id=#{drug_id} and to_char(birthday,'YYYY-MM-DD')=#{birthday}
+</select>
+
+<!-- 通过drug_id，factory_id查询药库库存表中该药品的生产日期-->
+<select id="getByDrugIdAndFactoryId" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	select to_char(birthday,'YYYY-MM-DD') birthday FROM t_stock 
+	where factory_id=#{factory_id} and drug_id=#{drug_id} order by birthday
+</select>
+
 <!-- 通过药库的全部药品名称 -->
 <select id="getAllDrugName" resultType="java.util.HashMap">
 	select distinct b.drug_name,a.drug_id from t_stock a,t_drug b
 	where a.drug_id=b.drug_id
 </select>
 
-<!-- 通过drug_id查询药库库存表中该药品ID的生产日期，厂家还有相对应的库存量 -->
+<!-- 通过drug_id查询药库库存表中该药品的厂家 -->
 <select id="getMegByDrugId" parameterType="int" resultType="java.util.HashMap">
-	select b.psychotropics,a.stock_number,to_char(a.birthday,'YYYY-MM-DD') birthday,b.drug_name,c.factory_name from t_stock a,t_drug b,t_factory c
-	where a.drug_id=b.drug_id and a.factory_id=c.factory_id and a.drug_id=#{0} order by a.birthday asc,c.factory_name desc
+	select distinct c.factory_name,a.factory_id, b.psychotropics from t_stock a,t_drug b,t_factory c
+	where a.drug_id=b.drug_id and a.factory_id=c.factory_id and a.drug_id=#{0}
 </select>
 
 <!-- 通过drug_id查询药库库存表中该ID的库存量 -->

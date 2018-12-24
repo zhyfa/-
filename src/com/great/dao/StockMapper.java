@@ -12,14 +12,24 @@ import com.great.bean.Stock;
 
 @Repository
 public interface StockMapper {
+	
+	//通过drug_id,birthday,factory_id定位到药库药品表的某一行的值减少drug_number数量
+	//药房申请药品成功，药库相对应的药品库存发生该表
+	public int updateByApply(Map<String, Object> map);
+	
+	// 通过drug_id，factory_id查询药库库存表中该药品的生产日期和库存总量
+	public List<Map<String, Object>> getByDrugIdAndFactoryId(Map<String, Object> map);
 
-	// 通过药库的全部药品名称
+	// 通过drug_id，factory_id,birthday查询药库库存表中该药品的库存总量
+	public Map<String, Object> getDrugNum(Map<String, Object> map);
+
+	// 查询药库的全部药品名称
 	public List<Map<String, Object>> getAllDrugName();
 
 	// 通过drug_id查询药库库存表中该ID的库存量
 	public int drugNumById(int drug_id);
 
-	// 通过drug_id查询药库库存表中该药品ID的生产日期，厂家还有相对应的库存量
+	// 通过drug_id查询药库库存表中该药品ID生产厂家
 	public List<Map<String, Object>> getMegByDrugId(int drug_id);
 
 	// 获取近半年的采购药品名字及数量

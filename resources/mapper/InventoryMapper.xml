@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.InventoryMapper">
+<!-- 	通过drug_id,birthday,factory_id定位到药房药品表的某一行,看是否存在 -->
+	<select id="checkRow" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from t_inventory 
+		where to_char(production_date,'YYYY-MM-DD')=#{BIRTHDAY} and factory_id=#{FACTORY_ID} and drug_id=#{DRUG_ID}
+	</select>
+<!-- 	向药房库存表新增一条数据 -->
+	<insert id="addRow" parameterType="java.util.HashMap">
+		insert into t_inventory(inventory_id,drug_id,production_date,inventory_number,admin_id,state,factory_id) values 
+		(seq_t_inventory.nextval,#{DRUG_ID},to_date(#{BIRTHDAY},'YYYY-MM-DD'),#{DRUG_NUMBER},#{newadmin_id},1,#{FACTORY_ID})
+	</insert>
+<!-- 	通过drug_id,birthday,factory_id定位到药房药品表的某一行，修改它的值 -->
+	<update id="updateByApply" parameterType="java.util.HashMap">
+		update t_inventory set inventory_number=inventory_number+#{drug_number} 
+		where to_char(production_date,'YYYY-MM-DD')=#{birthday} and factory_id=#{factory_id} and drug_id=#{drug_id}
+	</update>
+
 
     <!-- jyf 获得药房 库存数量 -->
 	<select id="getInventorys" resultType="com.great.bean.Drug">

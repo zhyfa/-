@@ -19,6 +19,16 @@ public class StockService {
 	@Autowired
 	private StockMapper stockMapper;
 
+	// 通过drug_id，factory_id,birthday查询药库库存表中该药品的库存总量
+	public Map<String, Object> getDrugNum(Map<String, Object> map) {
+		return stockMapper.getDrugNum(map);
+	};
+
+	// 通过drug_id，factory_id查询药库库存表中该药品的生产日期和库存总量
+	public List<Map<String, Object>> getByDrugIdAndFactoryId(Map<String, Object> map) {
+		return stockMapper.getByDrugIdAndFactoryId(map);
+	};
+
 	// 通过药库的全部药品名称
 	public List<Map<String, Object>> getAllDrugName() {
 		return stockMapper.getAllDrugName();

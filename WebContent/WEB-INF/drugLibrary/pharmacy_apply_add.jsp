@@ -100,44 +100,45 @@ table {
 }
 </style>
 <body>
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往申请列表页</a>
+	<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往申请列表页</a>
 	<p>
+	<h4>请输入此次申请表的编号:</h4><br />
+	<input type="text" name="ic" id="ic" placeholder="hhhh" style="border:1px solid red;">
+	<br />
 	<form id="myForm">
 		<table class="infoTb" cellspacing="1">
 			<tr>
 				<th>药品名称：</th>
-				<td><select id="drug_name" name="drug_name">
+				<td><select id="drug_id" name="drug_id">
 						<option value="">请选择</option>
 						<c:forEach items="${requestScope.drugNames}" var="drugs">
 							<option value="${drugs.DRUG_ID}">${drugs.DRUG_NAME}</option>
 						</c:forEach>
 				</select></td>
 				<th>是否特殊药品：</th>
-				<td><input type="text" id="psycho" name="psychotropics" readonly="readonly" /> 
+				<td><input type="text" id="psycho" name="psychotropics"
+					readonly="readonly" />
 				<th>生产厂家</th>
-				<td>
-					<select id="factory_id" name="factory_id">
-					
-					</select>
-				</td>
+				<td><select id="factory_id" name="factory_id">
+
+				</select></td>
 				<th>生产日期</th>
-				<td>
-					<select id="birthday" name="birthday">
-					
-					</select>
-				</td>
+				<td><select id="birthday" name="birthday">
+
+				</select></td>
 				<th>申请总量</th>
 				<td><input type="text" id="total" name="drug_number"></td>
 				<th>药库该药品库存总量</th>
-				<td><input type="text" id="allnumber" name="allnumber" readonly="readonly"></td>
+				<td><input type="text" id="allnumber" name="allnumber"
+					readonly="readonly"></td>
 			</tr>
 		</table>
 		</p>
 	</form>
 	<div class="table_toolbar">
 		<input type="button" onclick="DelRow();" value="删除"> <input
-			type="button" onclick="AddRow();" value="添加">
-		<input type="button" value="提交申请" onclick="add()">
+			type="button" onclick="AddRow();" value="添加"> <input
+			type="button" value="提交申请" onclick="add()">
 	</div>
 	<div class="">
 		<input type="hidden" id="hid" name="hid" />
@@ -145,14 +146,14 @@ table {
 			<thead>
 				<tr>
 					<td width="10px"><input type="checkbox" class="checkBox"
-						title="全选" />
-					</td>
+						title="全选" /></td>
 					<th>序号</th>
 					<th>药品名称</th>
 					<th>是否特殊药品</th>
 					<th>生产厂家</th>
 					<th>生产日期</th>
 					<th>申请总量</th>
+					<th>同意/不同意</th>
 				</tr>
 			</thead>
 			<tbody id="tbody"></tbody>
@@ -166,13 +167,29 @@ table {
 		var list1=new Array();
 		var list2=new Array();
 		
-		//药品名发现改变时，搜索该新的药名的看它是否特殊药,填充工厂下拉框
-  	  $( "#drug_name" ).change(function(){
-  	    	if($("#drug_name").val()!=''||$("#drug_name").val()!=null){
-  	    		$("#psycho").html("")
-  	    		$("#total").html("")
-  	    		$("#factory_id").html("<option>请选择</option>")
+	//药品名发现改变时，搜索该新的药名的看它是否特殊药,填充工厂下拉框
+  	  $( "#drug_id" ).change(function(){
+  	    	if($("#drug_id").val()!=''||$("#drug_id").val()!=null){
+  	    		$("#psycho").val("")
+  	    		$("#factory_id").html("")
   	    		searchById();
+  	   	 	}
+  		})
+  		//工厂发现改变时，通过该工厂Id还有之前的药品ID搜索药库药品表中的生产日期，填充生产日期下拉框
+  	  $("#factory_id").change(function(){
+  	    	if($("#factory_id").val()!=''||$("#factory_id").val()!=null){
+  	    		$("#birthday").html("");
+  	    		$("#allnumber").text("");
+  	    		$("#total").val("");
+  	    		searchByfactoryId();
+  	   	 	}
+  		})
+  		//生产日期发现改变时，通过该生产日期还有工厂Id还有之前的药品ID搜索药库药品表中的数量
+  	  $("#birthday").change(function(){
+  	    	if($("#birthday").val()!=''||$("#birthday").val()!=null){
+  	    		$("#allnumber").text("");
+  	    		$("#total").val("");
+  	    		searchDrugNum();
   	   	 	}
   		})
   function searchById() {
@@ -180,36 +197,80 @@ table {
   		  $.ajax({
   				type:"post",
   				url:"<%=basePath%>/stock/getMegByDrugId.action",
-  				data:{"drug_id":$( "#drug_name" ).val()},
+  				data:{"drug_id":$("#drug_id").val()},
   				success:function(data){
-  					alert(data);
   					console.log(data);
-  					var str="";
-  					$("#psycho").html(data[0].PSYCHOTROPICS)
-//   					for(var i=0;i<data.lenght;i++){
-//   						str+="<option>"
-//   					}
+  					var str="<option>请选择</option>";
+  					$("#psycho").val(data[0].PSYCHOTROPICS)
+  					for(var i=0;i<data.length;i++){
+  						str+="<option value=" + data[i].FACTORY_ID + ">" + data[i].FACTORY_NAME + "</option>"
+  					}
+  					$("#factory_id").html(str);
   				}
   			});
-  		
 	}
+	
+	
+	  function searchByfactoryId() {
+	  		  $.ajax({
+	  				type:"post",
+	  				url:"<%=basePath%>/stock/getByDrugIdAndFactoryId.action",
+	  				data:{"drug_id":$("#drug_id").val(),"factory_id":$("#factory_id").val()},
+	  				success:function(data){
+		  					var str="<option>请选择</option>";
+		  					$("#allnumber").val(data[0].STOCK_NUMBERs)
+		  					for(var i=0;i<data.length;i++){
+		  						str+="<option value=" + data[i].BIRTHDAY + ">" + data[i].BIRTHDAY + "</option>"
+		  					}
+		  					$("#birthday").html(str);
+	  				}
+	  			});
+		}
+	  
+	  function searchDrugNum() {
+	  		  $.ajax({
+	  				type:"post",
+	  				url:"<%=basePath%>/stock/getDrugNum.action",
+	  				data:{"drug_id":$("#drug_id").val(),"factory_id":$("#factory_id").val(),"birthday":$("#birthday").val()},
+	  				success:function(data){
+		  					$("#allnumber").val(data.STOCK_NUMBER);
+	  				}
+	  			});
+		}
+	
 		
         //添加行
         function AddRow() {        	
-			var obj=document.getElementById('drug_name');
-			var text=obj.options[obj.selectedIndex].text;//获取文本
-        	var drug_id=$("#drug_id").val();
+			var drug_id=document.getElementById('drug_id');
+			var drug_name=drug_id.options[drug_id.selectedIndex].text;//获取文本
+			
+			var factory_id=document.getElementById('factory_id');
+			var factory_name=factory_id.options[factory_id.selectedIndex].text;//获取文本
+			
+			
+			
 			var psycho = $("#psycho").val();
 			var total =$("#total").val();
+			var birthday =$("#birthday").val();
+			var allow=''
+			
+			
+			if(total != ''){
+				allow="同意"
+			}else{
+				allow="库存不足！";
+			}
 			
 			var newRowNumber = $("#tab1>tbody>tr").length+1;
             $("#tab1>tbody").append(
             		"<tr><td><input type='checkbox' class='checkBox' name='dateItem' /></td><td>"
             		+ newRowNumber +
-            		"</td><td>"+text+"</td>"+
-            		"</td><td>"+drug_id+"</td>"+
+            		"</td><td>"+drug_name+"</td>"+
             		"</td><td>"+psycho+"</td>"+
-            		"</td><td>"+total+"</td></tr>"
+            		"</td><td>"+factory_name+"</td>"+
+            		"</td><td>"+birthday+"</td>"+
+            		"</td><td>"+total+"</td>"+
+            		"</td><td>"+allow+"</td></tr>"
             );
             
         }
@@ -298,16 +359,17 @@ table {
     		date = new Object();
     		tr = table.rows[i];
 			date.Code = tr.childNodes[1].innerHTML;
-			date.name = tr.childNodes[2].innerHTML;
-			date.drug_id = tr.childNodes[3].innerHTML;
-    		date.psychotropics  = tr.childNodes[4].innerHTML;
-    		date.drug_number  = tr.childNodes[5].innerHTML;
+			date.drug_name = tr.childNodes[2].innerHTML;
+    		date.psychotropics  = tr.childNodes[3].innerHTML;
+			date.factory_name = tr.childNodes[4].innerHTML;
+    		date.birthday  = tr.childNodes[5].innerHTML;
+    		date.total  = tr.childNodes[6].innerHTML;
+    		date.meg  = tr.childNodes[7].innerHTML;
     		//将table表对象转换成数组装成json放在数组里
     		JSONtext+="]"+JSON.stringify(date);
     		}
-    		console.log(JSON.stringify(date));
 		$.ajax({
-			url : "<%=basePath%>/pharmacyApply/addPharmacyApply.action",
+			url : "<%=basePath%>/pharmacyApply/realPharmacyApply.action?ic="+$("#ic").val(),
 			type: "POST",
 			data:{"JSONtext":JSONtext},
 			success : function(res) {
@@ -318,9 +380,9 @@ table {
 					alert("添加失败");
 				}
 				//跳转至药房端的申请药品列表页
-				window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action";
+				//window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action";
 			}
-		})
+ 		})
 	}
 </script>
 </html>

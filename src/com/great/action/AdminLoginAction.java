@@ -24,14 +24,14 @@ import com.great.service.AdminService;
 public class AdminLoginAction {
 	@Resource // @AutoWired setUserService()
 	private AdminService adminService;
-	@Log(thing = "用户登录")
+	
 	@RequestMapping(value = "/login.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	public @ResponseBody String login(HttpServletRequest request,Admin admin,String code) {
 		String imageCode = (String) request.getSession().getAttribute("imageCode");
 		if (!imageCode.equals(code)) {
 			return "2";
 		}
-
+		System.out.println("admin="+admin);
 		Admin result = adminService.adminLogin(admin);
 		if (result != null) {
 			request.getSession().setAttribute("admin", result);
@@ -43,14 +43,15 @@ public class AdminLoginAction {
 			return "3";
 		}
 	}
+	
+	@Log(thing = "用户登录")
 	@RequestMapping(value = "/toHomepage.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
-	 public ModelAndView toHomepage(HttpSession session) {
+	public ModelAndView toHomepage(HttpSession session) {
 		session.invalidate();
-  	ModelAndView mav = new ModelAndView();
-  	mav.setViewName("main");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("main");
 		return mav;
-  	
-  }
+	}
 	//登录用户退出
 	
 	@RequestMapping(value = "/exit.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")

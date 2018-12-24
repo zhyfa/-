@@ -50,6 +50,7 @@ public class DoLog {
 		myLog.setAdmin_id(adminID);
 		myLog.setLog_operation(thing);
 		logAction.addLog(myLog);
+		
 	}
 	
 }

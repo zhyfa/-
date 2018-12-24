@@ -100,14 +100,12 @@ table {
 }
 </style>
 <body>
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往申请列表页</a>
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往药库未确认列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往药库已确认列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往药品申请流程结束列表页</a>
 	<p>
 	<form id="myForm">
 		<table class="infoTb" cellspacing="1">
-			<tr background-color="#E6E6FA">
-				<th>编号：</th>
-				<td colspan="7"><input type="text" id="count" name="count" /></td>
-			</tr>
 			<tr>
 				<th>药品名称：</th>
 				<td><select id="drug_name" name="drug_name">

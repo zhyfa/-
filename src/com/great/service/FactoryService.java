@@ -13,7 +13,13 @@ import com.great.dao.FactoryMapper;
 public class FactoryService {
 	@Resource
 	private FactoryMapper factoryMapper;
-	public List<Map<String, Object>> factoris(){
+
+	// 通过工厂名，查询工厂id
+	public int getFactoryId(String factory_name) {
+		return factoryMapper.getFactoryId(factory_name);
+	};
+
+	public List<Map<String, Object>> factoris() {
 		return factoryMapper.factoris();
 	}
 }

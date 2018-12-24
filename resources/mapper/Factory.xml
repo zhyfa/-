@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.FactoryMapper">
+	<!-- 通过工厂名，查询工厂id -->
+  <select id="getFactoryId" parameterType="String" resultType="int">
+    select factory_id from t_factory 
+    where factory_name=#{0}
+  </select> 
+
+
 	<!-- 查询所有的大类别 -->
   <select id="factoris" resultType="java.util.HashMap">
      SELECT * FROM T_FACTORY 
