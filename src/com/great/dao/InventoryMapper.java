@@ -11,6 +11,11 @@ import com.great.bean.Overdue;
 @Repository
 public interface InventoryMapper {
 	
+	//获取药房药品表的信息
+	public List<Map<String, Object>> inventoryDrugs(Map<String, Object> map);
+	
+	
+	
 	//通过drug_id,birthday,factory_id定位到药房药品表的某一行,看是否存在
 	public Map<String, Object> checkRow(Map<String, Object> map);
 	//新增一条数据

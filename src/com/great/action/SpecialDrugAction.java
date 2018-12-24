@@ -23,7 +23,6 @@ public class SpecialDrugAction {
 		if (pageIndex == null) {
 			pageIndex = 1;
 		}
-
 		ModelAndView andView = new ModelAndView();
 		List<Map<String, Object>> specialDruges = specialDrugService.queryAllByCondition(pageIndex, InfoPage.NUMBER,
 				drug_name, start, end); 

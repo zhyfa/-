@@ -30,7 +30,7 @@ import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/pharmacyApply")
-public class PharmacyApply {
+public class PharmacyApplyAction {
 	@Resource
 	private PharmacyApplyService pharmacyApplyService;
 	@Resource

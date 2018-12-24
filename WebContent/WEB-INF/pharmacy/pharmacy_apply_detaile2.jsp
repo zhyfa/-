@@ -45,7 +45,7 @@
 	<br />
 	<input type="button" onclick="exportTable()" value="导出Excel表格">
 	<table class="table table-bordered">
-	<caption style="text-align:center"><h4>2药房某次申请药品的详细页面</h4></caption>
+	<caption style="text-align:center"><h4>药房申请药品的待确认页面</h4></caption>
 	<thead>
 	<tr>
 			<th>序号</th>

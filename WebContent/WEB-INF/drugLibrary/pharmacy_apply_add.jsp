@@ -99,8 +99,10 @@ table {
 	border-collapse: collapse;
 }
 </style>
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往基准表列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往待确认列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往已确认列表页</a>
 <body>
-	<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往申请列表页</a>
 	<p>
 	<h4>请输入此次申请表的编号:</h4><br />
 	<input type="text" name="ic" id="ic" placeholder="hhhh" style="border:1px solid red;">
@@ -375,6 +377,7 @@ table {
 			success : function(res) {
 				if(res==0){
 					alert("添加成功");
+					window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action";
 				}
 				if(res==1){
 					alert("添加失败");

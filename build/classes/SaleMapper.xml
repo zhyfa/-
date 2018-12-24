@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.SaleMapper">
+	<select id="getWeekMoney" resultType="java.util.HashMap">
+		select '周1' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw') from dual),'YYYY-MM-DD')
+		union
+		select '周2' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+1 from dual),'YYYY-MM-DD')
+		union
+		select '周3' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+2 from dual),'YYYY-MM-DD')
+		union
+		select '周4' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+3 from dual),'YYYY-MM-DD')
+		union
+		select '周5' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+4 from dual),'YYYY-MM-DD')
+		union
+		select '周6' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+5 from dual),'YYYY-MM-DD')
+		union
+		select '周7' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+6 from dual),'YYYY-MM-DD')
+	</select>
+</mapper>

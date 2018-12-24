@@ -35,7 +35,7 @@ public class StockService {
 	};
 
 	// 通过drug_id查询药库库存表中该ID的库存量
-	public int drugNumById(int drug_id) {
+	public Integer drugNumById(Integer drug_id) {
 		// TODO Auto-generated method stub
 		return stockMapper.drugNumById(drug_id);
 	};

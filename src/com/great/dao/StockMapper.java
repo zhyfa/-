@@ -27,7 +27,7 @@ public interface StockMapper {
 	public List<Map<String, Object>> getAllDrugName();
 
 	// 通过drug_id查询药库库存表中该ID的库存量
-	public int drugNumById(int drug_id);
+	public Integer drugNumById(int drug_id);
 
 	// 通过drug_id查询药库库存表中该药品ID生产厂家
 	public List<Map<String, Object>> getMegByDrugId(int drug_id);

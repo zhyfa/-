@@ -100,9 +100,9 @@ table {
 }
 </style>
 <body>
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往药库未确认列表页</a><br />
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往药库已确认列表页</a><br />
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往药品申请流程结束列表页</a>
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往基准表列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往待确认列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往已确认列表页</a>
 	<p>
 	<form id="myForm">
 		<table class="infoTb" cellspacing="1">
@@ -253,8 +253,8 @@ table {
     	  $( "#drug_name" ).change(function(){
     	    	if($("#drug_name").val()!=''||$("#drug_name").val()!=null){
     	    		$("#psycho").html("")
-    	    		$("#allnumber").html("")
-    	    		$("#total").html("")
+    	    		$("#allnumber").val("")
+    	    		$("#total").val("")
     	    		searchById();
     	   	 	}
     		})
@@ -299,7 +299,6 @@ table {
     		//将table表对象转换成数组装成json放在数组里
     		JSONtext+="]"+JSON.stringify(date);
     		}
-    		console.log(JSON.stringify(date));
 		$.ajax({
 			url : "<%=basePath%>/pharmacyApply/addPharmacyApply.action",
 			type: "POST",

@@ -1,6 +1,8 @@
 package com.great.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,13 @@ public class InventoryService {
 
 	@Autowired
 	private InventoryMapper inventoryMapper;
+	public List<Map<String, Object>> inventoryDrugs(Integer pageIndex, Integer NUMBER, String drug_name,Integer factory_id){
+		PageHelper.startPage(pageIndex,NUMBER);
+		Map<String, Object> map=new HashMap<>();
+		map.put("drug_name", drug_name);
+		map.put("factory_id", factory_id);
+		return inventoryMapper.inventoryDrugs(map);
+	};
 	
 	public List<Drug> getInventorys(Integer pageIndex,Integer NUMBER) {
 		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
