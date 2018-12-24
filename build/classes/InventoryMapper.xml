@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.InventoryMapper">
+
+	<!-- 获取药房药品表的信息 -->
+	<select id="inventoryDrugs" resultType="java.util.HashMap">
+		SELECT to_char(a.CDATE,'YYYY-MM-DD HH:MM:SS') cdate,to_char(a.PRODUCTION_DATE,'YYYY-MM-DD HH:MM:SS') PRODUCTION_DATE,a.INVENTORY_NUMBER,b.factory_name,c.admin_name,d.drug_name
+		from t_inventory a,t_factory b,t_admin c,t_drug d
+		<where>
+			a.factory_id=b.factory_id and a.admin_id=c.admin_id and a.drug_id=d.drug_id
+			<if test="drug_name != '' and drug_name != null ">
+				and d.drug_name like '%${drug_name}%'
+			</if>
+			<if test="factory_id != '' and factory_id != null and factory_id != 0 ">
+				and a.factory_id=#{factory_id}
+			</if>
+		</where>
+	</select>
+
+
+
 <!-- 	通过drug_id,birthday,factory_id定位到药房药品表的某一行,看是否存在 -->
 	<select id="checkRow" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		select * from t_inventory 

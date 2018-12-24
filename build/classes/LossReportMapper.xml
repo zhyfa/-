@@ -2,10 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.LossReportMapper">
-<insert id="ReimburseAdd">
-
-
-</insert>
-
-
+	<!-- 查找总数 -->
+	<select id="queryCount"  resultType="int">
+	    	SELECT COUNT(0) FROM t_reimburse 
+	</select>
+	<!-- 分页查询 -->
+	<select id="queryListbypage" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	    	SELECT T.* FROM (select R.REIMBURSE_ID,R.INVENTORY_ID,D.DRUG_NAME,A.ADMIN_NAME,R.REIMBURSE_NUM,R.ILLUSTRATE,P.parameter_name,r.CDATE,rownum s
+from t_reimburse R,t_admin A,t_drug D,t_parameter P where a.admin_id=r.admin_id and d.drug_id=r.drug_id and r.state=p.parameter_value and p.parameter_type='药房库存状态' )T where T.S&gt;=#{StartCount} AND T.S&lt;=#{endCount}
+	</select>
+	
+	<!-- 查询所有的 -->
+	<select id="queryallList" resultType="com.great.bean.LossReport">
+	   select R.REIMBURSE_ID,R.INVENTORY_ID,D.DRUG_NAME,A.ADMIN_NAME,R.REIMBURSE_NUM,R.ILLUSTRATE,P.parameter_name,to_char(R.CDATE,'YYYY-MM-DD HH24:mi:ss') as CDATA
+from t_reimburse R,t_admin A,t_drug D,t_parameter P where a.admin_id=r.admin_id and d.drug_id=r.drug_id and r.state=p.parameter_value and p.parameter_type='药房库存状态'
+</select>
 </mapper>
