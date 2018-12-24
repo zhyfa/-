@@ -102,4 +102,19 @@
 		select a.inventory_id,a.drug_id,b.drug_name,a.production_date,b.irradiated,(a.production_date+b.irradiated*30) nowDate 
 		   from t_inventory a,t_drug b where a.drug_id = b.drug_id 
 	</select>
+	<!-- jyf 12.24 -->
+	<select id="getDrugByIdforChuku" parameterType="java.lang.Integer" resultType="com.great.bean.Drug">
+	select a.*,b.* from t_drug a,
+          (select drug_id,sum(inventory_number) inventory_number from  t_inventory where state=1 group by drug_id having drug_id=#{_parameter}) b 
+          where a.drug_id=b.drug_id
+	</select>
+	<select id="getInventorysByDrugIdForSold" parameterType="java.lang.Integer" resultType="com.great.bean.Inventory">
+	 	select a.*,b.drug_name,b.spec,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
+         where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
+          and a.drug_id=#{_parameter} and a.state in (1) order by a.production_date desc
+	</select>
+	<update id="UpdateSaleNum" parameterType="com.great.bean.SaleNum">
+		update t_inventory set inventory_number=inventory_number-#{saleNum} where  inventory_id=#{inventory_id}
+	</update>
+	<!-- jyf 12.24                  sdjasdhkasdjasd -->
 	</mapper>

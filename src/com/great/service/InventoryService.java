@@ -13,6 +13,7 @@ import com.great.bean.Drug;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
 import com.great.bean.Overdue;
+import com.great.bean.SaleNum;
 import com.great.dao.InventoryMapper;
 
 @Service
@@ -20,6 +21,11 @@ public class InventoryService {
 
 	@Autowired
 	private InventoryMapper inventoryMapper;
+	public List<Drug> getInventoryss() {
+		List<Drug> inventorys = inventoryMapper.getInventorys();
+		return inventorys;
+		
+	};
 	public List<Map<String, Object>> inventoryDrugs(Integer pageIndex, Integer NUMBER, String drug_name,Integer factory_id){
 		PageHelper.startPage(pageIndex,NUMBER);
 		Map<String, Object> map=new HashMap<>();
@@ -77,4 +83,17 @@ public class InventoryService {
 	public List<Overdue> getOverdues(){//药房 药品 过期检测
 		return inventoryMapper.getOverdues();
 	};
+	
+	//JYF 12.24 getDrugByIdforChuku
+			public Drug getDrugByIdforChuku(Integer drug_id) {
+				return inventoryMapper.getDrugByIdforChuku(drug_id);
+			};
+			public List<Inventory>  getInventorysByDrugIdForSold(Integer drug_id){
+				return inventoryMapper.getInventorysByDrugIdForSold(drug_id);
+				
+			};
+			public int UpdateSaleNum(SaleNum saleNum) {
+				return inventoryMapper.UpdateSaleNum(saleNum);
+				
+			};
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.great.bean.Drug;
 import com.great.bean.Inventory;
 import com.great.bean.Overdue;
+import com.great.bean.SaleNum;
 @Repository
 public interface InventoryMapper {
 	
@@ -47,5 +48,13 @@ public interface InventoryMapper {
 	
 	public List<Overdue> getOverdues();//药房 药品 过期检测
 	//===================jyf结束
+	
+	//JYF 12.24 getDrugByIdforChuku
+		public Drug getDrugByIdforChuku(Integer drug_id);
+		
+		//getInventorysByDrugIdForSold
+		public List<Inventory>  getInventorysByDrugIdForSold(Integer drug_id);
+		
+		public int UpdateSaleNum(SaleNum saleNum);
 	
 }

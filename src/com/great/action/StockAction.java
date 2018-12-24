@@ -97,16 +97,16 @@ public class StockAction {
 			}
 			return stocks;
 		} else if (admin.getRole_id() == 3) {
-//			List<Inventory> inventorys = stockService.checkInventoryNum();
-//			for(Inventory inventory:inventorys) {
-//				if(inventory.getInventory_number()==null) {
-//					inventory.setInventory_number(0);
-//				}
-//				if(inventory.getInventory_number()<=inventory.getInventory_min()) {
-//					inventory.setMsg("不足！");
-//				}
-//			}
-//			return inventorys;
+			List<Inventory> inventorys = stockService.checkInventoryNum();
+			for(Inventory inventory:inventorys) {
+				if(inventory.getInventory_number()==null) {
+					inventory.setInventory_number(0);
+				}
+				if(inventory.getInventory_number()<=inventory.getInventory_min()) {
+					inventory.setMsg("不足！");
+				}
+			}
+			return inventorys;
 		}
 		return null;
 	}
