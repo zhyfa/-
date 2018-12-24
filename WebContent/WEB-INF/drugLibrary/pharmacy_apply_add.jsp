@@ -179,7 +179,7 @@ table {
   	  $("#factory_id").change(function(){
   	    	if($("#factory_id").val()!=''||$("#factory_id").val()!=null){
   	    		$("#birthday").html("");
-  	    		$("#allnumber").text("");
+  	    		$("#allnumber").val("");
   	    		$("#total").val("");
   	    		searchByfactoryId();
   	   	 	}

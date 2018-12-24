@@ -19,13 +19,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 <script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
 <script src="<%=basePath%>/assets/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/x-admin/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/assets/bootstrap/css/bootstrap.css">
  <link rel="shortcut icon" href="<%=basePath%>/assets/x-admin/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/font.css">
-    <link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/xadmin.css">
-    <script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/jquery.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>/assets/x-admin/lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
+ <link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/font.css">
+<link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/xadmin.css">
+    
 <script type="text/javascript">
 function del(){
 $(function(){
@@ -67,6 +67,7 @@ $(function(){
       <td>
     	<input type="button" value="选择" onclick="change()">
     	</td>
+    	</tr>
   </tbody>
 </table>
   <form action="">  	
@@ -120,10 +121,8 @@ $(function(){
 			<td><input type="button" value="查找已配置的禁止药品" onclick="qyerybanned()"></td>
 			</tr>
   </table>
-<div id="changepage">
-<ul class="pagination pagination-lg">
+<ul class="pagination pagination-lg" id="changepage">
 		<li><a onclick="up()">&laquo;</a></li>
-		
 		<c:forEach items="${page.pageShu}" var="pageshu">
 			<li ><a onclick="addTabs(this)">${pageshu}</a></li>
 		</c:forEach>
@@ -133,7 +132,6 @@ $(function(){
 	</ul>
 	<input type="hidden" name="pageTwo" value="${page.pageTwo}" id="pageT">
 	<input type="hidden" value="${page.totalPageTwo}" id="totalPageTwo">
-	</div>
 </body>
 <script type="text/javascript">
 function delebanned(drugid,drugid1){
@@ -223,28 +221,24 @@ function qyerybyall(page,pagetwo){
 		  		"<td>"+data.queryList[a].DRUG_NAME+"</td>"+
 		  		"<td>"+data.queryList[a].DRUG_ID1+"</td>"+
 		  		"<td>"+data.queryList[a].DRUG_NAME1+"</td>"+
-		  		"<td><input type='button' value='删除' onclick='delebanned("+data.queryList[a].DRUG_ID+","+data.queryList[a].DRUG_ID1+")></td>"+
+		  		"<td><input type='button' value='删除' onclick='delebanned("+data.queryList[a].DRUG_ID+","+data.queryList[a].DRUG_ID1+")'/></td>"+
 		  		"</tr>"
 				}
-			console.log("sss："+str+":SSS");
 			$("#bannedshowbody").html(str);
 			
 			 var str1="";
 	           var str2="";
-	           str1+="<ul class='pagination pagination-lg'>"+
-	   		"<li><a onclick='up()'>&laquo;</a></li>"
-	   		
+	           str1+="<li><a onclick='up()'>&laquo;</a></li>"
 	   		for(var a=0 ;a<data.pageShu.length;a++){
 	   			str2+="<li><a onclick='addTabs(this)'>"+data.pageShu[a]+"</a></li>"
 	   		}
-	   		str1=str2+str1+"<li><a onclick='next()'>&raquo;</a></li>"+
+	   		str1=str1+str2+"<li><a onclick='next()'>&raquo;</a></li>"+
 	   		"<li>共"+data.totalPage+"页，当前第"+data.page+"页</li>"+
-	   	"</ul>"+
 	   	"<input type='hidden' name='pageTwo' value='"+data.pageTwo+"' id='pageT'>"+
 	   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
 	         
+	   	console.log("?????"+str1+"::::")
 	    $("#changepage").html(str1); 
-	   	console.log(str1)
 		},
 });
 }
@@ -252,32 +246,33 @@ function qyerybyall(page,pagetwo){
 function  update(){
 	 var arr = new Array();
 	    var trList = $("#bannedbeforbody").children("tr");
-	    if(trList.length>0){
-	    for (var i = 0; i < trList.length; i++) {
-	        var json = {};
-	        var tdArr = trList.eq(i).find("td");
-	        json.roiName = tdArr.eq(0).text();
-	        json.roiInfo = tdArr.eq(2).text();
-	        alert(json);
-	        if (json !=""|| json!="undefined") {
-	        	console.log("有值");
-	            arr.push(json);
-	    	    var arrs=JSON.stringify(arr);
-	    	    $.ajax({
-	    		type:"post",
-	    		url : "<%=basePath%>/drug/addbanned.action",
-	    		//dataType:'JSON',
-	    		data:{"data":arrs},
-	    		success:function(data){
-	    			if(data==1){
-	    				alert("增加成功");
-	    			}else{
-	    				alert("增加失败");
-	    			}
-	    		},
-	    		});
-	        } 
-	    }
+		  if(trList.length>0){
+		    for (var i = 0; i < trList.length; i++) {
+		        var json = {};
+		        var tdArr = trList.eq(i).find("td");
+		        json.roiName = tdArr.eq(0).text();
+		        json.roiInfo = tdArr.eq(2).text();
+		        if (json !=""|| json!="undefined") {
+		            arr.push(json);
+		        
+		        };
+		        };
+		    	    var arrs=JSON.stringify(arr);
+		    	    $.ajax({
+		    		type:"post",
+		    		url : "<%=basePath%>/drug/addbanned.action",
+		    		//dataType:'JSON',
+		    		data:{"data":arrs},
+		    		success:function(data){
+		    			if(data==1){
+		    				alert("增加成功");
+		    				window.location.href = "<%=basePath%>/drug/banned.action";
+		    			}else{
+		    				alert("增加失败");
+		    			}
+		    		},
+		    		});
+		    
 	    }else{
 	    	alert("请选择------")
 	    }
@@ -320,7 +315,8 @@ function  change(){
 	str+="<td>"+drugname1+"</td>";
 	str+="<td><input type='button' value='删除'  onclick='del()'></td></tr>";
 	$("#bannedbeforbody").append(str);
-	
+	$("#drug1").val("");
+	$("#drug2").val("");
 }
 
 

@@ -33,6 +33,6 @@ public interface AdminMapper {
 	public Map<String,Object> checkname(String adminname);
 	
 	public List<Map<String, Object>> queryadminbysome(Map<String, Object> map);
-	//妯＄硦鎼滅储鍒嗛〉
+	//
 	public int queryCountAdminbysome(Map<String, Object> map);
 }

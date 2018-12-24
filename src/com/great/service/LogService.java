@@ -27,4 +27,14 @@ public class LogService {
 		// TODO Auto-generated method stub
 		return logMapper.queryCountLog();
 	}
+	//模糊查询分页总数
+		public int queryCountbysome(Map<String, Object> map) {
+			// TODO Auto-generated method stub
+			return logMapper.queryCountbysome(map);
+		}
+		//模糊查找数据
+		public List<Map<String, Object>> queryLogbysome(Map<String, Object> map) {
+			// TODO Auto-generated method stub
+			return logMapper.queryLogbysome(map);
+		}
 }

@@ -14,7 +14,7 @@
   </select> 
   <!-- 通过药品ID获取药品表的一条信息 -->
   <select id="queryById" parameterType="int" resultType="java.util.HashMap">
-    select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c where a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID and a.drug_id=#{0}
+    select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c where a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID and a.drug_id=#{_id}
   </select> 
   
   <!-- 通过条件获取药品表的信息 -->
@@ -75,6 +75,28 @@
      select * from T_DRUG 
   </select>  
   
+   <!--查询药品表总数  -->
+      <select id="queryCount"  parameterType="java.util.HashMap" resultType="int" >
+    	SELECT COUNT(0) FROM T_DRUG 
+    	<where>
+		<if test="drugId!=0">
+		 and DRUG_ID=#{drugId}
+		</if>
+		</where>
+    	</select>
+    	
+    	<!-- 根据分页和ID查询 药品表-->
+    	<select  id="querypagedrugbyid" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+		 select s.* from(select a.*,rownum R from T_DRUG  a
+ 	<where>
+		<if test="drugId!=0">
+		and DRUG_ID=#{drugId} 
+		</if>
+		</where>
+		)S where S.R&gt;=#{StartCount} AND S.R&lt;=#{endCount}
+		
+	</select>
+  
    <!--  二次查找所有药品-->
    <select id="querybannedDrug"   parameterType="int" resultType="java.util.HashMap">
        select * from T_DRUG where DRUG_ID not in( select DRUG_ID1 from t_banned where DRUG_ID =#{_id}) and DRUG_ID !=#{_id}
@@ -103,4 +125,14 @@
 	  <select id="queryByName" parameterType="java.lang.String" resultType="java.util.HashMap">
 	    select a.*,c.SMALLTYPE_NAME from T_DRUG a,T_SMALLTYPE c where a.state=1 and a.SMALLTYPE_ID=c.SMALLTYPE_ID and a.drug_name=#{drug_name}
 	  </select> 	
+	  
+	  
+	 <!--修改一个药品价格 -->
+   <update id="updateDrugprice" parameterType="com.great.bean.Drug">
+   		update t_drug set price=#{price},discount=#{discount} where drug_id=#{drug_id}
+   </update>
+   
+   <update id="updateDrugstate" parameterType="com.great.bean.Drug">
+   		update t_drug set STATE=#{state} where drug_id=#{drug_id}
+   </update>
 </mapper>

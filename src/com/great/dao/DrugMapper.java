@@ -71,4 +71,13 @@ public interface DrugMapper {
 
 	// 模糊查询
 	public List<Map<String, Object>> querypagedrug(Map<String, Object> map);
+	//修改售价
+	public int updateDrugprice(Drug drug);
+
+	public int queryCount(Map<String, Object> map);
+
+	public List<Map<String, Object>> querypagedrugbyid(Map<String, Object> map);
+	//禁用药品
+	public int updateDrugstate(Drug drug);
+
 }

@@ -24,7 +24,7 @@ import com.great.service.AdminService;
 public class AdminLoginAction {
 	@Resource // @AutoWired setUserService()
 	private AdminService adminService;
-	
+	@Log(thing = "用户登录")
 	@RequestMapping(value = "/login.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	public @ResponseBody String login(HttpServletRequest request,Admin admin,String code) {
 		String imageCode = (String) request.getSession().getAttribute("imageCode");
@@ -44,7 +44,7 @@ public class AdminLoginAction {
 		}
 	}
 	
-	@Log(thing = "用户登录")
+	
 	@RequestMapping(value = "/toHomepage.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	public ModelAndView toHomepage(HttpSession session) {
 		session.invalidate();

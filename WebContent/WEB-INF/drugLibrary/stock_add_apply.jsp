@@ -218,7 +218,7 @@
     				   for(var i=0;i<detailList.length;i++){
     					str1="<option value='"+detailList[i].DRUG_NAME+"'>"+detailList[i].DRUG_NAME+"</option>"; 
     				   	str2="<option value='"+detailList[i].DRUG_ID+"'>"+detailList[i].DRUG_ID+"</option>"; 
-    				   	$("#factory").vai(detailList[i].FACTORY);
+    				   	$("#factory").val(detailList[i].FACTORY);
     				   	$("#plantobuy_number").val(detailList[i].TOTAL);
     				   	console.log($("#plantobuy_number").val(detailList[i].TOTAL));
     				   }

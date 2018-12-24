@@ -112,6 +112,7 @@ public class DrugService {
 		// TODO Auto-generated method stub
 		return drugMapper.querybannedDrug(drugid);
 	}
+	
 
 	// 查询总数
 	public int queryCountdrug(Map<String, Object> map) {
@@ -124,4 +125,25 @@ public class DrugService {
 		// TODO Auto-generated method stub
 		return drugMapper.querypagedrug(map);
 	};
+	
+	//修改售价
+		public int updateDrugprice(Drug drug) {
+			// TODO Auto-generated method stub
+			return drugMapper.updateDrugprice(drug);
+		}
+		//查找药品总的条数
+		public int queryCount(Map<String, Object> map) {
+			// TODO Auto-generated method stub
+			return drugMapper.queryCount(map);
+		}
+		//根据ID查找分页的药品
+		public List<Map<String, Object>> querypagedrugbyid(Map<String, Object> map) {
+			// TODO Auto-generated method stub
+			return drugMapper.querypagedrugbyid(map);
+		}
+		//禁用药品
+		public int updateDrugstate(Drug drug) {
+			// TODO Auto-generated method stub
+			return drugMapper.updateDrugstate(drug);
+		}
 }

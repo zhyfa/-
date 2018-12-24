@@ -1,6 +1,8 @@
 package com.great.action;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
+import com.great.bean.Page;
+import com.great.service.DrugService;
 import com.great.service.InventoryService;
 
 @Controller
@@ -21,6 +25,9 @@ import com.great.service.InventoryService;
 public class DailyAction {
 	@Autowired
 	private InventoryService inventoryService;
+	@Autowired
+	private DrugService drugService;
+	
 	/**
 	 * jyf 药房退库
 	 * @param pageIndex
@@ -182,6 +189,82 @@ public class DailyAction {
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("drugLibrary/checkDaily");
 		return mav;
+	}
+
+	//~~~~~~~~~~~~~~~~~~xusm~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~药品调价~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//药品调价
+	@RequestMapping("/readjust.action")
+	public ModelAndView updapricebefore() {
+		ModelAndView andView= new ModelAndView();
+		 List<Map<String,Object>> List=drugService.getalldrug();
+		 andView.addObject("drugs", List);
+		 andView.setViewName("drugLibrary/drug_updaprice");
+		return andView;
+	}
+	//查找该药品的信息
+	@RequestMapping(value = "/qurydrugbyid.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	public @ResponseBody Map qurydrugbyid(Integer drugid) {
+		 Map<String,Object> List=drugService.queryById(drugid);
+		 return List;
+	}
+	//修改售价
+	@RequestMapping(value = "/updateDrugprice.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	public @ResponseBody String updateDrugprice(Drug drug) {
+		 int i=drugService.updateDrugprice(drug);
+		 if(i>0) {
+			 return "1";
+		 }else {
+			 return "0";
+		 }
+	}
+	//~~~~~~~~~~~~~~~~调价结束~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~状态改变~~~~~~~~~~~~~~~~~~~~~~
+	@RequestMapping("/blockUp.action")
+	public ModelAndView updastatebefore() {
+		ModelAndView andView= new ModelAndView();
+		Page page=new Page();
+		Map<String, Object> map=new HashMap<>();
+		map.put("drugId", 0);
+		page=new Page();
+		page.setPageTwo(1);
+		page.setPage(1);
+		page.setTotal(drugService.queryCount(map));
+		page.csh();
+		map.put("StartCount", page.getStartCount());
+		map.put("endCount", page.getEndCount());
+		List<Map<String, Object>> list=drugService.querypagedrugbyid(map);
+		page.setQueryList(list);
+		andView.addObject("page", page);
+		andView.setViewName("drugLibrary/drug_updastate");
+		return andView;
+	}
+	//禁用的模糊查询
+	@RequestMapping(value = "/qurypagedrugbyid.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	public @ResponseBody Page qurypagedrugbyid(Integer drugid,int dqpage,int pageTwo) {
+		Page page=new Page();
+		Map<String, Object> map=new HashMap<>();
+		map.put("drugId", drugid);
+		page=new Page();
+		page.setPageTwo(pageTwo );
+		page.setPage( dqpage);
+		page.setTotal(drugService.queryCount(map));
+		page.csh();
+		map.put("StartCount", page.getStartCount());
+		map.put("endCount", page.getEndCount());
+		List<Map<String, Object>> list=drugService.querypagedrugbyid(map);
+		page.setQueryList(list);
+		return page;
+	}
+	//禁用的执行。。。
+	@RequestMapping(value = "/updateDrugstate.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+	public @ResponseBody String updateDrugstate(Drug drug) {
+		 int i=drugService.updateDrugstate(drug);
+		 if(i>0) {
+			 return "1";
+		 }else {
+			 return "0";
+		 }
 	}
 	
 }

@@ -45,11 +45,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	href="<%=basePath%>/media/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8"
 	src="<%=basePath%>/media/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8"
-	src="<%=basePath%>/layer/mobile/layer.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="<%=basePath%>/layer/mobile/need/layer.css">
-
+<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+	<link rel="stylesheet" href="<%=basePath%>/css/bootstrap.css">  
+	<script src="<%=basePath%>/js/bootstrap.min.js"></script>
 </head>
 
 
@@ -81,14 +79,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<input type="button" class="btn btn-primary" value="查询" onclick="queryadmin()">
 		</form>
 	</div>
+	
 	<div id="adindiv">
 	<c:forEach items="${page.queryList}" var="admins" varStatus="sta">
-		<div class="row" style="margin-left: 50px;float:left">
 			<div class="col-sm-6 col-md-3">
 				<div class="thumbnail" >
 					<img src="<%=basePath%>/image/doctor.png"
 						alt="通用的占位符缩略图">
-					<div class="caption">
 						<table class="table table-hover" id="${admins.ADMIN_ID}">
 							<thead>
 								<tr>
@@ -113,14 +110,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<input class="btn btn-primary" type="button"  onclick="changeadmin(${admins.ADMIN_ID})" value="更改信息" >
 							</p>
 							</div>
-						</div>
 					</div>
 				</div>
-			</div>
 		</c:forEach>
 	</div>
-	<div id="changepage">
-	<ul class="pagination pagination-lg">
+	<div  style="float:inherit;">
+	<ul class="pagination pagination-lg" id="changepage">
 		<li><a onclick="up()">&laquo;</a></li>
 		
 		<c:forEach items="${page.pageShu}" var="pageshu">
@@ -185,7 +180,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	function changeadmin(adminid){
     		layer.open({
     			type: 2, 
-    			//title:["处理页面详情",'background-image: url(/csp/static/js/theme/default/layerTiltle.fw_03.png);'],
     			title:["处理页面详情"],
     			area: ['50%', '80%'],
     			maxmin:true,
@@ -196,7 +190,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
     		});
 
-<%--     		window.open ("<%=basePath%>/admin/updaadminbefore.action?adminid="+adminid, "newwindow", "height=800, width=600, top=200,left=500,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no") --%>
     		
     	}
        function delectadmin(adminid){
@@ -229,11 +222,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					var str="";
 					 
 		                 for(var i=0;i<data.queryList.length;i++) {
-		                str+= "<div class='row' style='margin-left:50px;float:left'>"+
-		        			"<div class='col-sm-6 col-md-3'>"+
+		                str+= "<div class='col-sm-6 col-md-3'>"+
 		        				"<div class='thumbnail'>"+
 		        				"<img src='<%=basePath%>/image/doctor.png' alt='通用的占位符缩略图'>"+
-		        					"<div class='caption'>"+
+		        					
 		        						"<table class='table table-hover'>"+
 		        							"<thead>"+
 		        								"<tr>"+
@@ -258,25 +250,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        							"<input class='btn btn-primary' type='button'  onclick='changeadmin("+data.queryList[i].ADMIN_ID+")' value='更改信息' >"+						
 		        								"</p>"+
 		        							"</div>"+
-		        						"</div>"+
 		        					"</div>"+
-		        				"</div>"+
-		        			"</div>"
+		        				"</div>"
 		                 }
 		                    
 		           $("#adindiv").html(str); 
 		           
 		           var str1="";
 		           var str2="";
-		           str1+="<ul class='pagination pagination-lg'>"+
-		   		"<li><a onclick='up()'>&laquo;</a></li>"
+		           str1+="<li><a onclick='up()'>&laquo;</a></li>"
 		   		
 		   		for(var a=0 ;a<data.pageShu.length;a++){
 		   			str2+="<li><a onclick='addTabs(this)'>"+data.pageShu[a]+"</a></li>"
 		   		}
-		   		str1=str2+str1+"<li><a onclick='next()'>&raquo;</a></li>"+
+		   		str1+=str2+"<li><a onclick='next()'>&raquo;</a></li>"+
 		   		"<li>共"+data.totalPage+"页，当前第"+data.page+"页</li>"+
-		   	"</ul>"+
 		   	"<input type='hidden' name='pageTwo' value='"+data.pageTwo+"' id='pageT'>"+
 		   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
 		         
