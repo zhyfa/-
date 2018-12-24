@@ -8,7 +8,6 @@ public class Stock {
 	private String cdate;// date default sysdate ,--日期
 	private Integer admin_id;// number--用户ID
 	private Integer factory_id;// number --工厂ID
-
 	private String drug_name;// 药品名字
 	private int spec;//--规格 1:盒  2：瓶
 	private String parameter_name;// 状态名字
@@ -16,7 +15,13 @@ public class Stock {
 	private String  msg;//警报信息
 	private String factory_name;//工厂名字
 	private String admin_name;//操作人
+	private String birthday;
 	
+	public Stock() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Integer getFactory_id() {
 		return factory_id;
 	}
@@ -115,6 +120,14 @@ public class Stock {
 
 	
 
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
 	public String getCdate() {
 		return cdate;
 	}
@@ -136,16 +149,32 @@ public class Stock {
 		return "Stock [stock_id=" + stock_id + ", drug_id=" + drug_id + ", stock_number=" + stock_number + ", state="
 				+ state + ", cdate=" + cdate + ", admin_id=" + admin_id + ", factory_id=" + factory_id + ", drug_name="
 				+ drug_name + ", spec=" + spec + ", parameter_name=" + parameter_name + ", stock_min=" + stock_min
-				+ ", msg=" + msg + ", factory_name=" + factory_name + ", admin_name=" + admin_name + "]";
+				+ ", msg=" + msg + ", factory_name=" + factory_name + ", admin_name=" + admin_name + ", birthday="
+				+ birthday + "]";
+	}
+
+	public Stock(Integer stock_id, Integer drug_id, Integer stock_number, Integer state, String cdate, Integer admin_id,
+			Integer factory_id, String drug_name, int spec, String parameter_name, Integer stock_min, String msg,
+			String factory_name, String admin_name, String birthday) {
+		super();
+		this.stock_id = stock_id;
+		this.drug_id = drug_id;
+		this.stock_number = stock_number;
+		this.state = state;
+		this.cdate = cdate;
+		this.admin_id = admin_id;
+		this.factory_id = factory_id;
+		this.drug_name = drug_name;
+		this.spec = spec;
+		this.parameter_name = parameter_name;
+		this.stock_min = stock_min;
+		this.msg = msg;
+		this.factory_name = factory_name;
+		this.admin_name = admin_name;
+		this.birthday = birthday;
 	}
 
 	
 
 	
-
-	
-
-	
-	
-
 }

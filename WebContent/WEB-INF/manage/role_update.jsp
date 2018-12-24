@@ -22,6 +22,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.core.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <style>
 ul li {
 	list-style-type: none;
@@ -30,18 +33,18 @@ ul li {
 a {
 	text-decoration:none;
 }
+input{width:350px; height:35px}
+#info{ position:absolute; left:100px; top:100px;}
 </style>
-<script>
-
-</script>
 </head>
 
 <body>
-<div>
-
+<div id="info">
 	<input type="text" value="${requestScope.roleName}" id="roleName" name="roleName">
 	<input type="hidden" value="${requestScope.roleId}" id="roleId" name="roleId">
-	<input type="button" onclick="update()" value="确定">
+	<!-- <input type="button" onclick="update()" value="确定"> -->
+	<button class="layui-btn" onclick='update()'>确定</button>
+	</div>
 </body>
 <script>
 	function update() {

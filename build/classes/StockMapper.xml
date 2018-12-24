@@ -99,5 +99,9 @@ select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.dr
 	</set>
 	where stock_id=#{_parameter} 
 </update>
-
+	<!-- zsl 根据药品id增加药库库存 -->
+	<insert id="addStockNum" parameterType="com.great.bean.Stock">
+		INSERT INTO T_STOCK (STOCK_ID, DRUG_ID, STOCK_NUMBER, BIRTHDAY, STATE, CDATE, ADMIN_ID, FACTORY_ID) 
+		VALUES (SEQ_T_STOCK.NEXTVAL, #{drug_id}, #{stock_number}, to_date('${birthday}','yyyy-MM-DD hh24:mi:ss'), 1, sysdate, #{admin_id}, #{factory_id})
+	</insert>
 </mapper>

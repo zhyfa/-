@@ -20,7 +20,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <style>
 ul li {
 	list-style-type: none;
@@ -29,6 +33,7 @@ ul li {
 a {
 	text-decoration:none;
 }
+caption{font-size:26px}
 </style>
 <script>
 $(document).ready(function(){
@@ -39,11 +44,15 @@ $(document).ready(function(){
 </head>
 
 <body>
-</form>
- 	<form action="<%=basePath%>/role/addRoleBefore.action" method="post" >
-   	<input type="submit" value="新增角色" />
-</form>
-<table class="table table-bordered">
+ 	<%-- <form action="<%=basePath%>/role/addRoleBefore.action" method="post" > --%>
+ 	<button class="layui-btn" onclick="addNewRole()"><i class="layui-icon">&#xe608;</i>添加</button>
+<!-- </form> -->
+<table  class="layui-table" lay-even lay-skin="line">
+	<colgroup>
+	    <col width="150">
+	    <col width="200">
+	    <col>
+	  </colgroup>
 	<caption>系统角色列表</caption>
 	<thead>
 		<th>用户ID</th>
@@ -55,7 +64,10 @@ $(document).ready(function(){
 			<tr>
 				<td>${r.roleId}</td>
 				<td>${r.roleName}</td>
-				<td><input type='button' value='修改' onclick='updateRole(${r.roleId})'></td>
+				<td>
+				<button class="layui-btn" onclick='updateRole(${r.roleId})'><i class="layui-icon ">&#xe642;</i>修改</button>
+				</td>
+				
 			</tr>
 		</c:forEach>
 	</tbody>
@@ -75,20 +87,6 @@ $(document).ready(function(){
 		<a href="<%=basePath%>/role/toJSP.action?pageIndex=${requestScope.page.next}">下一页</a>&nbsp;
 		<a href="<%=basePath%>/role/toJSP.action?pageIndex=${requestScope.page.all}">末页</a>&nbsp;
 
-
-<%-- 		一共有：${requestScope.page.count }条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --%>
-<%-- 		${requestScope.page.page }/${requestScope.page.all }页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --%>
-<%-- 		<a href="<%=basePath%>/role/toJSP.action?pageIndex=1&roleName=${requestScope.roleName}">首页</a>&nbsp; --%>
-<%-- 		<a href="<%=basePath%>/role/toJSP.action?pageIndex=${requestScope.page.pre }&roleName=${requestScope.roleName}">上一页</a>&nbsp; --%>
-<%-- 		<c:forEach items="${requestScope.page.prePages }" var="prePage"> --%>
-<%-- 			<a href="<%=basePath%>/role/toJSP.action?pageIndex=${prePage}&roleName=${requestScope.roleName}">${prePage }</a>&nbsp; --%>
-<%-- 		</c:forEach> --%>
-<%-- 		<a style="color: black;">${requestScope.page.page }</a>&nbsp; --%>
-<%-- 		<c:forEach items="${requestScope.page.nextPages }" var="nextPage"> --%>
-<%-- 			<a href="<%=basePath%>/role/toJSP.action?pageIndex=${nextPage }&">${nextPage }</a>&nbsp; --%>
-<%-- 		</c:forEach> --%>
-<%-- 		<a href="<%=basePath%>/role/toJSP.action?pageIndex=${requestScope.page.next }&roleName=${requestScope.roleName}">下一页</a>&nbsp; --%>
-<%-- 		<a href="<%=basePath%>/role/toJSP.action?pageIndex=${requestScope.page.all }&roleName=${requestScope.roleName}">末页</a>&nbsp; --%>
 	</div>
  
  
@@ -97,8 +95,29 @@ $(document).ready(function(){
 <script>
 //进入修改角色名页面
 function updateRole(role_id){
-	window.location.href="<%=basePath%>/role/updateRoleBefore.action?roleId="+role_id;
+	 var that = this; 
+	    //多窗口模式，层叠置顶
+	    layer.open({
+	      type: 2 //此处以iframe举例
+	      ,title: '修改角色'
+	      ,area: ['600px', '400px']
+	      ,shade: 0
+	      ,maxmin: true
+	      ,content: '<%=basePath%>/role/updateRoleBefore.action?roleId='+role_id
+	    });
 }
 
+function addNewRole(){
+    var that = this; 
+    //多窗口模式，层叠置顶
+    layer.open({
+      type: 2 //此处以iframe举例
+      ,title: '新增角色'
+      ,area: ['600px', '400px']
+      ,shade: 0
+      ,maxmin: true
+      ,content: '<%=basePath%>/role/addRoleBefore.action'
+    });
+  }
 </script>
 </html>

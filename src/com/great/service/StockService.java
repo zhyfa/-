@@ -117,4 +117,7 @@ public class StockService {
 		return 1;
 
 	};
+	public int addStockNum(Stock stock) {
+		return stockMapper.addStockNum(stock);
+	}
 }

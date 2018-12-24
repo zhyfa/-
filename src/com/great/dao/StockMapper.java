@@ -43,7 +43,8 @@ public interface StockMapper {
 
 	// 获取时间段内的采购药品名字及数量
 	public List<Map<String, Object>> getOrdersByTime(Map<String, Object> map);
-
+	//增加药品库存数量
+	public int addStockNum(Stock stock);
 	/**
 	 * jyf
 	 * 

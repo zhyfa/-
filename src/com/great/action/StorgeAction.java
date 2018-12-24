@@ -29,6 +29,7 @@ import com.github.pagehelper.PageHelper;
 import com.great.bean.AuditsDetail;
 import com.great.bean.InfoPage;
 import com.great.bean.Purchase;
+import com.great.bean.Stock;
 import com.great.bean.Storge;
 import com.great.bean.StorgeApply;
 import com.great.service.AuditsDetailService;
@@ -65,7 +66,6 @@ public class StorgeAction {
 	private StorgeService storgeService;
 	@Resource
 	private StorgeApplyService storgeApplyService;
-	
 	//菜单进入入库申请汇总表
 	@RequestMapping(value = "drugStorge.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	public ModelAndView drugStorge(HttpServletRequest request,Integer pageIndex) {
@@ -196,6 +196,11 @@ public class StorgeAction {
 		String auditsdetail_id = (String) mStorge.get("AUDITSDETAIL_ID");
 		BigDecimal bDrug_id = (BigDecimal) mStorge.get("DRUG_ID");
 		Timestamp production_date = (Timestamp) mStorge.get("PRODUCTION_DATE");
+		String sBirthday = production_date.toString();
+		String[] b=sBirthday.split("\\.");
+		String a=b[0];
+		System.out.println(a);
+		String factory_name = (String) mStorge.get("FACTORY_NAME");
 		int drug_id = bDrug_id.intValue();
 		//根据入库单编号查询入库单信息
 		Map<String,Object> mStorgeApply = storgeApplyService.queryApplyDetail(storge_id);
@@ -205,6 +210,7 @@ public class StorgeAction {
 		
 		int realStorgetotal = real_storgetotal+real_storgeno;
 		int realStorgeType = real_storgetype+1;
+		System.out.println("realStorgeType="+realStorgeType);
 		StorgeApply storgeApply = new StorgeApply();
 		storgeApply.setStorge_id(storge_id);
 		storgeApply.setReal_storgetotal(realStorgetotal);
@@ -229,20 +235,32 @@ public class StorgeAction {
 		BigDecimal bTotal = (BigDecimal) detail.get("TOTAL");
 		int total = bTotal.intValue();
 		BigDecimal bStockNum = (BigDecimal) detail.get("STOCK_NUM");
+		BigDecimal bAdminId = (BigDecimal) detail.get("ADMIN_ID");
+		int admin_id = bAdminId.intValue();
 		int stock_num = bStockNum.intValue();
-		stock_num+= real_storgeno;
-		auditsDetail.setStock_num(stock_num);
-		if(stock_num==total) {
+		int stockNum= real_storgeno+stock_num;
+		auditsDetail.setStock_num(stockNum);
+		if(stockNum>=total) {
 			auditsDetail.setStat(5);
 		}else {
 			auditsDetail.setStat(4);
 		}
 		int result4 = auditsDetailService.updateStock(auditsDetail);
 		//添加库存表实际库存
+		int factory_id = factoryService.getFactoryId(factory_name);
+		Stock stock = new Stock();
+		
+		stock.setAdmin_id(admin_id);
+		stock.setDrug_id(drug_id);
+		stock.setFactory_id(factory_id);
+		stock.setBirthday(a);
+		stock.setStock_number(real_storgeno);
+		int result5 = stockService.addStockNum(stock);
 		
 		String str = result4 > 0 ? "0" : "1";
 		return str;
 		}
+	
 		//驳回核对入库
 		@Transactional
 		@RequestMapping(value = "/checkAndReturn.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")

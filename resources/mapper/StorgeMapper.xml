@@ -5,7 +5,7 @@
 <!-- 提交入库审批单 -->
 	<insert id="addStorge" parameterType="java.util.HashMap" >
 		INSERT INTO T_STORGE (STORGEDETAIL_ID,STORGE_ID, AUDITSDETAIL_ID,PLANTOBUY_NUMBER, ADMIN_ID, DRUG_ID,DRUG_NAME, STORGE_NUMBER, FACTORY_NAME, PRODUCTION_DATE, PRODUCTION_ID, CDATE, STAT) 
-		VALUES(seq_t_storge.nextval,'${storge_id}','${auditsdetail_id}',${plantobuy_number},${admin_id},${drug_id},'${drug_name}',${storge_number},'${factory}',to_date('${production_date}','MM/DD/YYYY'),'${production_id}',sysdate,1)
+		VALUES(seq_t_storge.nextval,'${storge_id}','${auditsdetail_id}',${plantobuy_number},${admin_id},${drug_id},'${drug_name}',${storge_number},'${factory}',to_date('${production_date}','MM/DD/YYYY hh24:mi:ss'),'${production_id}',sysdate,1)
 	</insert>
 	<!-- 查询审批单 -->
 	<select id="queryStorge" parameterType="java.lang.String" resultType="java.util.HashMap">
