@@ -24,14 +24,17 @@ public class AuditsDetail implements Serializable{
 	private String total_price;
 	private String cdate;
 	private Integer stat;
+	private Integer stock_num;//入库总量
+	private String stock_date;//最后入库时间
 	public AuditsDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
 	public AuditsDetail(String auditsdetail_id, Integer drug_id, String drug_name, String psycho, String drug_type,
-			String spec, String drug_unit, Integer per_piece, Integer price, String sicks, String factory, Integer total,
-			String irradiated, Integer admin_id, String total_price, String cdate, Integer stat) {
+			String spec, String drug_unit, Integer per_piece, Integer price, String sicks, String factory,
+			Integer total, String irradiated, Integer admin_id, String total_price, String cdate, Integer stat,
+			Integer stock_num, String stock_date) {
 		super();
 		this.auditsdetail_id = auditsdetail_id;
 		this.drug_id = drug_id;
@@ -50,6 +53,18 @@ public class AuditsDetail implements Serializable{
 		this.total_price = total_price;
 		this.cdate = cdate;
 		this.stat = stat;
+		this.stock_num = stock_num;
+		this.stock_date = stock_date;
+	}
+
+	@Override
+	public String toString() {
+		return "AuditsDetail [auditsdetail_id=" + auditsdetail_id + ", drug_id=" + drug_id + ", drug_name=" + drug_name
+				+ ", psycho=" + psycho + ", drug_type=" + drug_type + ", spec=" + spec + ", drug_unit=" + drug_unit
+				+ ", per_piece=" + per_piece + ", price=" + price + ", sicks=" + sicks + ", factory=" + factory
+				+ ", total=" + total + ", irradiated=" + irradiated + ", admin_id=" + admin_id + ", total_price="
+				+ total_price + ", cdate=" + cdate + ", stat=" + stat + ", stock=" + stock_num + ", stock_date="
+				+ stock_date + "]";
 	}
 
 	public String getAuditsdetail_id() {
@@ -159,6 +174,23 @@ public class AuditsDetail implements Serializable{
 	}
 	public void setStat(Integer stat) {
 		this.stat = stat;
+	}
+
+	
+	public Integer getStock_num() {
+		return stock_num;
+	}
+
+	public void setStock_num(Integer stock_num) {
+		this.stock_num = stock_num;
+	}
+
+	public String getStock_date() {
+		return stock_date;
+	}
+
+	public void setStock_date(String stock_date) {
+		this.stock_date = stock_date;
 	}
 	
 }

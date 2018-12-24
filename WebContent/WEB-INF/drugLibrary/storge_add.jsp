@@ -200,8 +200,12 @@
         		alert("请选择厂家");
         		return false;
         	}
-        	if(total==""){
-        		alert("请输入采购数量");
+        	if(total==""||!reg.test(total)){
+        		alert("请输入采购数量，内容限为整数");
+        		return false;
+        	}
+        	if(total.length>8){
+        		alert("数值最大为99999999");
         		return false;
         	}
         	if(irradiated==""){

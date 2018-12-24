@@ -22,4 +22,16 @@ public class StorgeApplyService {
 	public int updateStorgeApply(StorgeApply storgeApply) {
 		return StorgeApplyDao.updateStorgeApply(storgeApply);
 	}
+	public Map<String,Object> queryApplyDetail(String storge_id){
+		return StorgeApplyDao.queryApplyDetail(storge_id);
+	}
+	public int getRealTotal(String storge_id) {
+		return StorgeApplyDao.getRealTotal(storge_id);
+	}
+	public int getRealTotalType(String storge_id) {
+		return StorgeApplyDao.getRealTotalType(storge_id);
+	}
+	public int updateRealStorge(StorgeApply storgeApply) {
+		return StorgeApplyDao.updateRealStorge(storgeApply);
+	};
 }

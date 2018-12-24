@@ -4,12 +4,12 @@
 <mapper namespace="com.great.dao.StorgeMapper">
 <!-- 提交入库审批单 -->
 	<insert id="addStorge" parameterType="java.util.HashMap" >
-		INSERT INTO T_STORGE (STORGE_ID, AUDITSDETAIL_ID, ADMIN_ID, DRUG_ID,DRUG_NAME, STORGE_NUMBER, FACTORY_NAME, PRODUCTION_DATE, PRODUCTION_ID, SUBMIT_DATE, STAT) 
-		VALUES('${storge_id}','${auditsdetail_id}',${admin_id},${drug_id},'${drug_name}',${storge_number},'${factory}',to_date('${production_date}','MM/DD/YYYY'),'${production_id}',sysdate,1)
+		INSERT INTO T_STORGE (STORGEDETAIL_ID,STORGE_ID, AUDITSDETAIL_ID,PLANTOBUY_NUMBER, ADMIN_ID, DRUG_ID,DRUG_NAME, STORGE_NUMBER, FACTORY_NAME, PRODUCTION_DATE, PRODUCTION_ID, CDATE, STAT) 
+		VALUES(seq_t_storge.nextval,'${storge_id}','${auditsdetail_id}',${plantobuy_number},${admin_id},${drug_id},'${drug_name}',${storge_number},'${factory}',to_date('${production_date}','MM/DD/YYYY'),'${production_id}',sysdate,1)
 	</insert>
 	<!-- 查询审批单 -->
 	<select id="queryStorge" parameterType="java.lang.String" resultType="java.util.HashMap">
-		select * from t_storge where storge_id=#{storge_id}
+		select a.*, b.parameter_name from t_storge a, t_parameter b where a.stat=b.parameter_value and b.parameter_type='入库单状态' and a.storge_id=#{storge_id}
 	</select>
 	<!-- 删除审批单 -->
 	<delete id="deleteStorge" parameterType="java.lang.String">
@@ -25,6 +25,14 @@
 	</select>
 	<!-- 更新入库单状态 -->
 	<update id="updateStorge" parameterType="com.great.bean.Storge" >
-		update t_storge set stat=#{stat} where storge_id=#{storge_id}
+		update t_storge set stat=#{stat},REAL_STORGENO=#{real_storgeno},REASONFOR_VARITY=#{reasonfor_varity},NOTES=#{notes},STORGE_DATE=sysdate where STORGEDETAIL_ID=#{storgedetail_id}
 	</update>
+	<!-- 提交入库单，更改库单状态 -->
+	<update id="submitStorgeApply" parameterType="com.great.bean.Storge">
+		update t_storge set stat=#{stat},SUBMIT_DATE=sysdate where storge_id=#{storge_id}
+	</update>
+	<!-- 根据明细id查询对应明细 -->
+	<select id="getDetailById" resultType="java.util.HashMap">
+		select * from t_storge where STORGEDETAIL_ID=#{storgedetail_id}
+	</select>
 </mapper>

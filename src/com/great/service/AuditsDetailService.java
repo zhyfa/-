@@ -13,12 +13,8 @@ import com.great.dao.AuditsDetailMapper;
 public class AuditsDetailService {
 	@Autowired 
 	private AuditsDetailMapper detailDao;
-	public int addDetail(List<Map> orders) {
-		Map<String,Object> order = null;
-		for(int i=0;i<orders.size();i++) {
-			detailDao.addDetail(orders.get(i));
-		}
-		return 0;
+	public int addDetail(Map<String,Object> orders) {
+		return detailDao.addDetail(orders);
 	}; 
 	public int updateDetail(String auditsdetail_id){
 		return detailDao.updateDetail(auditsdetail_id);
@@ -46,5 +42,11 @@ public class AuditsDetailService {
 	}
 	public Map<String,Object> queryByDrugId(int drug_id){
 		return detailDao.queryByDrugId(drug_id);
+	}
+	public List<Map<String,Object>> getdetail(AuditsDetail auditsDetail){
+		return detailDao.getdetail(auditsDetail);
+	}
+	public Map<String,Object> getdetailInfo(AuditsDetail auditsDetail){
+		return detailDao.getdetailInfo(auditsDetail);
 	}
 }

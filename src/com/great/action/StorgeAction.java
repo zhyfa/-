@@ -4,7 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +66,7 @@ public class StorgeAction {
 	@Resource
 	private StorgeApplyService storgeApplyService;
 	
-	//菜单进入入库单填写页
+	//菜单进入入库申请汇总表
 	@RequestMapping(value = "drugStorge.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	public ModelAndView drugStorge(HttpServletRequest request,Integer pageIndex) {
 		if(pageIndex==null) {
@@ -74,7 +76,7 @@ public class StorgeAction {
 		List<Map<String,Object>> StorgeApplyList = storgeApplyService.queryStorgeApply();
 		InfoPage page = new InfoPage(StorgeApplyList);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("purchaseList", StorgeApplyList);
+		mav.addObject("StorgeApplyList", StorgeApplyList);
 	 	mav.addObject("page", page);
 		mav.setViewName("drugLibrary/stock_add_check");
 		return mav;
@@ -85,20 +87,39 @@ public class StorgeAction {
 		 public ModelAndView storgeApply(HttpServletRequest request) {
 			List<Map<String, Object>> factoris = factoryService.factoris();
 			request.setAttribute("factoris", factoris);
-			List<Map<String, Object>>  drugList = drugService.queryAll();
-			request.setAttribute("drugList", drugList);
+			/*List<Map<String, Object>>  drugList = drugService.queryAll();
+			request.setAttribute("drugList", drugList);*/
 			List<Map<String,Object>> purchaseList = purchaseService.getUnfinishedPurchase();
 			request.setAttribute("purchaseList", purchaseList);
 		 	ModelAndView mav = new ModelAndView();
 		 	mav.setViewName("drugLibrary/stock_add_apply");
 			return mav;
 		}
-		//根据药名显示药品信息
-		@RequestMapping(value = "/showDrugId.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-		public @ResponseBody List<Map<String,Object>> showDrugId(String drug_name) throws UnsupportedEncodingException  {
-			List<Map<String, Object>> drugList = drugService.queryByName(drug_name);
-			return drugList;
+		//根据审批单id显示药品名称
+		@RequestMapping(value = "/showDrugName.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody List<Map> showDrugName(String auditsdetail_id) throws UnsupportedEncodingException  {
+			List<Map> detailList = auditsDetailService.queryDetail(auditsdetail_id);
+			System.out.println("detailList="+detailList);
+			return detailList;
 		}
+		//根据药名显示药品信息
+		@RequestMapping(value ="/showDrugId.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody List<Map<String,Object>> showDrugId(String drug_name,String auditsdetail_id) throws UnsupportedEncodingException  {
+			AuditsDetail auditsDetail = new AuditsDetail();
+			auditsDetail.setAuditsdetail_id(auditsdetail_id);
+			auditsDetail.setDrug_name(drug_name);
+			List<Map<String,Object>> drugList = auditsDetailService.getdetail(auditsDetail);
+			return drugList;
+			
+		}
+		//根据药品id显示药品信息
+		@RequestMapping(value = "/showDrugDetail.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody Map<String,Object> showDrugDetail(int drug_id) throws UnsupportedEncodingException  {
+		Map<String,Object> detail = auditsDetailService.queryByDrugId(drug_id);
+		return detail;
+					
+		}
+		
 		
 		//添加明细
 		@RequestMapping(value ="/addStorge.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
@@ -110,13 +131,8 @@ public class StorgeAction {
 			JSONObject  myJson = JSONObject.fromObject(storge);
 			Map m=myJson;
 			String storge_id = (String) m.get("storge_id");
-			/*List<Map<String,Object>> detail = storgeService.queryStorge(storge_id);
-			if(detail!=null) {
-				storgeService.deleteStorge(storge_id);
-			}*/
 			int count = storgeService.addStorge(m);
 			storges.add(m);
-//			int count = storgeService.addStorge(storges);
 			System.out.println("storges.size()="+storges.size());
 			System.out.println(storges);
 			return storges;
@@ -136,23 +152,132 @@ public class StorgeAction {
 			Storge storge = new Storge();
 			storge.setStat(2);
 			storge.setStorge_id(storge_id);
-			int result2 = storgeService.updateStorge(storge);
+			int result2 = storgeService.submitStorgeApply(storge);
 			String str = result > 0 ? "0" : "1";
 			return str;
 		}
 		
+		//进入入库单明细表
+		@RequestMapping(value = "storgeApplyDetail.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+		public ModelAndView storgeApplyDetail(HttpServletRequest request,Integer pageIndex,String storge_id) {
+			if(pageIndex==null) {
+				pageIndex=1;
+			}
+			PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+			Map<String,Object> storgeApply = storgeApplyService.queryApplyDetail(storge_id);
+			List<Map<String,Object>> detailList = storgeService.queryStorge(storge_id);
+			System.out.println("detailList="+detailList);
+			System.out.println("storgeApply="+storgeApply);
+			InfoPage page = new InfoPage(detailList);
+			ModelAndView mav = new ModelAndView();
+			mav.addObject("detailList", detailList);
+		 	mav.addObject("storgeApply", storgeApply);
+		 	mav.addObject("page", page);
+			mav.setViewName("drugLibrary/stock_apply_detail");
+			return mav;
+		}
+		
+		//核对入库
+		@Transactional
+		@RequestMapping(value = "/checkAndStorge.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody String checkAndStorge(int storgedetail_id,int real_storgeno,String reasonfor_varity, String notes,int real_storgetotal,int real_storgetype) {
+			Storge storge = new Storge();
+			storge.setStorgedetail_id(storgedetail_id);
+			storge.setReal_storgeno(real_storgeno);
+			storge.setReasonfor_varity(reasonfor_varity);
+			storge.setNotes(notes);
+			storge.setStat(4);
+		//更新入库明细状态
+		int result = storgeService.updateStorge(storge);
+		//根据明细id查询明细信息
+		Map<String,Object> mStorge = storgeService.getDetailById(storgedetail_id);
+		System.out.println("mStorge="+mStorge);
+		String storge_id =  (String) mStorge.get("STORGE_ID");
+		String auditsdetail_id = (String) mStorge.get("AUDITSDETAIL_ID");
+		BigDecimal bDrug_id = (BigDecimal) mStorge.get("DRUG_ID");
+		Timestamp production_date = (Timestamp) mStorge.get("PRODUCTION_DATE");
+		int drug_id = bDrug_id.intValue();
+		//根据入库单编号查询入库单信息
+		Map<String,Object> mStorgeApply = storgeApplyService.queryApplyDetail(storge_id);
+		System.out.println("mStorgeApply="+mStorgeApply);
+		BigDecimal bType_total = (BigDecimal) mStorgeApply.get("TYPE_TOTAL");
+		int type_total = bType_total.intValue();
+		
+		int realStorgetotal = real_storgetotal+real_storgeno;
+		int realStorgeType = real_storgetype+1;
+		StorgeApply storgeApply = new StorgeApply();
+		storgeApply.setStorge_id(storge_id);
+		storgeApply.setReal_storgetotal(realStorgetotal);
+		storgeApply.setReal_storgetype(realStorgeType);
+		Purchase purchase = new Purchase();
+		purchase.setAuditsdetail_id(auditsdetail_id);
+		if(realStorgeType==type_total){
+			storgeApply.setStat(4);
+			purchase.setStat(5);
+		}else {
+			storgeApply.setStat(3);
+			purchase.setStat(4);
+		}
+		int result2 = storgeApplyService.updateStorgeApply(storgeApply);
+		int result3 = purchaseService.updateStock(purchase);
+		AuditsDetail auditsDetail = new AuditsDetail();
+		auditsDetail.setAuditsdetail_id(auditsdetail_id);
+		auditsDetail.setDrug_id(drug_id);
+		//根据明细id和药品id查询明细
+		Map<String,Object> detail = auditsDetailService.getdetailInfo(auditsDetail);
+		System.out.println("detail="+detail);
+		BigDecimal bTotal = (BigDecimal) detail.get("TOTAL");
+		int total = bTotal.intValue();
+		BigDecimal bStockNum = (BigDecimal) detail.get("STOCK_NUM");
+		int stock_num = bStockNum.intValue();
+		stock_num+= real_storgeno;
+		auditsDetail.setStock_num(stock_num);
+		if(stock_num==total) {
+			auditsDetail.setStat(5);
+		}else {
+			auditsDetail.setStat(4);
+		}
+		int result4 = auditsDetailService.updateStock(auditsDetail);
+		//添加库存表实际库存
+		
+		String str = result4 > 0 ? "0" : "1";
+		return str;
+		}
+		//驳回核对入库
+		@Transactional
+		@RequestMapping(value = "/checkAndReturn.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody String checkAndReturn(int storgedetail_id,int real_storgeno,String reasonfor_varity, String notes) {
+			Storge storge = new Storge();
+			storge.setStorgedetail_id(storgedetail_id);
+			storge.setReal_storgeno(real_storgeno);
+			storge.setReasonfor_varity(reasonfor_varity);
+			storge.setNotes(notes);
+			storge.setStat(6);
+			int result = storgeService.updateStorge(storge);
+			String str = result > 0 ? "0" : "1";
+			return str;
+			}
 		//审核入库申请
 		@Transactional
 		@RequestMapping(value = "/passStorgeApply.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-		public @ResponseBody String passPurchase(String auditsdetail_id) {
-		int result = purchaseService.passPurchase(auditsdetail_id);
-		int result2 = auditsDetailService.passDetail(auditsdetail_id);
+		public @ResponseBody String passPurchase(String storge_id) {
+			StorgeApply StorgeApply = new StorgeApply();
+			StorgeApply.setStorge_id(storge_id);
+			StorgeApply.setStat(4);
+		int result = storgeApplyService.updateStorgeApply(StorgeApply);
+		Storge storge = new Storge();
+		storge.setStorge_id(storge_id);
+		storge.setStat(4);
+		int result2 = storgeService.updateStorge(storge);
 		String str = result > 0 ? "0" : "1";
 		return str;
 		}
 		
-	
 		
+		
+		
+		
+	
 		@RequestMapping("/creatImage.action")
 		public ModelAndView creatImage(String sy) {
 			cgdSy=sy;

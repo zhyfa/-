@@ -109,20 +109,16 @@ public class AuditsManagement {
 			JSONObject  myJson = JSONObject.fromObject(order);
 			Map m=myJson;
 			String auditsdetail_id = (String) m.get("auditsdetail_id");
-			List<Map> details = auditsDetailService.queryDetail(auditsdetail_id);
-			if(details!=null) {
-				auditsDetailService.deleteDetail(auditsdetail_id);
-			}
-			System.out.println("auditsdetail_id="+auditsdetail_id);
+			
+			int count = auditsDetailService.addDetail(m);
 			orders.add(m);
-			int count2 = auditsDetailService.addDetail(orders);
 			System.out.println("orders.size()="+orders.size());
 			System.out.println(orders);
 			return orders;
 		}
 		//菜单进入审批列表
-		@RequestMapping(value = "/apurchaseUpdate.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
-		 public ModelAndView apurchaseUpdate(HttpServletRequest request,Integer pageIndex) {
+		@RequestMapping(value = "/PurchaseDetail.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+		 public ModelAndView PurchaseDetail(HttpServletRequest request,Integer pageIndex,String auditsdetail_id) {
 			if(pageIndex==null) {
 				pageIndex=1;
 			}
@@ -146,14 +142,32 @@ public class AuditsManagement {
 			return str;
 		}
 		//驳回采购审批
-			@Transactional
-			@RequestMapping(value = "/returnPurchase.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-			public @ResponseBody String returnPurchase(String auditsdetail_id) {
-				int result = purchaseService.returnPurchase(auditsdetail_id);
-				int result2 = auditsDetailService.returnDetail(auditsdetail_id);
-				String str = result > 0 ? "0" : "1";
-				return str;
+		@Transactional
+		@RequestMapping(value = "/returnPurchase.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody String returnPurchase(String auditsdetail_id) {
+			int result = purchaseService.returnPurchase(auditsdetail_id);
+			int result2 = auditsDetailService.returnDetail(auditsdetail_id);
+			String str = result > 0 ? "0" : "1";
+			return str;
+		}
+		
+		//菜单进入审批列表
+		@RequestMapping(value = "/apurchaseUpdate.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+		public ModelAndView apurchaseUpdate(HttpServletRequest request,Integer pageIndex) {
+			if(pageIndex==null) {
+				pageIndex=1;
 			}
+			PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+			List<Map<String,Object>> purchaseList = purchaseService.queryPurchase();
+			InfoPage page = new InfoPage(purchaseList);
+			ModelAndView mav = new ModelAndView();
+			mav.addObject("purchaseList", purchaseList);
+			mav.addObject("page", page);
+			mav.setViewName("manage/audits_check");
+			return mav;
+		}
+		
+		
 	@RequestMapping("/creatImage.action")
 	public ModelAndView creatImage(String sy) {
 		cgdSy=sy;
@@ -232,8 +246,6 @@ public class AuditsManagement {
 			List<Map<String, Object>> lists = stockService.getOrdersByTime(map);
 			return lists;
 		}
-	
-	
 }
 
 

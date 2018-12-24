@@ -4,8 +4,8 @@
 <mapper namespace="com.great.dao.AuditsDetailMapper">
 	<!--添加明细-->
 	<insert id="addDetail" parameterType="java.util.HashMap" >
-	INSERT INTO T_AUDITSDETAIL (AUDITSDETAIL_ID, DRUG_ID, DRUG_NAME, PSYCHO, DRUG_TYPE, SPEC, DRUG_UNIT, PER_PIECE, PRICE, SICKS, FACTORY, TOTAL, IRRADIATED,TOTAL_PRICE,ADMIN_ID,CDATE,STAT) VALUES 
-   			('${auditsdetail_id}',${drug_id},'${drug_name}','${psycho}','${drug_type}','${spec}','${drug_unit}',${per_piece},${price},'${sicks}','${factory}',${total},'${irradiated}',${total_price},${admin_id},sysdate,1)
+	INSERT INTO T_AUDITSDETAIL (AUDITSDETAIL_ID, DRUG_ID, DRUG_NAME, PSYCHO, DRUG_TYPE, SPEC, DRUG_UNIT, PER_PIECE, PRICE, SICKS, FACTORY, TOTAL, IRRADIATED,TOTAL_PRICE,ADMIN_ID,CDATE,STAT,STOCK_NUM) VALUES 
+   			('${auditsdetail_id}',${drug_id},'${drug_name}','${psycho}','${drug_type}','${spec}','${drug_unit}',${per_piece},${price},'${sicks}','${factory}',${total},'${irradiated}',${total_price},${admin_id},sysdate,1,0)
 	</insert> 
 	<!--删除明细-->
 	<delete id="deleteDetail" parameterType="java.lang.String">
@@ -14,7 +14,7 @@
 	<!--查询明细-->
 	<select id="queryDetail" parameterType="java.lang.String" resultType="java.util.HashMap">
       SELECT * FROM T_AUDITSDETAIL WHERE AUDITSDETAIL_ID=#{auditsdetail_id}
-  </select>
+  	</select>
   <!--查询某审批表id下的所有采购药品总价-->
   <select id="getTotalPrice" parameterType="java.lang.String" resultType="java.lang.String">
       SELECT SUM(TOTAL_PRICE) FROM T_AUDITSDETAIL WHERE AUDITSDETAIL_ID=#{auditsdetail_id}
@@ -37,9 +37,20 @@
   </update>
   <!--更新明细的入库数据-->
   <update id="updateStock" parameterType="com.great.bean.AuditsDetail" >
-  	UPDATE T_AUDITSDETAIL SET STAT=#{stat}, STOCK_NUM=#{stock_num},STOCK_DATE=#{stock_date} where AUDITSDETAIL_ID=#{auditsdetail_id}
+  	UPDATE T_AUDITSDETAIL SET STAT=#{stat}, STOCK_NUM=#{stock_num},STOCK_DATE=sysdate where AUDITSDETAIL_ID=#{auditsdetail_id}
   </update>
+   <!--根据药品id查询明细-->
   <select id="queryByDrugId" parameterType="int" resultType="java.util.HashMap">
   	select * from T_AUDITSDETAIL where drug_id=#{drug_id}
   </select>
+   <!--根据审批单号和药品名称显示药品信息-->
+  <select id="getdetail" parameterType="com.great.bean.AuditsDetail" resultType="java.util.HashMap">
+  	select * from T_AUDITSDETAIL where drug_name=#{drug_name} and AUDITSDETAIL_ID=#{auditsdetail_id}
+  </select>
+  
+   <!--根据审批单号和药品id显示药品信息-->
+  <select id="getdetailInfo" parameterType="com.great.bean.AuditsDetail" resultType="java.util.HashMap">
+  	select * from T_AUDITSDETAIL where drug_id=#{drug_id} and AUDITSDETAIL_ID=#{auditsdetail_id}
+  </select>
+  
 </mapper>

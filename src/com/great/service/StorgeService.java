@@ -31,4 +31,10 @@ public class StorgeService {
 	public int updateStorge(Storge storge) {
 		return storgeDao.updateStorge(storge);
 	}
+	public int submitStorgeApply(Storge storge) {
+		return storgeDao.submitStorgeApply(storge);
+	}
+	public Map<String,Object> getDetailById(int storgedetail_id){
+		return storgeDao.getDetailById(storgedetail_id);
+	}
 }

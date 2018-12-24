@@ -94,14 +94,14 @@ function PurchaseDetail(auditsdetail_id){
       ,area: ['600px', '400px']
       ,shade: 0
       ,maxmin: true
-      ,content: '<%=basePath%>/stock/PurchaseDetail.action'+auditsdetail_id
+      ,content: '<%=basePath%>/stock/PurchaseDetail.action?auditsdetail_id='+auditsdetail_id
      
     });
   }
   function returnPurchase(auditsdetail_id){
 	  if(confirm("是否驳回该采购申请？")){
 	  $.ajax({
-			url:"<%=basePath%>/stock/passPurchase.action",
+			url:"<%=basePath%>/stock/returnPurchase.action",
 			type: "POST",
 			data:{
 				"auditsdetail_id":auditsdetail_id,

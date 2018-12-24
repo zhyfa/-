@@ -59,25 +59,26 @@
 			<caption>入库申请单</caption>
 				<tr>
 					<th>入库单编号</th>
-					<td ><input id="storge_id" name="storge_id"></td>
+					<td colspan="5"><input id="storge_id" name="storge_id"></td>
+				</tr>
+				<tr>
 					<th>采购单编号</th>
-					<td><input id="auditsdetail_id" name="auditsdetail_id" list="purchaseList">
+					<td><input id="auditsdetail_id" name="auditsdetail_id" list="purchaseList" >
 						<datalist id="purchaseList">
 						<c:forEach items="${requestScope.purchaseList}" var="purchases">
 							<option value="${purchases.AUDITSDETAIL_ID}">${purchases.AUDITSDETAIL_ID}</option>
 						</c:forEach>
 						</datalist>
 					</td>
+					<th>采购数量</th>
+					<td><input type="text" name="plantobuy_number" id="plantobuy_number" value="" readonly="readonly"></td>
+					<th>已入库数量</th>
+					<td><input type="text" name="waitstorge_number" id="waitstorge_number" value="" readonly="readonly"></td>
 				</tr>
 				<tr>
 				<th>药品名称：</th>
 			        <td>
-			        	 <input type="text" id="drug_name" name="drug_name" list="drug_names"/>
-			         <datalist id="drug_names">
-			          	<c:forEach items="${requestScope.drugList}" var="drugs">
-							<option value="${drugs.DRUG_NAME}">${drugs.DRUG_NAME}</option>
-						</c:forEach>
-			         </datalist>
+			        	<select id="drug_name" name="drug_name" onchange="chooseName()"></select>
 			        </td>
 				<th>药品编号：</th>
 					<td>
@@ -85,12 +86,12 @@
 					</td>
 			        <th> 生产厂家：</th>
 			    	<td>
-				    	<select id="factory" name="factory">
-							<option value="">请选择</option>
+				    	<input type="text" id="factory" name="factory" list="factoryList">
+							<datalist id="factoryList">
 							<c:forEach items="${requestScope.factoris}" var="fac">
 								<option value="${fac.FACTORY_NAME}" >${fac.FACTORY_NAME}</option>
 							</c:forEach>
-						</select>
+							</datalist> 
 					</td>
 					</tr>
 					<tr>
@@ -199,37 +200,89 @@
         		"</td><td>"+storgeNumber+"</td></tr>"
         );
 	 }
-	 
+  //根据采购单id显示信息
+    $("#auditsdetail_id").on("blur",function(){
+    	var auditsdetail_id=$("#auditsdetail_id").val();
+    	console.log(auditsdetail_id);
+    	$.ajax({
+    		type:"post",
+    		   url:"<%=basePath%>/storge/showDrugName.action",
+    		   data:{"auditsdetail_id":auditsdetail_id},
+    		   dataType:"json",
+    		   success:function(res){
+    			   var detailList=res;
+    			   var str1;
+    			   var str2;
+    			   var str3;
+    			   if(detailList.length==1){
+    				   for(var i=0;i<detailList.length;i++){
+    					str1="<option value='"+detailList[i].DRUG_NAME+"'>"+detailList[i].DRUG_NAME+"</option>"; 
+    				   	str2="<option value='"+detailList[i].DRUG_ID+"'>"+detailList[i].DRUG_ID+"</option>"; 
+    				   	$("#factory").vai(detailList[i].FACTORY);
+    				   	$("#plantobuy_number").val(detailList[i].TOTAL);
+    				   	console.log($("#plantobuy_number").val(detailList[i].TOTAL));
+    				   }
+    				   $("#drug_name").html(str1);
+    				   $("#drug_id").html(str2);
+    			   }else{
+    			   for(var i=0;i<detailList.length;i++){
+    				   str1+="<option value='"+detailList[i].DRUG_NAME+"'>"+detailList[i].DRUG_NAME+"</option>";
+    			   }
+    			   $("#drug_name").html("<option>请选择</option>"+str1);
+    		   }
+    		 }
+    	});
+    	
+    });  
 	 
     //根据药名显示信息
-    $("#drug_name").on("blur",function(){
+   function chooseName(){
+    	
     	var drug_name=$("#drug_name").val();
-    	console.log(drug_name);
+    	var auditsdetail_id = $("#auditsdetail_id").val();
     	$.ajax({
     		type:"post",
     		   url:"<%=basePath%>/storge/showDrugId.action",
-    		   data:{"drug_name":drug_name},
+    		   data:{
+    			   "drug_name":drug_name,
+    			   "auditsdetail_id":auditsdetail_id,
+    			   },
     		   dataType:"json",
     		   success:function(res){
     			   var drugList=res;
     			   console.log(drugList.length);
-    			   var str="";
+    			   var str1;
+    			   var str2;
     			   if(drugList.length==1){
-    				   for(var i=0;i<drugList.length;i++){
-        				   str+="<option value='"+drugList[i].DRUG_ID+"'>"+drugList[i].DRUG_ID+"</option>";
-        					$("#factory").val(drugList[i].FACTORY);
-    				   }
-    				   $("#drug_id").html(str);
+        				str1="<option value='"+drugList[0].DRUG_ID+"'>"+drugList[0].DRUG_ID+"</option>";
+    				   $("#drug_id").html(str1);
+    				   $("#factory").val(drugList[0].FACTORY)
+    				   $("#plantobuy_number").val(drugList[0].TOTAL);
     			   }else{
     			   for(var i=0;i<drugList.length;i++){
-    				   str+="<option value='"+drugList[i].DRUG_ID+"'>"+drugList[i].DRUG_ID+"</option>";
+    				   str1+="<option value='"+drugList[i].DRUG_ID+"'>"+drugList[i].DRUG_ID+"</option>";
     			   }
-    			   $("#drug_id").html("<option>请选择</option>"+str);
+    			   $("#drug_id").html("<option>请选择</option>"+str1);
     			   }
     		   }
     	});
-    	
-    }); 
+    }; 
+    
+  
+  //根据药品id显示药品信息
+    function chooseId(){
+    	$.ajax({
+			url:"<%=basePath%>/storge/showDrugDetail.action",
+			type: "POST",
+			data:{
+				"drug_id":$("#drug_id").val(),
+				},
+				success : function(res){
+				var drug = res;
+				$("#plantobuy_number").val(drug.TOTAL);
+			}
+		});
+    }
     //提交入库表
     function submitForm(){
     	$.ajax({
@@ -248,6 +301,29 @@
 			}
 		});
     }
+    
+  //导出水印审批单
+    function submitTable(){
+    	var sy=prompt("请输入水印内容");
+    	if(sy!=null&&sy!=""){
+        var that = this; 
+        //多窗口模式，层叠置顶
+        layer.open({
+          type: 2 //此处以iframe举例
+          ,title: '入库单预览'
+          ,area: ['600px', '400px']
+          ,shade: 0
+          ,maxmin: true
+          
+          ,content: '<%=basePath%>/storge/creatImage.action?sy='+sy
+          ,btn: ['关闭本页'] 
+          ,btn2: function(){
+            layer.closeAll();
+          }
+          
+        });
+    	}
+      }
 	</script>
 	
 </html>

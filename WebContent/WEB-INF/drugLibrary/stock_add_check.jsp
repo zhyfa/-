@@ -48,17 +48,23 @@
 					<td>${st.count }</td>
 					<td>${storgeApply.STORGE_ID}</td>
 					<td>${storgeApply.ADMIN_ID}</td>
-					<td>${storgeApply.PHARMARY_NUMBER}</td>
-					<td>${storgeApply.PHARMARY_TOTAL}</td>
-					<td>${storgeApply.PURCHASE_DATE}</td>
+					<td>${storgeApply.TYPE_TOTAL}</td>
+					<td>${storgeApply.STORGE_TOTAL}</td>
+					<td>${storgeApply.SUBMIT_DATE}</td>
 					<td>${storgeApply.PARAMETER_NAME}</td>
 					<td>
-						<c:if test="${purchase.STAT==2}">
-						<input type="button" value="同意" onclick="passPurchase(${purchase.AUDITSDETAIL_ID})" >
-						<input type="button" value="驳回" onclick="returnPurchase(${purchase.AUDITSDETAIL_ID})" >
+						<c:if test="${storgeApply.STAT==6}">
+						<input type="button" value="删除" onclick="deleteStorgeApply(${storgeApply.STORGE_ID})" >
 						</c:if>
-						<input type="button" value="查看详情" onclick="PurchaseDetail(${purchase.AUDITSDETAIL_ID})" >
-						<input type="button" value="删除" onclick="deletesPurchase(${purchase.AUDITSDETAIL_ID})" >
+						<c:if test="${storgeApply.STAT==6}">
+						<input type="button" value="删除" onclick="deleteStorgeApply(${storgeApply.STORGE_ID})" >
+						</c:if>
+						<c:if test="${storgeApply.STAT==2}">
+						<input type="button" value="查看详情" onclick="storgeApplyDetail(${storgeApply.STORGE_ID})" >
+						</c:if>
+						<c:if test="${storgeApply.STAT==3}">
+						<input type="button" value="查看详情" onclick="storgeApplyDetail(${storgeApply.STORGE_ID})" >
+						</c:if>
 					</td>
 				</tr>
 			</c:forEach>
@@ -67,76 +73,38 @@
 	<div id="page">
 		一共有：${requestScope.page.count }条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		${requestScope.page.page }/${requestScope.page.all }页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="<%=basePath%>/stock/apurchaseUpdate.action?pageIndex=1">首页</a>&nbsp;
+		<a href="<%=basePath%>/storge/drugStorge.action?pageIndex=1">首页</a>&nbsp;
 		<a
-			href="<%=basePath%>/stock/apurchaseUpdate.action?pageIndex=${requestScope.page.pre }">上一页</a>&nbsp;
+			href="<%=basePath%>/storge/drugStorge.action?pageIndex=${requestScope.page.pre }">上一页</a>&nbsp;
 		<c:forEach items="${requestScope.page.prePages }" var="prePage">
-			<a href="<%=basePath%>/stock/apurchaseUpdate.action?pageIndex=${prePage }">${prePage }</a>&nbsp;
+			<a href="<%=basePath%>/storge/drugStorge.action?pageIndex=${prePage }">${prePage }</a>&nbsp;
 		</c:forEach>
 		<a style="color: black;">${requestScope.page.page }</a>&nbsp;
 		<c:forEach items="${requestScope.page.nextPages }" var="nextPage">
-			<a href="<%=basePath%>/stock/apurchaseUpdate.action?pageIndex=${nextPage }">${nextPage }</a>&nbsp;
+			<a href="<%=basePath%>/storge/drugStorge.action?pageIndex=${nextPage }">${nextPage }</a>&nbsp;
 		</c:forEach>
 		<a
-			href="<%=basePath%>/stock/apurchaseUpdate.action?pageIndex=${requestScope.page.next }">下一页</a>&nbsp;
+			href="<%=basePath%>/storge/drugStorge.action?pageIndex=${requestScope.page.next }">下一页</a>&nbsp;
 		<a
-			href="<%=basePath%>/stock/apurchaseUpdate.action?pageIndex=${requestScope.page.all }">末页</a>&nbsp;
+			href="<%=basePath%>/storge/drugStorge.action?pageIndex=${requestScope.page.all }">末页</a>&nbsp;
 	</div>
-	<%-- 		${requestScope.drugs } --%>
-	<%-- ${requestScope.page } --%>
+	
 </body>
 <script type="text/javascript">
-function PurchaseDetail(auditsdetail_id){
+function storgeApplyDetail(storge_id){
     var that = this; 
     //多窗口模式，层叠置顶
     layer.open({
       type: 2
-      ,title: '查看采购详情'
+      ,title: '查看入库单详情'
       ,area: ['600px', '400px']
       ,shade: 0
       ,maxmin: true
-      ,content: '<%=basePath%>/stock/PurchaseDetail.action'+auditsdetail_id
+      ,content: '<%=basePath%>/storge/storgeApplyDetail.action?storge_id='+storge_id
      
     });
   }
-  function returnPurchase(auditsdetail_id){
-	  if(confirm("是否驳回该采购申请？")){
-	  $.ajax({
-			url:"<%=basePath%>/stock/passPurchase.action",
-			type: "POST",
-			data:{
-				"auditsdetail_id":auditsdetail_id,
-				},
-				success : function(res){
-				if(res=='0'){
-					alert("驳回成功");
-				}else{
-					alert("驳回失败");
-				}
-				window.location.href="<%=basePath%>/stock/apurchaseUpdate.action"
-			}
-		});
-	  }
-  }
-  function passPurchase(auditsdetail_id){
-	  if(confirm("确认同意该采购申请吗？")){
-	  $.ajax({
-			url:"<%=basePath%>/stock/passPurchase.action",
-			type: "POST",
-			data:{
-				"auditsdetail_id":auditsdetail_id,
-				},
-				success : function(res){
-				if(res=='0'){
-					alert("已同意该审批！");
-				}else{
-					alert("审批失败！");
-				}
-				window.location.href="<%=basePath%>/stock/apurchaseUpdate.action"
-			}
-		});
-	  }
-  }
+  
   function toNewApply(){
 		     var that = this; 
 		     //多窗口模式，层叠置顶

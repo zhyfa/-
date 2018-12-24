@@ -14,4 +14,6 @@ public interface StorgeMapper {
 	public int getStorgeTotal(String storge_id);
 	public int getDrugtypeTotal(String storge_id);
 	public int updateStorge(Storge storge);
+	public int submitStorgeApply(Storge storge);
+	public Map<String,Object> getDetailById(int storgedetail_id);
 }
