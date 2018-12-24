@@ -1,6 +1,7 @@
 package com.great.bean;
 //药房盘点表
 public class Check {
+	private Integer check_id;//盘点ID
 	private String drug_name;//药品名字
 	private Integer system_quantity;//系统数量
 	private String production_date;//生产批号
@@ -35,6 +36,12 @@ public class Check {
 	}
 	public void setProduction_date(String production_date) {
 		this.production_date = production_date;
+	}
+	public Integer getCheck_id() {
+		return check_id;
+	}
+	public void setCheck_id(Integer check_id) {
+		this.check_id = check_id;
 	}
 	
 	

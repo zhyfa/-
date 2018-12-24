@@ -44,8 +44,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<td><span>${user1.system_quantity}</span></td>
 				<td><span>${user1.production_date}</span></td>
 				<td><span>${user1.real_quantity}</span></td>
-				<td><span style="color:<cc:if test="${user1.difference>0}">red</cc:if><cc:if test="${user1.difference<0}">green</cc:if>">${user1.difference}</span></td>
-				<td><input type="button" value="盘盈/盘亏" class="btn btn-warning"></td>
+				<td><span style="color:<cc:if test="${user1.difference>0}">blue</cc:if><cc:if test="${user1.difference<0}">red</cc:if>">${user1.difference}</span></td>
+				<td><input type="<cc:if test="${user1.difference==0}">hidden</cc:if><cc:if test="${user1.difference!=0}">button</cc:if>" value="<cc:if test="${user1.difference>0}">盘盈</cc:if><cc:if test="${user1.difference<0}">盘亏</cc:if>" onclick="channage(${user1.check_id})" class="btn btn-warning"></td>
 				</cc:forEach>
 				</table>
 				<ul class="pagination pagination-lg">
@@ -94,5 +94,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   }
        }
        
+       function channage(checkID){
+    	   alert(checkID);
+       }
    </script>
 </html>

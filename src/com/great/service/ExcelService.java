@@ -71,6 +71,7 @@ public class ExcelService {
 		XSSFWorkbook book = null;
 		ems.add(new ExcelBean("药品名称", "drug_name", 0));
 		ems.add(new ExcelBean("系统数量", "inventory_number", 0));
+		ems.add(new ExcelBean("生产批号", "production_date", 0));
 		ems.add(new ExcelBean("实际数量", "shiji", 0));
 		ems.add(new ExcelBean("差额", "beizhu", 0));
 		map.put(0, ems);
@@ -86,8 +87,9 @@ public class ExcelService {
 			Check check = new Check();
 			check.setDrug_name(String.valueOf(ob.get(0)));
 			check.setSystem_quantity(Integer.valueOf((String) ob.get(1)));
-			check.setReal_quantity(Integer.valueOf((String) ob.get(2)));
-			check.setDifference(Integer.valueOf((String) ob.get(3)));
+			check.setProduction_date(String.valueOf(ob.get(2)));
+			check.setReal_quantity(Integer.valueOf((String) ob.get(3)));
+			check.setDifference(Integer.valueOf((String) ob.get(4)));
 			checkList.add(check);
 		}
 		for (int i = 0; i < checkList.size(); i++) {

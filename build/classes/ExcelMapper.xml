@@ -17,7 +17,7 @@ insert into T_AUDITSDETAIL(DRUG_NAME,TOTAL,PER_PIECE,TOTAL_PRICE,FACTORY) VALUES
 </select>
 
 <insert id="addCheck" parameterType="com.great.bean.Check">
-insert into T_CHECK(DRUG_NAME,SYSTEM_QUANTITY,PRODUCTION_DATE,REAL_QUANTITY,DIFFERENCE) VALUES(#{drug_name},#{system_quantity},#{production_date},#{real_quantity},#{difference})
+insert into T_CHECK(CHECK_ID,DRUG_NAME,SYSTEM_QUANTITY,PRODUCTION_DATE,REAL_QUANTITY,DIFFERENCE) VALUES(SEQ_T_CHECK.NEXTVAL,#{drug_name},#{system_quantity},#{production_date},#{real_quantity},#{difference})
 </insert>
 
 <select id="queryCount" resultType="int">
@@ -25,7 +25,7 @@ insert into T_CHECK(DRUG_NAME,SYSTEM_QUANTITY,PRODUCTION_DATE,REAL_QUANTITY,DIFF
 </select>
 
 <select id="checkDaily" parameterType="com.great.bean.Page" resultType="com.great.bean.Check">
-	SELECT * FROM (SELECT A.*,ROWNUM R FROM T_CHECK A) A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
+	SELECT A.* FROM (SELECT A.*,ROWNUM r FROM (SELECT A.* FROM T_CHECK A order by a.DIFFERENCE) A) A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
 </select>
 
 </mapper>
