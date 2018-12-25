@@ -34,16 +34,16 @@ public class AdminLoginAction {
 		System.out.println("admin="+admin);
 		Admin result = adminService.adminLogin(admin);
 		if (result != null) {
+			if(result.getAdmin_state()!=3) {
 			request.getSession().setAttribute("admin", result);
 			return "1";
-		} else if(result.getAdmin_state()==3){
-			return "4";
-		}else {
-
+			}else {
+				return "4";
+			}
+		} else {
 			return "3";
 		}
 	}
-	
 	
 	@RequestMapping(value = "/toHomepage.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	public ModelAndView toHomepage(HttpSession session) {
