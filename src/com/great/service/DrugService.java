@@ -18,6 +18,13 @@ public class DrugService {
 	@Autowired
 	private DrugMapper drugMapper;
 
+	// 检查新增的药名是否可用
+	public Integer checkDrugName(String drug_name) {
+		// TODO Auto-generated method stub
+		return drugMapper.checkDrugName(drug_name);
+	}
+	
+
 	// 通过药品名字获取id
 	public int getDrugId(String drug_name) {
 //		Map<String, Object> map=new HashMap<>();
@@ -112,7 +119,6 @@ public class DrugService {
 		// TODO Auto-generated method stub
 		return drugMapper.querybannedDrug(drugid);
 	}
-	
 
 	// 查询总数
 	public int queryCountdrug(Map<String, Object> map) {
@@ -125,25 +131,31 @@ public class DrugService {
 		// TODO Auto-generated method stub
 		return drugMapper.querypagedrug(map);
 	};
+
+	// 修改售价
+	public int updateDrugprice(Drug drug) {
+		// TODO Auto-generated method stub
+		return drugMapper.updateDrugprice(drug);
+	}
+
+	// 查找药品总的条数
+	public int queryCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return drugMapper.queryCount(map);
+	}
+
+	// 根据ID查找分页的药品
+	public List<Map<String, Object>> querypagedrugbyid(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return drugMapper.querypagedrugbyid(map);
+	}
+
+	// 禁用药品
+	public int updateDrugstate(Drug drug) {
+		// TODO Auto-generated method stub
+		return drugMapper.updateDrugstate(drug);
+	}
+
 	
-	//修改售价
-		public int updateDrugprice(Drug drug) {
-			// TODO Auto-generated method stub
-			return drugMapper.updateDrugprice(drug);
-		}
-		//查找药品总的条数
-		public int queryCount(Map<String, Object> map) {
-			// TODO Auto-generated method stub
-			return drugMapper.queryCount(map);
-		}
-		//根据ID查找分页的药品
-		public List<Map<String, Object>> querypagedrugbyid(Map<String, Object> map) {
-			// TODO Auto-generated method stub
-			return drugMapper.querypagedrugbyid(map);
-		}
-		//禁用药品
-		public int updateDrugstate(Drug drug) {
-			// TODO Auto-generated method stub
-			return drugMapper.updateDrugstate(drug);
-		}
+
 }

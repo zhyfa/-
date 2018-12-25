@@ -47,6 +47,7 @@ function  show() {
 			for(var i=0;i<res.length;i++){
 				var r=res[i];
 				str+="<li><input type='button' value='"+r.roleName+"' onclick='quaryByID("+r.roleId+")' /></li>"
+				//str+="<li><a href='#' onclick='quaryByID("+r.roleId+")'>"+r.roleName+"</a></li>"
 			}
 			$("#roles").html(str);
 		}
@@ -85,6 +86,7 @@ function  show() {
 
 	//显示选中角色的权限
 	function  quaryByID(roleId){
+		alert("href");
 		$("#role_id").val(roleId)
 		
 		$.ajax({

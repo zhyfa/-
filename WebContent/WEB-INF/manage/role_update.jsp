@@ -41,12 +41,29 @@ input{width:350px; height:35px}
 <body>
 <div id="info">
 	<input type="text" value="${requestScope.roleName}" id="roleName" name="roleName">
+	<span id="showMeg"></span>
 	<input type="hidden" value="${requestScope.roleId}" id="roleId" name="roleId">
-	<!-- <input type="button" onclick="update()" value="确定"> -->
 	<button class="layui-btn" onclick='update()'>确定</button>
 	</div>
 </body>
 <script>
+
+//检查角色名是否可用
+$("#roleName").blur(function checkRoleName(){
+	$.ajax({
+		url:"<%=basePath%>/role/checkRoleName.action",
+		type: "POST",
+		data:{"roleName":$("#roleName").val()},
+		success : function(res){
+			if(res=='0'){
+				$("#showMeg").text("该名字可用");
+			}else{
+				$("#showMeg").text("该名字不可用");
+			}
+		}
+	});
+});
+
 	function update() {
 		if($("#roleName").val()==""){
 			alert("角色名不得为空！");
@@ -65,11 +82,11 @@ input{width:350px; height:35px}
 				success : function(res){
 					if(res=='0'){
 						alert("修改成功");
+						//重新跳转至用户列表页
+						window.location.href="<%=request.getContextPath()%>/role/toJSP.action";
 					}else{
 						alert("修改失败");
 					}
-					//重新跳转至用户列表页
-					window.location.href="<%=request.getContextPath()%>/role/toJSP.action";
 				}
 			});
 		}

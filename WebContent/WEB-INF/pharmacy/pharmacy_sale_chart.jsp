@@ -22,21 +22,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script>
 
 $(document).ready(function(){
-	$(function(){
-		//得到今天的日期
-		var date_now=new Date();
-		//得到该日期所在年份
-		var year=date_now.getFullYear();
-		var month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
-		var date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
-		$("#start").attr("max",year+"-"+month+"-"+date);
-		$("#end").attr("max",year+"-"+month+"-"+date);
-	});
-	
 	getWeekMoney();//默认显示这周的营业数据
+	$("#week").click(function(){
+		getWeekMoney();
+	});
+	$("#month").click(function(){
+		getMonthMoney();
+	});
 	
 });
 
+function getMonthMoney(){
+	$.ajax({
+		type:"post",
+		url:"<%=basePath%>/sale/getMonthMoney.action",
+		data:'{}',
+		success:function(data){
+		var datalist=[];
+		var total=0;
+		for(var i=0;i<data.length;i++){
+			total+=data[i].COUNT;
+			datalist[i]={
+			name:data[i].NAME,
+			value:data[i].ALLPRICE,
+			color:'#a5c2d5',
+			};	
+		}
+		var title="本月的营业额";
+		importStatistics(datalist,title,total);
+		}
+	});
+}
 function getWeekMoney(){
 	$.ajax({
 		type:"post",
@@ -53,7 +69,7 @@ function getWeekMoney(){
 			color:'#a5c2d5',
 			};	
 		}
-		var title="这一周的营业额";
+		var title="本周的营业额";
 		importStatistics(datalist,title,total);
 		}
 	});
@@ -88,11 +104,10 @@ function importStatistics(data,title,total){
 </script>
 </head>
 <body>
-起始时间：<input type="date" id="start" name="start">&nbsp;&nbsp;
-终止时间：<input type="date" id="end" name="end">&nbsp;&nbsp;
-<input type="button" id="search" name="search" value="搜索" onclick="search()"><br />
+
 
 <input type="button" id="week" value="本周">
+<input type="button" id="month" value="本月">
 
 
 
@@ -109,49 +124,6 @@ function importStatistics(data,title,total){
 
 </body>
 <script>
-$("#end").blur(function () {
-    if($("#start").val()!=""){
-    	var startTime=$("#start").val();
-    	var start=new Date(startTime.replace("-", "/").replace("-", "/"));
-    	var endTime=$("#end").val();
-    	var end=new Date(endTime.replace("-", "/").replace("-", "/"));
-    	if(end<start){
-    		alert("终止时间应该在开始时间之后");
-    		$("#end").val("");
-    	}
-    }
-
-});
-	
-	function search(){
-		if($("#start").val()=="" || $("#end").val()==""){
-			alert("请确定要搜索的时间段");
-			return;
-		}
-		$.ajax({
-			url:"<%=basePath%>/stock/getOrdersByTime.action",
-			type: "POST",
-			data:{"start":$("#start").val(),"end":$("#end").val()},
-			success : function(data){
-				if(data==''){
-					alert("该时间段没有任何收入！");
-				}
-				var datalist=[];
-				var total=0;
-				for(var i=0;i<data.length;i++){
-					total+=data[i].COUNT;
-					datalist[i]={
-					name:data[i].DRUG_NAME,
-					value:data[i].COUNT,
-					color:'#a5c2d5',
-					};	
-				}
-				var title="该时间段内的营业额";
-				importStatistics(datalist,title,total);
-				}
-			
-		});
-	}
 
 
 </script>

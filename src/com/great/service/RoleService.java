@@ -20,6 +20,12 @@ public class RoleService {
 	@Autowired
 	private RoleAndMenuMapper roleAndMenuMapper;
 
+	//检查角色名是否可用
+	public Integer checkRoleName(String roleName) {
+		// TODO Auto-generated method stub
+		return roleMapper.checkRoleName(roleName);
+	}
+	
 	// 查询全部角色
 	public List<Map<String, Object>> queryAll() {
 		// TODO Auto-generated method stub
@@ -78,4 +84,5 @@ public class RoleService {
 		// TODO Auto-generated method stub
 		return roleMapper.queryById(roleId);
 	}
+	
 }

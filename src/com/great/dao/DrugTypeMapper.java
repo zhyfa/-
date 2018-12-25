@@ -4,6 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface DrugTypeMapper {
+	// 检查该二级类别名是否可用
+	public Integer checkSecondTypeName(String smalltype_name);
+
+	// 检查该一级类别名是否可用
+	public Integer checkBigTypeName(String bigTypeName);
+
 	// 查询一级药品目录
 	public List<Map<String, Object>> firstType();
 

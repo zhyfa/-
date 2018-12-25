@@ -10,6 +10,9 @@ import com.great.bean.Drug;
 @Repository
 public interface DrugMapper {
 
+	// 检查新增的药名是否可用
+	public Integer checkDrugName(String drug_name);
+
 	// 通过药品名字获取id
 	public int getDrugId(String drug_name);
 
@@ -71,13 +74,15 @@ public interface DrugMapper {
 
 	// 模糊查询
 	public List<Map<String, Object>> querypagedrug(Map<String, Object> map);
-	//修改售价
+
+	// 修改售价
 	public int updateDrugprice(Drug drug);
 
 	public int queryCount(Map<String, Object> map);
 
 	public List<Map<String, Object>> querypagedrugbyid(Map<String, Object> map);
-	//禁用药品
+
+	// 禁用药品
 	public int updateDrugstate(Drug drug);
 
 }

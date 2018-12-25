@@ -84,6 +84,7 @@ function  showMenu() {
  <form id="commentForm">
 	<div style="float:left" height="600px" class="info">
 	角色名：<input type="text" name="roleName" id="roleName" >
+	<span id="showMeg"></span>
 	<button class="layui-btn" onclick='getNotes()'>确定</button>
 	</div >
 		<div id="treecontentpane" >
@@ -99,7 +100,23 @@ function  showMenu() {
  
 </body>
 <script>
-	
+//检查角色名是否可用
+$("#roleName").blur(function checkRoleName(){
+	$.ajax({
+		url:"<%=basePath%>/role/checkRoleName.action",
+		type: "POST",
+		data:{"roleName":$("#roleName").val()},
+		success : function(res){
+			if(res=='0'){
+				$("#showMeg").text("该名字可用");
+			}else{
+				$("#showMeg").text("该名字不可用");
+			}
+		}
+	});
+});
+
+
 	function getNotes(){
 		if($("#roleName").val()==""){
 			alert("用户名不得为空！");

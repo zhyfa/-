@@ -42,6 +42,7 @@ a {
 	ID:<input type="text" value="${requestScope.drugType.SMALLTYPE_ID}" id="sId" name="sId" readonly="readonly">
 	<br />
 	名称：<input type="text" value="${requestScope.drugType.SMALLTYPE_NAME}" id="sName" name="sName">
+	<span id="showMeg"></span>
 	<br />
 <!-- 		下拉框的默认显示值是该药品的所属类别 -->
 	所属类别:<select id="bId" name="bId">
@@ -55,6 +56,24 @@ a {
 	<input type="button" value="返回" onclick="javascript:history.back(-1);">
 </body>
 <script>
+
+
+//检查该二级类别名是否可用
+$("#sName").blur(function checkSecondTypeName(){
+	$.ajax({
+		url:"<%=basePath%>/drugType/checkSecondTypeName.action",
+		type: "POST",
+		data:{"smalltype_name":$("#sName").val()},
+		success : function(res){
+			if(res=='0'){
+				$("#showMeg").text("该名字可用");
+			}else{
+				$("#showMeg").text("该名字不可用");
+			}
+		}
+	});
+});
+
 function update() {
 	$.ajax({
 			url:"<%=basePath%>/drugType/updateSecondDrugType.action",
@@ -63,11 +82,11 @@ function update() {
 			success : function(res){
 				if(res=='0'){
 					alert("修改成功");
+					//跳回药品种类列表页
+					window.location.href="<%=basePath%>/drugType/toOtherJsp.action";
 				}else{
 					alert("修改失败");
 				}
-				//跳回药品种类列表页
-				window.location.href="<%=basePath%>/drugType/toOtherJsp.action";
 			}
 		});
 }

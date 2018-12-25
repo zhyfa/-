@@ -8,9 +8,13 @@ import org.springframework.stereotype.Repository;
 import com.great.bean.Role;
 
 public interface RoleMapper {
+
+	// 检查角色名是否可用
+	public Integer checkRoleName(String roleName);
+
 	// 查询全部角色
 	public List<Map<String, Object>> queryAll();
-	
+
 	// 查询符合条件的全部角色
 	public List<Map<String, Object>> queryAllByRoleName(String roleName);
 

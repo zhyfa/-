@@ -42,6 +42,7 @@ a {
 <div>
 
 	类别名称：<input type="text" id="smalltype_name" name="smalltype_name">
+	<span id="showMeg"></span>
 	<br />
 	所属类别:
 		<select id="father_id" name="father_id">
@@ -55,6 +56,24 @@ a {
 	<input type="button" value="返回" onclick="javascript:history.back(-1);">
 </body>
 <script>
+
+
+//检查该二级类别名是否可用
+$("#smalltype_name").blur(function checkSecondTypeName(){
+	$.ajax({
+		url:"<%=basePath%>/drugType/checkSecondTypeName.action",
+		type: "POST",
+		data:{"smalltype_name":$("#smalltype_name").val()},
+		success : function(res){
+			if(res=='0'){
+				$("#showMeg").text("该名字可用");
+			}else{
+				$("#showMeg").text("该名字不可用");
+			}
+		}
+	});
+});
+
 function add() {
 	$.ajax({
 			url:"<%=basePath%>/drugType/addSecondType.action",

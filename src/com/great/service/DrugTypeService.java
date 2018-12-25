@@ -15,6 +15,18 @@ public class DrugTypeService {
 	@Resource
 	private DrugTypeMapper drugTypeMapper;
 
+	// 检查该二级类别名是否可用
+	public Integer checkSecondTypeName(String smalltype_name) {
+		// TODO Auto-generated method stub
+		return drugTypeMapper.checkSecondTypeName(smalltype_name);
+	}
+
+	// 检查该一级类别名是否可用
+	public Integer checkBigTypeName(String bigTypeName) {
+		// TODO Auto-generated method stub
+		return drugTypeMapper.checkBigTypeName(bigTypeName);
+	}
+
 	// 查询一级药品目录
 	public List<Map<String, Object>> firstType() {
 		// TODO Auto-generated method stub
@@ -41,11 +53,12 @@ public class DrugTypeService {
 	public List<Map<String, Object>> secondType() {
 		return drugTypeMapper.secondType();
 	}
+
 	// 查询全部的二级目录，根据一级目录的名称排序
-		public List<Map<String, Object>> newsecondType(Integer pageIndex,Integer NUMBER) {
-			PageHelper.startPage(pageIndex,NUMBER);
-			return drugTypeMapper.secondType();
-		}
+	public List<Map<String, Object>> newsecondType(Integer pageIndex, Integer NUMBER) {
+		PageHelper.startPage(pageIndex, NUMBER);
+		return drugTypeMapper.secondType();
+	}
 
 	// 修改一个二级目录的名称
 	public int updateSecondType(Map<String, Object> map) {
@@ -66,4 +79,5 @@ public class DrugTypeService {
 	public int addSecondType(Map<String, Object> map) {
 		return drugTypeMapper.addSecondType(map);
 	}
+
 }

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.SaleMapper">
+	<!-- 获取本周的每天的营业额 -->
 	<select id="getWeekMoney" resultType="java.util.HashMap">
 		select '周1' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw') from dual),'YYYY-MM-DD')
 		union
@@ -16,5 +17,43 @@
 		select '周6' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+5 from dual),'YYYY-MM-DD')
 		union
 		select '周7' name, sum(price*sold_num) allPrice from t_sold where to_char(cdate,'YYYY-MM-DD')=to_char((select trunc(sysdate, 'iw')+6 from dual),'YYYY-MM-DD')
+	</select>
+	
+	<!-- 	获取本月的每周的营业额 -->
+	<select id="getMonthMoney" resultType="java.util.HashMap">
+		select '第1周' name,sum(price*sold_num) allPrice from T_SOLD where to_char(CDATE,'YYYY-MM-DD') 
+		between to_char((select trunc(sysdate,'mm') from dual),'YYYY-MM-DD') 
+		and to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual),'YYYY-MM-DD')
+		union
+		select '第2周' name,sum(price*sold_num) allPrice from T_SOLD where to_char(CDATE,'YYYY-MM-DD') 
+		between to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS "第一个星期日" from dual)+1,'YYYY-MM-DD') 
+		and to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+7,'YYYY-MM-DD')
+		union
+		select '第3周' name,sum(price*sold_num) allPrice from T_SOLD where to_char(CDATE,'YYYY-MM-DD')
+		between to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+8,'YYYY-MM-DD') 
+		and to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+14,'YYYY-MM-DD')
+		union
+		select '第4周' name,sum(price*sold_num) allPrice from T_SOLD where to_char(CDATE,'YYYY-MM-DD')
+		between to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+15,'YYYY-MM-DD') 
+		and to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+21,'YYYY-MM-DD')
+		union
+		select '第5周' name,sum(price*sold_num) allPrice from T_SOLD where to_char(CDATE,'YYYY-MM-DD')
+		between to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+22,'YYYY-MM-DD') 
+		and to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+28,'YYYY-MM-DD')
+		union
+		select '第6周' name,sum(price*sold_num) allPrice from T_SOLD where to_char(CDATE,'YYYY-MM-DD')
+		between to_char((select CASE  WHEN TO_CHAR(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+29,'YYYY-MM-DD') 
+		and to_char((select CASE  WHEN TO_CHAR(to_date('2018','yyyymm'), 'D') = '1'  THEN to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm') ELSE  
+		next_day(to_date((SELECT TO_CHAR(SYSDATE,'YYYYMM') FROM DUAL),'yyyymm'),'星期日')  END  AS  "第一个星期日" from dual)+35,'YYYY-MM-DD')
 	</select>
 </mapper>

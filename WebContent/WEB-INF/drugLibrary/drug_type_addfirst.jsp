@@ -42,11 +42,28 @@ a {
 
 	
 	一级类别名称：<input type="text" id="bigTypeName" name="bigTypeName">
-	
+	<span id="showMeg"></span>
+	<br />
 	<input type="button" onclick="add()" value="确定">
 	<input type="button" value="返回" onclick="javascript:history.back(-1);">
 </body>
 <script>
+
+//检查该一级类别名是否可用
+$("#bigTypeName").blur(function checkBigTypeName(){
+	$.ajax({
+		url:"<%=basePath%>/drugType/checkBigTypeName.action",
+		type: "POST",
+		data:{"bigTypeName":$("#bigTypeName").val()},
+		success : function(res){
+			if(res=='0'){
+				$("#showMeg").text("该名字可用");
+			}else{
+				$("#showMeg").text("该名字不可用");
+			}
+		}
+	});
+});
 function add() {
 	$.ajax({
 			url:"<%=basePath%>/drugType/addFirstType.action",
@@ -54,12 +71,12 @@ function add() {
 			data:{"bigTypeName":$("#bigTypeName").val()},
 			success : function(res){
 				if(res=='0'){
-					alert("添加成功");
+					alert("添加一级类别名成功");
+					//跳回药品种类列表页
+					window.location.href="<%=basePath%>/drugType/toOtherJsp.action";
 				}else{
 					alert("添加失败");
 				}
-				//跳回药品种类列表页
-				window.location.href="<%=basePath%>/drugType/toOtherJsp.action";
 			}
 		});
 }

@@ -51,7 +51,9 @@ $(document).ready(function(){
 
 <body>
 <form id="myForm">
-		药品名称： <input type="text" name="drug_name" id="drug_name"><br>
+		药品名称： <input type="text" name="drug_name" id="drug_name">
+		<span id="showMeg"></span>
+		<br>
 		药品所属类别：<select name="smalltype_id">
 						<c:forEach items="${requestScope.secondType}" var="s">
 							<option value="${s.SMALLTYPE_ID}">${s.SMALLTYPE_NAME}</option>
@@ -83,6 +85,23 @@ $(document).ready(function(){
 	</form>
 </body>
 <script>
+
+//检查该药品名是否可用
+$("#drug_name").blur(function drug_name(){
+	$.ajax({
+		url:"<%=basePath%>/drug/checkDrugName.action",
+		type: "POST",
+		data:{"drug_name":$("#drug_name").val()},
+		success : function(res){
+			if(res=='0'){
+				$("#showMeg").text("该名字可用");
+			}else{
+				$("#showMeg").text("该名字不可用");
+			}
+		}
+	});
+});
+
 function submitForm(){
 		$.ajax({
 			url : "<%=basePath%>/drug/addDrug.action",
@@ -93,12 +112,12 @@ function submitForm(){
 			success : function(res) {
 				if(res==0){
 					alert("添加成功");
+					//添加成功或是失败都需要跳回列表页
+					window.location.href="<%=basePath%>/drug/toDrugJSP.action";
 				}
 				if(res==1){
 					alert("添加失败");
 				}
-				//添加成功或是失败都需要跳回列表页
-				window.location.href="<%=basePath%>/drug/toDrugJSP.action";
 			}
 		});
 	}

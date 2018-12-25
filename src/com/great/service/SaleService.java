@@ -13,9 +13,15 @@ import com.great.dao.SaleMapper;
 public class SaleService {
 	@Resource
 	private SaleMapper saleMapper;
-	//获取这一周的每天的营业额
-	public List<Map<String, Object>> getWeekMoney(){
+
+	// 获取这一周的每天的营业额
+	public List<Map<String, Object>> getWeekMoney() {
 		return saleMapper.getWeekMoney();
 	};
-	
+
+	// 获取本月的每周的营业额
+	public List<Map<String, Object>> getMonthMoney(){
+		return saleMapper.getMonthMoney();
+	};
+
 }

@@ -45,13 +45,15 @@ public class PharmacyApplyService {
 		for (int i = 0; i < applyList.size(); i++) {
 			Map<String, Object> map=applyList.get(i);
 			stockMapper.updateByApply(map);//修改药库的库存
-			Map<String, Object> temp=inventoryMapper.checkRow(map);
-			if(temp==null) {//为空就新增
-				map.put("newadmin_id", admin_id);
-				inventoryMapper.addRow(map);
-			}else {//不为空就修改
-				inventoryMapper.updateByApply(map);
-			}
+//			Map<String, Object> temp=inventoryMapper.checkRow(map);
+//			if(temp==null) {//为空就新增
+//				map.put("newadmin_id", admin_id);
+//				inventoryMapper.addRow(map);
+//			}else {//不为空就修改
+//				inventoryMapper.updateByApply(map);
+//			}
+			map.put("newadmin_id", admin_id);
+			inventoryMapper.addRow(map);
 		}
 		return pharmacyApplyMapper.affirmApply(ic);
 	};

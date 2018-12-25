@@ -66,8 +66,8 @@ function  secondType(bigtype_id){
 <table class="table table-bordered">
 	<caption>药品种类列表</caption>
 	<thead>
-		<th>药品种类ID</th>
-		<th>药品类名</th>
+		<th>药品二级种类ID</th>
+		<th>药品二级类名</th>
 		<th>药品所属父类名称</th>
 		<th>操作</th>
 	</thead>

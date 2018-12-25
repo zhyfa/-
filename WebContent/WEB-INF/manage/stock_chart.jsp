@@ -54,7 +54,9 @@ function getHalfYear(){
 		var datalist=[];
 		var total=0;
 		for(var i=0;i<data.length;i++){
-			total+=data[i].COUNT;
+			if(data[i].COUNT>total){
+				total=data[i].COUNT;
+			}
 			datalist[i]={
 			name:data[i].DRUG_NAME,
 			value:data[i].COUNT,
@@ -75,7 +77,9 @@ function getMonth(){
 		var datalist=[];
 		var total=0;
 		for(var i=0;i<data.length;i++){
-			total+=data[i].COUNT;
+			if(data[i].COUNT>total){
+				total=data[i].COUNT;
+			}
 			datalist[i]={
 			name:data[i].DRUG_NAME,
 			value:data[i].COUNT,
@@ -96,7 +100,9 @@ function getWeek(){
 		var datalist=[];
 		var total=0;
 		for(var i=0;i<data.length;i++){
-			total+=data[i].COUNT;
+			if(data[i].COUNT>total){
+				total=data[i].COUNT;
+			}
 			datalist[i]={
 			name:data[i].DRUG_NAME,
 			value:data[i].COUNT,

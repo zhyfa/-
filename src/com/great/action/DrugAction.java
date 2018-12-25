@@ -40,9 +40,42 @@ public class DrugAction {
 	private DrugTypeService drugTypeService;
 	@Resource
 	private BannedService bannedservice;
-	
+
 	Page page;
 
+	// 修改药品信息,先查看药品名是否可用
+	@RequestMapping(value = "/updateDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String updateDrug(@RequestBody Drug drug) {
+		Integer result1 = drugService.checkDrugName(drug.getDrug_name());
+		if (result1 != null) {
+			return "1";
+		}
+		int result = drugService.updateDrug(drug);
+		String str = result > 0 ? "0" : "1";
+		return str;
+	}
+
+	// 检查新增的药名是否可用
+	@RequestMapping(value = "/checkDrugName.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String checkDrugName(String drug_name) {
+		Integer result = drugService.checkDrugName(drug_name);
+		String str = result == null ? "0" : "1";
+		return str;
+	}
+
+	// 添加药品,先查看药品名是否可用
+	@RequestMapping(value = "/addDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String addDrug(@RequestBody Drug drug) {
+		Integer result1 = drugService.checkDrugName(drug.getDrug_name());
+		if (result1 != null) {
+			return "1";
+		}
+		int result = drugService.addDrug(drug);
+		String str = result > 0 ? "0" : "1";
+		return str;
+	}
+
+	// 进入药品列表页
 	@RequestMapping("/toDrugJSP.action")
 	public ModelAndView toDrugJSP(Integer pageIndex, String drug_name, Integer smalltype_id, String illustrate) {
 		if (pageIndex == null) {
@@ -50,8 +83,6 @@ public class DrugAction {
 		}
 
 		List<Map<String, Object>> secondType = drugTypeService.secondType();// 填充小类别
-
-		System.err.println("smalltype_id=" + smalltype_id);
 
 		ModelAndView andView = new ModelAndView();
 		List<Map<String, Object>> druges = drugService.queryAllByCondition(pageIndex, InfoPage.NUMBER, drug_name,
@@ -100,14 +131,6 @@ public class DrugAction {
 		return andView;
 	}
 
-	// 添加药品
-	@RequestMapping(value = "/addDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody String addDrug(@RequestBody Drug drug) {
-		int result = drugService.addDrug(drug);
-		String str = result > 0 ? "0" : "1";
-		return str;
-	}
-
 	// 通过drug_id获取该药品的信息
 	@RequestMapping("/searchById.action")
 	public @ResponseBody Map<String, Object> searchById(int drug_id) {
@@ -133,15 +156,6 @@ public class DrugAction {
 //		andView.setViewName("drugLibrary/drug");
 //		return andView;
 //	}
-
-	// 修改药品信息
-	@RequestMapping(value = "/updateDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody String updateDrug(@RequestBody Drug drug) {
-		System.out.println("drug=" + drug.toString());
-		int result = drugService.updateDrug(drug);
-		String str = result > 0 ? "0" : "1";
-		return str;
-	}
 
 ///////////////////////////设置最低量开始////////////////////
 //stock_min.action
@@ -180,103 +194,104 @@ public class DrugAction {
 		}
 
 	}
+
 ///////////////////////////设置最低量结束////////////////////
-	//-----------------------------------xsm------------
-		//初始化
-				@RequestMapping("/banned.action")
-				public ModelAndView bannedbefor() {
-					Map<String, Object> map=new HashMap<>();
-					map.put("drugId", 0);
-					page=new Page();
-					page.setPageTwo(1);
-					page.setPage(1);
-					page.setTotal(drugService.queryCount(map));
-					page.csh();
-					map.put("StartCount", page.getStartCount());
-					map.put("endCount", page.getEndCount());
-					List<Map<String, Object>> list=drugService.querypagedrug(map);
-					page.setQueryList(list);
-					ModelAndView andView = new ModelAndView();
-					List<Map<String,Object>> lists= drugService.getalldrug();
+	// -----------------------------------xsm------------
+	// 初始化
+	@RequestMapping("/banned.action")
+	public ModelAndView bannedbefor() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("drugId", 0);
+		page = new Page();
+		page.setPageTwo(1);
+		page.setPage(1);
+		page.setTotal(drugService.queryCount(map));
+		page.csh();
+		map.put("StartCount", page.getStartCount());
+		map.put("endCount", page.getEndCount());
+		List<Map<String, Object>> list = drugService.querypagedrug(map);
+		page.setQueryList(list);
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> lists = drugService.getalldrug();
 //					List<Map<String,Object>> banedlist=bannedservice.queryall();
-					andView.addObject("drugs", lists);
-					andView.addObject("page", page);
-					andView.setViewName("manage/Banned");
-					return andView;
-				}
-				
-				//A查询还没匹配的药品
-				@RequestMapping(value = "/qurydrugbyid.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-				public @ResponseBody List<Map<String,Object>> querybannedDrug(int drugid) {
-					List<Map<String,Object>> result = drugService.querybannedDrug(drugid);
-					return result;
-				}
-				
-				//增加禁忌
-				@RequestMapping(value = "/addbanned.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-				public @ResponseBody String addbanned(@RequestParam String data, Object HashMap) {
+		andView.addObject("drugs", lists);
+		andView.addObject("page", page);
+		andView.setViewName("manage/Banned");
+		return andView;
+	}
+
+	// A查询还没匹配的药品
+	@RequestMapping(value = "/qurydrugbyid.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody List<Map<String, Object>> querybannedDrug(int drugid) {
+		List<Map<String, Object>> result = drugService.querybannedDrug(drugid);
+		return result;
+	}
+
+	// 增加禁忌
+	@RequestMapping(value = "/addbanned.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String addbanned(@RequestParam String data, Object HashMap) {
 //					List<Map<String,Object>> result = drugService.querybannedDrug(drugid);
-					System.err.println(data);
-					 JSONArray ja = JSONArray.fromObject(data); 
-					 System.err.println("??????:"+ja);
-					 List<Map<String,String>> list=new ArrayList();
-					 for(Object jstr:ja){
-				            list.add((Map<String, String>) jstr);
-				            }
-				     System.out.println(list);    
-					 System.out.println("List:"+list);
-					 System.out.println("List:"+list.get(0));
-					 Banned banned=new Banned();
-					 int j=0;
-					 for(int i=0;i<list.size();i++) {
-						 banned.setPharmacy_id(Integer.valueOf(list.get(i).get("roiName")));
-						 banned.setPharmacy_id1(Integer.valueOf(list.get(i).get("roiInfo")));
-						 j+=bannedservice.addBanned(banned);
-					 }
-					 if(j<list.size()) {
-						 return "2";
-					 }
-					 
-					 System.out.println("List内容:"+list.get(0).get("roiName"));
-					return "1";
-				}
-				//模糊查询禁忌药品
-				@RequestMapping(value = "/qurybannedbydrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-				public @ResponseBody Page qurybannedbydrug(int drugid,int dqpage,int pageTwo) {
-					Map<String, Object> map=new HashMap<>();
-					map.put("drugId", drugid);
-					page=new Page();
-					page.setPageTwo(pageTwo);
-					page.setPage(dqpage);
-					page.setTotal(drugService.queryCountdrug(map));
-					page.csh();
-					map.put("StartCount", page.getStartCount());
-					map.put("endCount", page.getEndCount());
-					List<Map<String, Object>> list=drugService.querypagedrug(map);
-					page.setQueryList(list);
-					return page;
-				}
-				
-				@RequestMapping(value = "/delebanbed.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-				public @ResponseBody String delebanbed(int drugid,int drugid1) {
-					Banned banned=new Banned();
-					banned.setPharmacy_id(drugid);
-					banned.setPharmacy_id1(drugid1);
-					int i=bannedservice.delBanned(banned);
-					if(i>0) {
-					return "1";}
-					else {
-						return"2";
-					}
-				}
-				
-				//跳转配置医保药品界面
-				@RequestMapping("medical.action")
-				public ModelAndView medical() {
-					ModelAndView mav=new ModelAndView();
-					mav.setViewName("drugLibrary/medical");
-					return mav;
-				}
-				
-				
+		System.err.println(data);
+		JSONArray ja = JSONArray.fromObject(data);
+		System.err.println("??????:" + ja);
+		List<Map<String, String>> list = new ArrayList();
+		for (Object jstr : ja) {
+			list.add((Map<String, String>) jstr);
+		}
+		System.out.println(list);
+		System.out.println("List:" + list);
+		System.out.println("List:" + list.get(0));
+		Banned banned = new Banned();
+		int j = 0;
+		for (int i = 0; i < list.size(); i++) {
+			banned.setPharmacy_id(Integer.valueOf(list.get(i).get("roiName")));
+			banned.setPharmacy_id1(Integer.valueOf(list.get(i).get("roiInfo")));
+			j += bannedservice.addBanned(banned);
+		}
+		if (j < list.size()) {
+			return "2";
+		}
+
+		System.out.println("List内容:" + list.get(0).get("roiName"));
+		return "1";
+	}
+
+	// 模糊查询禁忌药品
+	@RequestMapping(value = "/qurybannedbydrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody Page qurybannedbydrug(int drugid, int dqpage, int pageTwo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("drugId", drugid);
+		page = new Page();
+		page.setPageTwo(pageTwo);
+		page.setPage(dqpage);
+		page.setTotal(drugService.queryCountdrug(map));
+		page.csh();
+		map.put("StartCount", page.getStartCount());
+		map.put("endCount", page.getEndCount());
+		List<Map<String, Object>> list = drugService.querypagedrug(map);
+		page.setQueryList(list);
+		return page;
+	}
+
+	@RequestMapping(value = "/delebanbed.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String delebanbed(int drugid, int drugid1) {
+		Banned banned = new Banned();
+		banned.setPharmacy_id(drugid);
+		banned.setPharmacy_id1(drugid1);
+		int i = bannedservice.delBanned(banned);
+		if (i > 0) {
+			return "1";
+		} else {
+			return "2";
+		}
+	}
+
+	// 跳转配置医保药品界面
+	@RequestMapping("medical.action")
+	public ModelAndView medical() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("drugLibrary/medical");
+		return mav;
+	}
+
 }

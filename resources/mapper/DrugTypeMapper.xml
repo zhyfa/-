@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.DrugTypeMapper">
+	<!-- 	检查该二级类别名是否可用 -->
+	<select id="checkSecondTypeName" parameterType="String" resultType="Integer">
+     SELECT smalltype_id,smalltype_name from t_smalltype where smalltype_name=#{0}
+  	</select>
+
+	<!-- 检查该一级类别名是否可用 -->
+	<select id="checkBigTypeName" parameterType="String" resultType="Integer">
+     select bigtype_id,bigtype_name from t_bigtype where bigtype_name=#{0}
+  	</select>
 	<!-- 查询所有的大类别 -->
   <select id="firstType" resultType="java.util.HashMap">
      select bigtype_id,bigtype_name from t_bigtype where state=1

@@ -24,11 +24,45 @@ import com.great.service.RoleService;
 @Controller
 @RequestMapping("/role")
 public class RoleAction {
-	//jj
+	// jj
 	@Resource
 	private RoleService roleService;
 	@Resource
 	private RoleAndMenuService roleAndMenuService;
+
+	// 添加角色,检查角色名是否可用
+	@RequestMapping(value = "/addRole.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String addRole(String roleName, String menus) {
+		int result = 0;
+		String str = "";
+		Integer result1 = roleService.checkRoleName(roleName);
+		if (result1 != null) {
+			return "1";
+		}
+
+		if (menus.equals("")) {
+			str = "3";
+			return str;
+		} else {
+			String[] menusID = menus.split(",");
+			int[] menusIds = new int[menusID.length];
+			for (int i = 0; i < menusID.length; i++) {
+				menusIds[i] = Integer.parseInt(menusID[i]);
+			}
+
+			result = roleService.addRole(roleName, menusIds);
+		}
+		str = result > 0 ? "0" : "1";
+		return str;
+	}
+
+	// 检查角色名是否可用
+	@RequestMapping(value = "/checkRoleName.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String checkRoleName(String roleName) {
+		Integer result = roleService.checkRoleName(roleName);
+		String str = result == null ? "0" : "1";
+		return str;
+	}
 
 	// 角色更新之前
 	@RequestMapping(value = "/updateRoleBefore.action")
@@ -41,9 +75,13 @@ public class RoleAction {
 		return andView;
 	}
 
-	// 角色更新
+	// 角色更新,先检查角色名是否可用
 	@RequestMapping(value = "/updateRole.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody String updateRole(int roleId, String roleName) {
+		Integer result1 = roleService.checkRoleName(roleName);
+		if (result1 != null) {
+			return "1";
+		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("roleName", roleName);
 		map.put("roleId", roleId);
@@ -63,12 +101,12 @@ public class RoleAction {
 //		return andView;
 //	}
 	// 进入角色管理的JSP页面
-	@RequestMapping(value="/toJSP.action")
-	public ModelAndView toRoleJSP(Integer pageIndex,String roleName) {
-		if(pageIndex==null) {
-			pageIndex=1;
+	@RequestMapping(value = "/toJSP.action")
+	public ModelAndView toRoleJSP(Integer pageIndex, String roleName) {
+		if (pageIndex == null) {
+			pageIndex = 1;
 		}
-		List<Map<String,Object>> roles=roleService.queryAllByRoleName(roleName,pageIndex,InfoPage.NUMBER);
+		List<Map<String, Object>> roles = roleService.queryAllByRoleName(roleName, pageIndex, InfoPage.NUMBER);
 		InfoPage page = new InfoPage(roles);
 		ModelAndView andView = new ModelAndView();
 		andView.addObject("roles", roles);
@@ -76,14 +114,8 @@ public class RoleAction {
 		andView.addObject("roleName", roleName);
 		andView.setViewName("manage/role_list");
 		return andView;
-		
-		
+
 	}
-	
-	
-	
-	
-	
 
 	// 进入新增角色页面
 	@RequestMapping("/addRoleBefore.action")
@@ -100,24 +132,4 @@ public class RoleAction {
 		return roles;
 	}
 
-	// 添加角色
-	@RequestMapping(value = "/addRole.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody String addRole(String roleName, String menus) {
-		int result = 0;
-		String str = "";
-		if (menus.equals("")) {
-			str = "3";
-			return str;
-		} else {
-			String[] menusID = menus.split(",");
-			int[] menusIds = new int[menusID.length];
-			for (int i = 0; i < menusID.length; i++) {
-				menusIds[i] = Integer.parseInt(menusID[i]);
-			}
-
-			result = roleService.addRole(roleName, menusIds);
-		}
-		str = result > 0 ? "0" : "1";
-		return str;
-	}
 }
