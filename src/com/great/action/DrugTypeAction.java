@@ -86,16 +86,16 @@ public class DrugTypeAction {
 
 	}
 
-	// 进入药品种类页面
+/*	// 进入药品种类页面
 	@RequestMapping("/toJSP.action")
 	public ModelAndView toDrugMenuJSP() {
 		ModelAndView andView = new ModelAndView();
 		andView.setViewName("drugLibrary/drug_type");
 		return andView;
-	}
+	}*/
 
 	// 另一个页面（测试）
-	@RequestMapping("/toOtherJsp.action")
+	@RequestMapping("/toJSP.action")
 	public ModelAndView toOtherJsp(Integer pageIndex) {
 		if (pageIndex == null) {
 			pageIndex = 1;
@@ -105,7 +105,7 @@ public class DrugTypeAction {
 		ModelAndView andView = new ModelAndView();
 		andView.addObject("page", page);
 		andView.addObject("secondType", secondType);
-		andView.setViewName("drugLibrary/drug_type2");
+		andView.setViewName("drugLibrary/drug_type");
 		return andView;
 	}
 

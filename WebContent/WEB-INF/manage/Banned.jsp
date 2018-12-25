@@ -17,14 +17,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="expires" content="0">    
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<script src="<%=basePath%>/assets/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/assets/x-admin/lib/layui/layui.js" charset="utf-8"></script>
-<script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/assets/bootstrap/css/bootstrap.css">
- <link rel="shortcut icon" href="<%=basePath%>/assets/x-admin/favicon.ico" type="image/x-icon" />
- <link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/font.css">
-<link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/xadmin.css">
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
     
 <script type="text/javascript">
 function del(){
@@ -36,7 +35,9 @@ $(function(){
 }
 </script>
 </head>
-
+<style>
+caption{font-size:24px}
+</style>
 
 <body>
 <h1 style="text-align: center;">药品配伍禁忌</h1>
@@ -65,7 +66,7 @@ $(function(){
 			</datalist>
       </td>
       <td>
-    	<input type="button" value="选择" onclick="change()">
+    	<button class="layui-btn layui-btn-sm" onclick="change()">选择</button>
     	</td>
     	</tr>
   </tbody>
@@ -85,7 +86,7 @@ $(function(){
   	<tbody id="bannedbeforbody">
   	</tbody>
   </table>
-  <input type="button" onclick="update()" value="提交">
+  <button type="button" class="layui-btn layui-btn-sm" onclick="update()" >提交</button>
 </form>
 
  <table id="bannedshow" class="table table-hover">
@@ -106,7 +107,7 @@ $(function(){
   		<td>${drug.DRUG_NAME}</td>
   		<td>${drug.DRUG_ID1}</td>
   		<td>${drug.DRUG_NAME1}</td>
-  		<td><input type="button" value="删除" onclick="delebanned(${drug.DRUG_ID},${drug.DRUG_ID1})"></td>
+  		<td><button class="layui-btn layui-btn-danger layui-btn-xs" onclick="delebanned(${drug.DRUG_ID},${drug.DRUG_ID1})"><i class="layui-icon">&#xe640;</i>删除</button></td>
   		</tr>
   	</c:forEach>
   	</tbody>
@@ -118,7 +119,7 @@ $(function(){
 			  	</c:forEach>
 			</datalist>
 			</td>
-			<td><input type="button" value="查找已配置的禁止药品" onclick="qyerybanned()"></td>
+			<td><button class="layui-btn layui-btn-sm" onclick="qyerybanned()">查找已配置的禁止药品</button></td>
 			</tr>
   </table>
 <ul class="pagination pagination-lg" id="changepage">
@@ -128,7 +129,7 @@ $(function(){
 		</c:forEach>
 		
 		<li><a onclick="next()">&raquo;</a></li>
-		<li>共${page.totalPage}页，当前第${page.page}页</li>
+	
 	</ul>
 	<input type="hidden" name="pageTwo" value="${page.pageTwo}" id="pageT">
 	<input type="hidden" value="${page.totalPageTwo}" id="totalPageTwo">

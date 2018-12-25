@@ -10,20 +10,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <style type="text/css">
-#page {
-	position: absolute;
-	left: 200px;
-	top: 350px;
-}
+caption{font-size:24px}
+#td1{text-align:left;font-size:24px}
+#td2{text-align:right;padding-right:30px}
 </style>
 <body>
-<table border="1" class="table">
-	<caption>审核退库</caption>
+	<table style="width:100%; margin-top:50px">
+	<tr>
+		<td id="td1">审核退库</td>
+		<td id="td2"><button class="layui-btn" onclick="createReturnBackForm()" ${inventory.state!=4?'hidden':'' }><i class="layui-icon">&#xe609;</i>导出</button>
+		</td>
+	</tr>
+	</table>
+<table class="layui-table">
+	
 	<thead>
 		<th>序号</th>
 		<th>药房库存id</th>
@@ -37,20 +46,19 @@
 	</thead>
 	<tbody>
 			<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
-			<!-- var demo = {"active","success","warning","danger"}; -->
 				<tr class="active">
 					<td>${st.count }</td>
-					<td>${inventory.inventory_id }</td>
-					<td>${inventory.drug_id }</td>
-					<td>${inventory.drug_name }</td>
-					<td>${inventory.production_date }</td>
-					<td>${inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
-					<td>${inventory.parameter_name }</td>
+					<td>${inventory.inventory_id}</td>
+					<td>${inventory.drug_id}</td>
+					<td>${inventory.drug_name}</td>
+					<td>${inventory.production_date}</td>
+					<td>${inventory.inventory_number}${inventory.spec==1?'盒':'瓶'}</td>
+					<td>${inventory.parameter_name}</td>
 					<td>${inventory.cdate }</td>
 					<td>
-						<button onclick="returnBackToStockPass(${inventory.inventory_id },${inventory.drug_id },${inventory.admin_id },${inventory.inventory_number },'${inventory.production_date }')" ${inventory.state!=3?'hidden':'' }>审核通过</button>
-						<button onclick="returnBackToStockNotPass(${inventory.inventory_id })"  ${inventory.state!=3?'hidden':'' }>审核不通过</button>
-						<button onclick="createReturnBackForm()" ${inventory.state!=4?'hidden':'' }>生成水印单</button>
+						<button class="layui-btn layui-btn-xs" onclick="returnBackToStockPass(${inventory.inventory_id },${inventory.drug_id },${inventory.admin_id },${inventory.inventory_number },'${inventory.production_date }')" ${inventory.state!=3?'hidden':''}><i class="layui-icon">&#xe605;</i>通过</button>
+						<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="returnBackToStockNotPass(${inventory.inventory_id })"  ${inventory.state!=3?'hidden':'' }><i class="layui-icon">&#x1006;</i>驳回</button>
+
 					</td>
 				</tr>
 			</c:forEach>
@@ -71,8 +79,6 @@
 		<a href="<%=basePath%>/daily/returnStockReviewList.action?pageIndex=${requestScope.page.next }">下一页</a>&nbsp;
 		<a href="<%=basePath%>/daily/returnStockReviewList.action?pageIndex=${requestScope.page.all }">末页</a>&nbsp;
 	</div>
-<%-- ${requestScope.inventorys } --%>
-<%-- ${requestScope.page } --%>
 </body>
 <script type="text/javascript">
 function returnBackToStockPass(inventory_id,drug_id,admin_id,inventory_number,production_date){

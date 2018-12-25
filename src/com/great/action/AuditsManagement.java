@@ -116,19 +116,21 @@ public class AuditsManagement {
 			System.out.println(orders);
 			return orders;
 		}
-		//菜单进入审批列表
-		@RequestMapping(value = "/PurchaseDetail.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
+		//菜单进入审批明细列表
+		@RequestMapping(value = "/purchaseDetail.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 		 public ModelAndView PurchaseDetail(HttpServletRequest request,Integer pageIndex,String auditsdetail_id) {
 			if(pageIndex==null) {
 				pageIndex=1;
 			}
 			PageHelper.startPage(pageIndex, InfoPage.NUMBER);
-			List<Map<String,Object>> purchaseList = purchaseService.queryPurchase();
-			InfoPage page = new InfoPage(purchaseList);
+			List<Map<String,Object>> aditDeatilList = auditsDetailService.queryDetail(auditsdetail_id);
+			Map<String,Object> purchase = purchaseService.queryPurchaseById(auditsdetail_id);
+			InfoPage page = new InfoPage(aditDeatilList);
 		 	ModelAndView mav = new ModelAndView();
-		 	mav.addObject("purchaseList", purchaseList);
+		 	mav.addObject("aditDeatilList", aditDeatilList);
+		 	mav.addObject("purchase", purchase);
 		 	mav.addObject("page", page);
-		 	mav.setViewName("manage/audits_check");
+		 	mav.setViewName("manage/audit_detail");
 			return mav;
 		}
 		

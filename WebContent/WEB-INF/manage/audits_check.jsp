@@ -10,23 +10,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
-
-<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 
 <style type="text/css">
-#page {
-	position: absolute;
-	left: 200px;
-	top: 400px;
-}
+caption{font-size:24px}
 </style>
 </head>
 <body>
-	<table border="1" width="80%" align="center" class="table">
+	<table class="layui-table">
 		<caption>采购单审核列表</caption>
 		<thead>
 			<tr>
@@ -53,11 +50,13 @@
 					<td>${purchase.PARAMETER_NAME}</td>
 					<td>
 						<c:if test="${purchase.STAT==2}">
-						<input type="button" value="同意" onclick="passPurchase(${purchase.AUDITSDETAIL_ID})" >
-						<input type="button" value="驳回" onclick="returnPurchase(${purchase.AUDITSDETAIL_ID})" >
+						<button class="layui-btn layui-btn-xs"" onclick="passPurchase(${purchase.AUDITSDETAIL_ID})" ><i class="layui-icon">&#xe605;</i>同意</button>
+						<%-- <input type="button" value="同意" onclick="passPurchase(${purchase.AUDITSDETAIL_ID})" >
+						<input type="button" value="驳回" onclick="returnPurchase(${purchase.AUDITSDETAIL_ID})" > --%>
+						<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="returnPurchase(${purchase.AUDITSDETAIL_ID})" ><i class="layui-icon">&#x1006;</i>驳回</button>
 						</c:if>
-						<input type="button" value="查看详情" onclick="PurchaseDetail(${purchase.AUDITSDETAIL_ID})" >
-						<input type="button" value="删除" onclick="deletesPurchase(${purchase.AUDITSDETAIL_ID})" >
+					<%-- 	<input type="button" value="查看详情" onclick="PurchaseDetail(${purchase.AUDITSDETAIL_ID})" > --%>
+						<button class="layui-btn layui-btn-xs" onclick="PurchaseDetail(${purchase.AUDITSDETAIL_ID})" ><i class="layui-icon ">&#xe63c;</i>详情</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -94,7 +93,7 @@ function PurchaseDetail(auditsdetail_id){
       ,area: ['600px', '400px']
       ,shade: 0
       ,maxmin: true
-      ,content: '<%=basePath%>/stock/PurchaseDetail.action?auditsdetail_id='+auditsdetail_id
+      ,content: '<%=basePath%>/stock/purchaseDetail.action?auditsdetail_id='+auditsdetail_id
      
     });
   }

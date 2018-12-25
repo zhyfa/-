@@ -17,51 +17,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="expires" content="0">    
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery.min.js"></script>
-<script
-	src="<%=basePath%>/assets/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript"
-	src="<%=basePath%>/assets/x-admin/lib/layui/layui.js"
-	charset="utf-8"></script>
-<script type="text/javascript"
-	src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
-<script type="text/javascript" charset="utf8"
-	src="<%=basePath%>/media/js/jquery.js"></script>
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery-ui.js"></script>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/jquery-ui.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/css/jquery-ui.theme.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/css/style.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/assets/bootstrap/css/bootstrap.css">
-<link rel="shortcut icon"
-	href="<%=basePath%>/assets/x-admin/favicon.ico"
-	type="image/x-icon" />
-<link rel="stylesheet"
-	href="<%=basePath%>/assets/x-admin/css/font.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/assets/x-admin/css/xadmin.css">
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+	<link rel="stylesheet" href="<%=basePath%>/js/jqueryUI/jquery-ui.min.css">
+	<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 </head>
-
+<style>
+.info{margin-top:20px}
+.info input{width:180px;height:35px; border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;margin-top:5px}
+.info .td{text-align:left;font-size:16px}
+#page{font-size:16px;}
+</style>
 
 <body>
-	<h1 style="text-align: center;">日志查看界面</h1>
+	<h1 style="text-align: center;">日志查看</h1>
 
-	<div style="padding: 100px 100px 10px;">
-		<form id="queryadmin" class="navbar-form navbar-left">
-			<div class="input-group">
-				<label class="input-group ">请在下列输入（选择）查询条件</label> 
-				<p>姓名 <input type="text" class="form-control" placeholder="请输入需要查询的姓名" name="admin_name" id="adminname"></p>
-				<p>操作 <input type="text" class="form-control" placeholder="请输入需要查询的操作" name="log_operation" id="log_operation"></p>
-					<p>开始日期：<input  class="form-control" type="text" id="datepicker" name="startdata"></p>
-					<p>结束日期：<input class="form-control" type="text" id="datepickerend" name="enddata"></p>
+	<div >
+		<form id="queryadmin" >
+			<div class="info">
+				<table>
+				<tr>
+					<td class="td">姓名： </td>
+					<td> <input type="text"  placeholder="请输入需要查询的姓名" name="admin_name" id="adminname"></td>
+					<td class="td">操作： </td>
+					<td><input type="text"  placeholder="请输入需要查询的操作" name="log_operation" id="log_operation"></td>
+					<td class="td">开始日期： </td>
+					<td><input   type="text" id="datepicker" name="startdata"></td>
+					<td class="td">结束日期： </td>
+					<td><input  type="text" id="datepickerend" name="enddata">
+					<button class="layui-btn "  onclick="queryadmin()"><i class="layui-icon ">&#xe615;</i>搜索</button></td>
+				</tr>
+				<!--<tr>
+				<td> <input type="button"  data-toggle="button" value="查询"> -->
+				
+				</table>
 			</div>
-			<input type="button" class="btn btn-primary" data-toggle="button"
-				value="查询" onclick="queryadmin()">
+			
 		</form>
 	</div >
 	
@@ -93,7 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</c:forEach>
 		
 		<li><a onclick="next()">&raquo;</a></li>
-		<li>共${page.totalPage}页，当前第${page.page}页</li>
+		<%-- <li id="page">共${page.totalPage}页，当前第${page.page}页</li> --%>
 	</ul>
 	
 	<input type="hidden" name="pageTwo" value="${page.pageTwo}" id="pageT">
@@ -134,7 +130,6 @@ function up(){
 		   alert(pageTwo);
 		   this.allqurry(page,pageTwo);
 	   }
-	   
 }
 
 
@@ -195,7 +190,6 @@ function allqurry(page,pagetwo){
 		   			str2+="<li><a onclick='addTabs(this)'>"+data.pageShu[a]+"</a></li>"
 		   		}
 		   		str1+=str2+"<li><a onclick='next()'>&raquo;</a></li>"+
-		   		"<li>共"+data.totalPage+"页，当前第"+data.page+"页</li>"+
 		   	"<input type='hidden' name='pageTwo' value='"+data.pageTwo+"' id='pageT'>"+
 		   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
 		         

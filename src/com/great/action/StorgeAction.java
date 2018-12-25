@@ -97,8 +97,8 @@ public class StorgeAction {
 		}
 		//根据审批单id显示药品名称
 		@RequestMapping(value = "/showDrugName.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-		public @ResponseBody List<Map> showDrugName(String auditsdetail_id) throws UnsupportedEncodingException  {
-			List<Map> detailList = auditsDetailService.queryDetail(auditsdetail_id);
+		public @ResponseBody List<Map<String, Object>> showDrugName(String auditsdetail_id) throws UnsupportedEncodingException  {
+			List<Map<String,Object>> detailList = auditsDetailService.queryDetail(auditsdetail_id);
 			System.out.println("detailList="+detailList);
 			return detailList;
 		}

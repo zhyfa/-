@@ -8,7 +8,7 @@ import com.great.bean.AuditsDetail;
 public interface AuditsDetailMapper {
 	public int addDetail(Map<String,Object> order); 
 	public int deleteDetail(String auditsdetail_id);
-	public List<Map> queryDetail(String auditsdetail_id); 
+	public List<Map<String,Object>> queryDetail(String auditsdetail_id); 
 	public String getTotalPrice(String auditsdetail_id);
 	public int getTotalDrug(String auditsdetail_id);
 	public int updateDetail(String auditsdetail_id);

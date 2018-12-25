@@ -19,7 +19,7 @@ public class AuditsDetailService {
 	public int updateDetail(String auditsdetail_id){
 		return detailDao.updateDetail(auditsdetail_id);
 	}
-	public List<Map> queryDetail(String auditsdetail_id){
+	public List<Map<String,Object>> queryDetail(String auditsdetail_id){
 		return detailDao.queryDetail(auditsdetail_id);
 	}
 	public String getTotalPrice(String auditsdetail_id) {

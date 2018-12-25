@@ -10,41 +10,42 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <style>
-body {
-	margin-top: 20px;}
-#addButton {
-	position: absolute;
-	left: 950px;}
-#serach {
-	position: absolute;
-	left: 30px;}
-.table {
-	position: absolute;
-	top: 50px;
-	width: 900px;
-	left: 100px;}
-#page {
-	position: absolute;
-	top: 400px;
-	left: 300px;}
+.info{margin-top:20px}
+.info input{width:200px;height:35px; border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;margin-top:5px}
+.info .td{text-align:left;font-size:16px}
+#btnSearch{width:70px;}
+#addButton{width:90px;}
+#page{font-size:16px}
+caption{font-size:24px}
 </style>
 <body>
 	<form id="serach" action="<%=basePath%>/parameter/parameterList.action" method="post" onsubmit="return checkForm()">
-		参数名字：
-		<input type="text" name="parameter_name" value="${param.parameter_name}"> 
-		参数类型：
-		<input type="text" name="parameter_type" value="${param.parameter_type}"> 
-		参数值：
-		<input type="text" name="parameter_value" id="parameter_value" value="${param.parameter_value}"> 
-		<input type="submit" value="搜索">
-		<input type="button" id="addButton" onclick="parameterAdd()" value="新增参数">
+		<table class="info">
+			<tr>
+				<td calss="td">参数名字：</td>
+				<td><input type="text" name="parameter_name" value="${param.parameter_name}"> 
+				</td>
+				<td calss="td">参数类型：</td>
+				<td><input type="text" name="parameter_type" value="${param.parameter_type}"> 
+				</td>
+				<td calss="td">参数值：</td>
+				<td colspan="2"><input type="text" name="parameter_value" id="parameter_value" value="${param.parameter_value}"> 
+					<input type="submit" value="搜索" class="layui-btn" id="btnSearch"> 
+					<input type="button" id="addButton"  class="layui-btn" onclick="parameterAdd()" value="新增参数"> 
+				</td>
+			</tr>
+		</table>
 	</form>
-	<table border="1" width="80%" class="table">
+	<table class="layui-table" >
 		<caption>参数列表</caption>
 		<thead>
 			<th>序号</th>
@@ -58,14 +59,14 @@ body {
 			<c:forEach items="${requestScope.parameters }" var="parameter" varStatus="st">
 			<!-- var demo = {"active","success","warning","danger"}; -->
 				<tr class="success">
-					<td width="50">${st.count }</td>
-					<td width="70">${parameter.parameter_id }</td>
+					<td >${st.count }</td>
+					<td >${parameter.parameter_id }</td>
 					<td>${parameter.parameter_name }</td>
-					<td width="150">${parameter.parameter_type }</td>
-					<td width="70">${parameter.parameter_value }</td>
-					<td width="200">
-						<button href="#" onclick="updateParatemerBefore(${parameter.parameter_id })">修改</button>
-						<button href="#" onclick="delParameter(${parameter.parameter_id })">删除</button>
+					<td >${parameter.parameter_type }</td>
+					<td >${parameter.parameter_value }</td>
+					<td >
+						<button href="#" class="layui-btn layui-btn-xs" onclick="updateParatemerBefore(${parameter.parameter_id })"><i class="layui-icon">&#xe642;</i>修改</button>
+						<button href="#" class="layui-btn layui-btn-danger layui-btn-xs" onclick="delParameter(${parameter.parameter_id })"><i class="layui-icon">&#xe640;</i>删除</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -113,8 +114,20 @@ function delParameter(parameter_id){
 	}
 }
 function updateParatemerBefore(parameter_id){
+    var that = this; 
+    //多窗口模式，层叠置顶
+    layer.open({
+      type: 2 //此处以iframe举例
+      ,title: '修改参数'
+      ,area: ['600px', '400px']
+      ,shade: 0
+      ,maxmin: true
+      ,content: '<%=basePath%>/parameter/updateParatemerBefore.action?parameter_id='+parameter_id
+    });
+  }
+<%-- function updateParatemerBefore(parameter_id){
 	window.location.href="<%=basePath%>/parameter/updateParatemerBefore.action?parameter_id="+parameter_id;
-}
+} --%>
 function checkForm(){
 	var parameter_name = document.getElementById("parameter_name").value.trim();
 	var parameter_type = document.getElementById("parameter_type").value.trim();

@@ -16,9 +16,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 
 <script src="<%=basePath%>/js/jquery.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.core.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
 <script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
@@ -31,9 +28,11 @@ ul li {
 	margin: 8px 0;
 }
 a {
-	text-decoration:none;
+/* 	text-decoration:none; */
+	font-size:16px;
 }
-caption{font-size:26px}
+#btn_add{margin_right:10%;margin-top:40px;float:right}
+h2{margin-left:40%;margin-top:10px;}
 </style>
 <script>
 $(document).ready(function(){
@@ -44,16 +43,12 @@ $(document).ready(function(){
 </head>
 
 <body>
- 	<%-- <form action="<%=basePath%>/role/addRoleBefore.action" method="post" > --%>
- 	<button class="layui-btn" onclick="addNewRole()"><i class="layui-icon">&#xe608;</i>添加</button>
-<!-- </form> -->
-<table  class="layui-table" lay-even lay-skin="line">
-	<colgroup>
-	    <col width="150">
-	    <col width="200">
-	    <col>
-	  </colgroup>
-	<caption>系统角色列表</caption>
+<div>
+<div id="btn_add">
+ 	<button class="layui-btn " onclick="addNewRole()"><i class="layui-icon">&#xe608;</i>添加</button>
+</div>
+	<h2>系统角色列表</h2>
+<table  class="layui-table" lay-even lay-skin="line ">
 	<thead>
 		<th>用户ID</th>
 		<th>用户名</th>
@@ -65,13 +60,13 @@ $(document).ready(function(){
 				<td>${r.roleId}</td>
 				<td>${r.roleName}</td>
 				<td>
-				<button class="layui-btn" onclick='updateRole(${r.roleId})'><i class="layui-icon ">&#xe642;</i>修改</button>
+				<button class="layui-btn layui-btn-xs" onclick='updateRole(${r.roleId})'><i class="layui-icon ">&#xe642;</i>修改</button>
 				</td>
-				
 			</tr>
 		</c:forEach>
 	</tbody>
 </table>
+</div>
 <div id="page">
 		一共有：${requestScope.page.count }条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		${requestScope.page.page }/${requestScope.page.all }页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

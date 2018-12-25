@@ -21,45 +21,43 @@
 <meta http-equiv="expires" content="0">    
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-
 <script src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="shortcut icon"
-	href="<%=basePath%>/assets/favicon.ico"
-	type="image/x-icon" />
-<script type="text/javascript"
-	src="<%=basePath%>/assets/js/jquery.min.js"></script>
-<script
-	src="<%=basePath%>/assets/lib/layui/layui.js"
-	charset="utf-8"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
-<script type="text/javascript"
-	src="<%=basePath%>/assets/js/xadmin.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+
 </head>
 <style>
- .infoTb table { white-space: nowrap; width: 90%;font-size: 14px; 
+ .infoTb table { white-space: nowrap; width: 95%;font-size: 16px; 
 } 
 .info tr{background-color:#DCDCDC;}
  .infoTb th{ text-align:left; font-family:"微软雅黑"; border:0.5px solid #E6E6FA;} 
- .infoTb td{text-align:left; border:0.5px solid #E6E6FA;}
+ .infoTb td{text-align:left; border:0.5px solid #E6E6FA;padding-left:3px}
  .infoTb select{border:10px}
  input{width:120px;height:30px; border:0px ;border-radius: 3px 3px 3px 3px;}
  caption{padding-left:15%}
- button{border:0px solid #dae6f0; width:80px; height:35px; margin-left:15%}
  span{color:red}
- .btn_opt{border:0px solid #dae6f0; width:60px; height:25px;margin-right:3px}
 .checkBox{width:18px;}
- table { white-space: nowrap; width: 90%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse;
-}  
+ table { white-space: nowrap; width: 95%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse;
+}
+ th{text-align:center; font-family:"微软雅黑"; border:0.5px solid #E6E6FA;} 
+ td{text-align:center; border:0.5px solid #E6E6FA;padding-left:3px}
+ #tab1 tr{background-color:#DCDCDC;}
+#con{margin-left:5%;margin-top:50px}  
 </style>
 <body>
-	<p>
-<input type="button" value="查看采购图形表" onclick="getChart()">
+	<div id="con">
+<!-- <input type="button" value="查看采购图形表" onclick="getChart()"> -->
+
 <form id="myForm">
 	<input type="hidden" value="${sessionScope.admin.admin_id}" name="admin_id" id="admin_id">
 	<table class="infoTb" cellspacing="1">
 	
-		<tr background-color="#E6E6FA">
+		<tr >
 			<th>编号：</th>
 			<td colspan="7"><input type="text" id="auditsdetail_id" name="auditsdetail_id"/></td>
 		</tr>
@@ -133,13 +131,14 @@
 	    	<td colspan="7"><input type="text" id="total_price" name="total_price"  readonly="readonly"></td>
 	    </tr>
 	    </table>
-	    </p>
+	    
 </form>	
 <div class="table_toolbar">
-                <input type="button"  onclick="DelRow();" value="删除"> 
-                <input type="button" onclick="AddRow();" value="添加">
-                <input type="button" value="提交" onclick="submitForm()">
-                <input type="button" value="生成采购单" onclick="submitTable()">
+                <button type="button" class="layui-btn" onclick="AddRow();" ><i class="layui-icon ">&#xe642;</i>添加</button>
+                <button type="button" class="layui-btn layui-btn-danger" onclick="DelRow();" ><i class="layui-icon ">&#xe640;</i> 删除</button>
+                <button type="button" class="layui-btn"  onclick="submitForm()"><i class="layui-icon ">&#xe605;</i>提交</button>
+                <button type="button" class="layui-btn"  onclick="submitTable()"><i class="layui-icon ">&#xe609;</i>导出</button>
+            	<button type="button" class="layui-btn layui-btn-normal" onclick="getChart()"><i class="layui-icon ">&#xe62c;</i>查看采购图形表</button>
             </div>
             <div class="">
                 <input type="hidden" id="hid" name="hid" />    
@@ -166,7 +165,7 @@
                      <tbody id="tbody"></tbody>
                 </table>
             </div>
-<p><div id="result"></div></p>
+</div>
 </body>
 <script type="text/javascript">
         //添加行
@@ -304,15 +303,6 @@
               ,maxmin: true
               
               ,content: '<%=basePath%>/stock/creatImage.action?sy='+sy
-              ,btn: ['关闭本页'] 
-              ,btn2: function(){
-                layer.closeAll();
-              }
-              
-              /* ,zIndex: layer.zIndex //重点1
-              ,success: function(layero){
-                layer.setTop(layero); //重点2
-              } */
             });
         	}
           }
@@ -343,6 +333,7 @@
         					$("#drug_unit").val(drugList[i].DRUG_UNIT);
         					$("#per_piece").val(drugList[i].DRUG_SIZE);
         					$("#sicks").val(drugList[i].ILLUSTRATE);
+        					
             			   }
         				   $("#drug_id").html(str);
         			   }else{

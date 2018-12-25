@@ -10,13 +10,30 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
+<style type="text/css">
+caption{font-size:24px}
+#title{font-size:26px;text-align:left}
+#btnImport{text-align:right;margin-right:30px}
+</style>
 <body>
-<table border="1"  class="table">
-	<caption>审核报损</caption>
+<table width="100%" style="margin-top:40px">
+	<tr>
+	<td id="title">审核报损</td>
+	<td id="btnImport">
+	<button class="layui-btn " onclick="createReturnBackForm()" ${inventory.state!=7?'hidden':'' }><i class="layui-icon ">&#xe609;</i>导出</button>
+	</td>
+	</tr>
+</table>
+<table class="layui-table">
+	
 	<thead>
 		<th>序号</th>
 		<th>药房库存id</th>
@@ -41,9 +58,8 @@
 					<td>${inventory.parameter_name }</td>
 					<td>${inventory.cdate }</td>
 					<td>
-						<button onclick="badDrugPass(${inventory.inventory_id },${inventory.drug_id },${inventory.admin_id },${inventory.inventory_number },'${inventory.production_date }')" ${inventory.state!=6?'hidden':'' }>同意报损</button>
-						<button onclick="badDrugNotPass(${inventory.inventory_id })"  ${inventory.state!=6?'hidden':'' }>不同意报损</button>
-						<button onclick="createReturnBackForm()" ${inventory.state!=7?'hidden':'' }>生成水印单</button>
+						<button class="layui-btn layui-btn-xs" onclick="badDrugPass(${inventory.inventory_id },${inventory.drug_id },${inventory.admin_id },${inventory.inventory_number },'${inventory.production_date }')" ${inventory.state!=6?'hidden':'' }><i class="layui-icon ">&#xe605;</i>同意</button>
+						<button class="layui-btn layui-btn-xs layui-btn-danger" onclick="badDrugNotPass(${inventory.inventory_id })"  ${inventory.state!=6?'hidden':''}><i class="layui-icon ">&#x1006;</i>驳回</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -91,7 +107,7 @@ function badDrugPass(inventory_id,drug_id,admin_id,inventory_number,production_d
 function badDrugNotPass(inventory_id){
 	if(confirm("确认驳回申请嘛？")){
 		$.ajax({
-			type : "post",
+			type: "post",
 			url : "<%=basePath%>/daily/badDrugNotPass.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",

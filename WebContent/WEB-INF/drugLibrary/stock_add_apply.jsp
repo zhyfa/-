@@ -16,10 +16,9 @@
 <meta http-equiv="expires" content="0">    
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
 <script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/jqueryUI/jquery-ui.min.css">
 <script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
@@ -37,25 +36,28 @@
 	  });
   </script>
 <style>
- .infoTb table { white-space: nowrap; width: 90%;font-size: 14px; 
+  .infoTb table { white-space: nowrap; width: 95%;font-size: 16px; 
 } 
-  th{ text-align:left; font-family:"微软雅黑"; border:0.5px solid #E6E6FA;} 
-  td{text-align:left; border:0.5px solid #E6E6FA;}
+.info tr{background-color:#DCDCDC;}
+ .infoTb th{ text-align:left; font-family:"微软雅黑"; border:0.5px solid #E6E6FA;} 
+ .infoTb td{text-align:left; border:0.5px solid #E6E6FA;padding-left:3px}
  .infoTb select{border:10px}
- input{width:120px;height:30px; border:0px ;border-radius: 3px 3px 3px 3px;}
- caption{padding-left:15%}
- button{border:0px solid #dae6f0; width:80px; height:35px; margin-left:15%}
+ input{width:100%;height:30px; border:0px ;border-radius: 3px 3px 3px 3px;}
  span{color:red}
- .btn_opt{border:0px solid #dae6f0; width:60px; height:25px;margin-right:3px}
 .checkBox{width:18px;}
- table { white-space: nowrap; width: 90%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse; margin-left:5%;
-}  
+ table { white-space: nowrap; width: 95%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse;
+}
+ th{text-align:center; font-family:"微软雅黑"; border:0.5px solid #E6E6FA;height:30px} 
+ td{text-align:center; border:0.5px solid #E6E6FA;padding-left:3px;height:30px;}
+ #tab1 tr{background-color:#DCDCDC;}
+#con{margin-left:5%;margin-top:50px}
+caption{font-size:24px}  
 </style>
 <body>
-	<div id="">
+	<div id="con">
 		<form id="myForm">
 			<input type="hidden" value="${sessionScope.admin.admin_id}" name="admin_id" id="admin_id">
-			<table>
+			<table class="infoTb" cellspacing="1">
 			<caption>入库申请单</caption>
 				<tr>
 					<th>入库单编号</th>
@@ -106,14 +108,14 @@
 				    </tr>
 			</table>
 		</form>
-	</div>
-	<div >
-                 <input type="button"  onclick="DelRow();" value="删除"> 
-                <input type="button" onclick="AddRow();" value="添加">
-                <input type="button" value="提交" onclick="submitForm()">
-                <input type="button" value="生成入库单" onclick="submitTable()">
+	
+			<div id="btns">
+                <button class="layui-btn " onclick="AddRow();"><i class="layui-icon">&#xe608;</i>添加</button>
+                <button class="layui-btn layui-btn-danger" onclick="DelRow();"><i class="layui-icon">&#xe640;</i>删除 </button>
+                <button class="layui-btn " onclick="submitForm()"><i class="layui-icon">&#xe605;</i>提交</button>
+                <button class="layui-btn " onclick="submitTable()"><i class="layui-icon">&#xe609;</i>导出</button>
             </div>
-            <div class="">
+            <div>
                 <input type="hidden" id="hid" name="hid" />    
                  <table id="tab1" class="detailList">
                     <thead>

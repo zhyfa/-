@@ -23,13 +23,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
 <style>
-ul li {
-	list-style-type: none;
-	margin: 8px 0;
-}
-a {
-	text-decoration:none;
-}
+	ul{list-style-type:none;height:40px;margin-top:15px;padding:5px; } 
+	ul>li>ul>li{display:inline;margin-left:20px}
+	/* ul{display:inline;margin-left:20px} */
+	input{background-color:	#dae6f0; width:130px; height:35px;border:0px solid;}
+	input:hover{color:#3CB371}
+	ul.ztree>li{background: #dae6f0;height:45px;}
+	.treecontentpane{position:absolute;left:200px;top:50px}
 </style>
 <script>
 $(document).ready(function(){
@@ -112,7 +112,8 @@ function  show() {
 						}
 				}
 
-				$.fn.zTree.init($("#menuTree"), setting, res);
+				treeObj=$.fn.zTree.init($("#menuTree"), setting, res);
+				treeObj.expandAll(true); 
 			}
 			
 		});

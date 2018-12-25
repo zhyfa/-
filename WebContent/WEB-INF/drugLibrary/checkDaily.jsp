@@ -39,7 +39,6 @@ $('#upLoad').click(function(){
         });   
     }  
 });  
- 
 //JS校验form表单信息  
 function checkData(){  
    var fileDir = $("#upfile").val();  
