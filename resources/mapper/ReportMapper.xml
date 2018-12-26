@@ -9,4 +9,8 @@
      <select id="queryOut" resultType="java.util.HashMap">
      	select a.outsum,b.drug_name from (select a.drug_id,sum(a.sold_num) outsum from t_sold a group by(drug_id)) a,t_drug b where a.drug_id=b.drug_id
      </select>
+     
+     <select id="queryPrice" resultType="java.util.HashMap">
+     	select a.outsum*bPrice price,b.drug_name from (select a.drug_id,a.BIR_PRICE bPrice,sum(a.sold_num) outsum from t_sold a group by drug_id,BIR_PRICE) a,t_drug b where a.drug_id=b.drug_id  
+     </select>
 </mapper>

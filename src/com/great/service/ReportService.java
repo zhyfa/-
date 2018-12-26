@@ -19,4 +19,8 @@ public class ReportService {
 	public List<Map<String, Object>> queryOut(){
 		return reportMapper.queryOut();
 	}
+	
+	public List<Map<String, Object>> queryPrice(){
+		return reportMapper.queryPrice();
+	}
 }

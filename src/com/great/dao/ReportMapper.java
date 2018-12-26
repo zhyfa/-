@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface ReportMapper {
 	public List<Map<String, Object>> queryIn();
 	public List<Map<String, Object>> queryOut();
+	public List<Map<String, Object>> queryPrice();
 }

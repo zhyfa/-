@@ -30,4 +30,15 @@ public class ReportAction {
 		return mav;
 		
 	}
+	
+	@RequestMapping("instock.action")
+	public ModelAndView instock() {
+		ModelAndView mav=new ModelAndView();
+		mav.setViewName("admin/admin_price");
+		List<Map<String, Object>> priceList=reportService.queryPrice();
+		JSONArray json1 = JSONArray.fromObject(priceList);
+		mav.addObject("outList", json1);
+		return mav;
+		
+	}
 }
