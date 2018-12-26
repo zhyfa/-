@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface PharmacyApplyMapper {
+	
+	// 通过ic值获取drug_id和drug_name
+	public List<Map<String, Object>> queryAllDrugNameByIC(int ic);
+	
+	
 	// 药房人员确认数据一致，确认该领药流程结束,state=3
 	public int affirmApply(int ic);
 

@@ -42,12 +42,19 @@
 </head>
 	
 <body>
-	<c:forEach items="${requestScope.applyList}" var="r" varStatus="st">
-		<div class="myResult"><br/>
-			<span id="cdate">${r.CDATE}</span><br >
-			<a href="#" onclick="seeDetaile(${r.IC})"><h3>申请编号${r.IC}</h3></a>
-		</div>
-	</c:forEach>
+	<c:choose>
+		<c:when test="${not empty requestScope.applyList}">
+			<c:forEach items="${requestScope.applyList}" var="r" varStatus="st">
+				<div class="myResult"><br/>
+					<span id="cdate">${r.CDATE}</span><br >
+					<a href="#" onclick="seeDetaile(${r.IC})"><h3>申请编号${r.IC}</h3></a>
+				</div>
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<h3>暂无已确认的申请药品表</h3>
+		</c:otherwise>
+	</c:choose>
 </body>
 <script type="text/javascript">
 //进入该IC编号的具体申请明细

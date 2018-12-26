@@ -37,6 +37,11 @@ public class StockAction {
 		map.put("factory_id", factory_id);
 		map.put("birthday", birthday);
 		Map<String, Object> result = stockService.getDrugNum(map);
+		if(result.size()>0) {
+			return result;
+		}
+		System.out.println(result);
+		result.put("STOCK_NUMBER", 0);
 		return result;
 	}
 	
@@ -55,8 +60,8 @@ public class StockAction {
 	@RequestMapping("/auditing.action")
 	public ModelAndView toPharmacyApplyJSP() {
 		ModelAndView andView = new ModelAndView();
-		List<Map<String, Object>> drugNames = stockService.getAllDrugName();
-		andView.addObject("drugNames", drugNames);
+		//List<Map<String, Object>> drugNames = stockService.getAllDrugName();
+		//andView.addObject("drugNames", drugNames);
 		andView.setViewName("drugLibrary/pharmacy_apply_add");
 		return andView;
 	}
@@ -64,7 +69,10 @@ public class StockAction {
 	// 通过drug_id查询药库库存表中该ID的库存量
 	@RequestMapping(value = "/drugNumById.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody int drugNumById(int drug_id) {
-		int result = stockService.drugNumById(drug_id);
+		Integer result = stockService.drugNumById(drug_id);
+		if(result==null) {
+			result=0;
+		}
 		return result;
 	}
 

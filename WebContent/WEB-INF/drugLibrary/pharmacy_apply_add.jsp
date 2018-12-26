@@ -99,23 +99,23 @@ table {
 	border-collapse: collapse;
 }
 </style>
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往基准表列表页</a><br />
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往待确认列表页</a><br />
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往已确认列表页</a>
+<a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list.action">前往基准表列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list2.action">前往待确认列表页</a><br />
+<a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list3.action">前往已确认列表页</a>
 <body>
 	<p>
 	<h4>请输入此次申请表的编号:</h4><br />
-	<input type="text" name="ic" id="ic" placeholder="hhhh" style="border:1px solid red;">
+	<input type="text" name="ic" id="ic"  style="border:1px solid red;">
 	<br />
 	<form id="myForm">
 		<table class="infoTb" cellspacing="1">
 			<tr>
 				<th>药品名称：</th>
 				<td><select id="drug_id" name="drug_id">
-						<option value="">请选择</option>
-						<c:forEach items="${requestScope.drugNames}" var="drugs">
-							<option value="${drugs.DRUG_ID}">${drugs.DRUG_NAME}</option>
-						</c:forEach>
+<!-- 						<option value="">请选择</option> -->
+<%-- 						<c:forEach items="${requestScope.drugNames}" var="drugs"> --%>
+<%-- 							<option value="${drugs.DRUG_ID}">${drugs.DRUG_NAME}</option> --%>
+<%-- 						</c:forEach> --%>
 				</select></td>
 				<th>是否特殊药品：</th>
 				<td><input type="text" id="psycho" name="psychotropics"
@@ -168,7 +168,27 @@ table {
 <script type="text/javascript">
 		var list1=new Array();
 		var list2=new Array();
-		
+		//ic失去焦点，若是不为空，就通过药品申请表查询该ic中的全部药品名，填充药品名下拉框
+		$("#ic").blur(function queryAllDrugNameByIC(){
+			if($("#ic").val() !== '' || $("#ic").val() !== null){
+				$.ajax({
+					url:"<%=basePath%>/pharmacyApply/queryAllDrugNameByIC.action",
+					type: "POST",
+					data:{"ic":$("#ic").val()},
+					success : function(res){
+						if(res.length>0){
+							var str="<option value=''>请选择</option>";
+							for(var i=0;i<res.length;i++){
+		  						str+="<option value=" + res[i].DRUG_ID + ">" + res[i].DRUG_NAME + "</option>"
+		  					}
+							$("#drug_id").html(str);
+						}else{
+							alert("该编号是个无效数值");
+						}
+					}
+				});
+			}
+		});
 	//药品名发现改变时，搜索该新的药名的看它是否特殊药,填充工厂下拉框
   	  $( "#drug_id" ).change(function(){
   	    	if($("#drug_id").val()!=''||$("#drug_id").val()!=null){
@@ -252,9 +272,18 @@ table {
 			
 			
 			var psycho = $("#psycho").val();
-			var total =$("#total").val();
+			var total =$("#total").val();//同意申请的总数量
+			var allnumber =$("#allnumber").val();//库存的总数量
 			var birthday =$("#birthday").val();
 			var allow=''
+			
+			
+			if(total>allnumber){
+				alert("申请总量大于库存总量！");
+				return;
+			}
+				
+			
 			
 			
 			if(total != ''){

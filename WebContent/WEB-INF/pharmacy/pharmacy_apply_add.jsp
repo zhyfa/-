@@ -108,6 +108,9 @@
 		</table>
 	</div>
 	</div>
+	<p>
+	<div id="result"></div>
+	</p>
 </body>
 <script type="text/javascript">
 		var list1=new Array();
@@ -118,7 +121,12 @@
 			var text=obj.options[obj.selectedIndex].text;//获取文本
         	var drug_id=$("#drug_id").val();
 			var psycho = $("#psycho").val();
-			var total =$("#total").val();
+			var total =(Number)($("#total").val());
+			var allnumber =(Number)($("#allnumber").val());
+			if(total>allnumber){
+				alert("申请总量大于库存总量！");
+				return;
+			}
 			
 			var newRowNumber = $("#tab1>tbody>tr").length+1;
             $("#tab1>tbody").append(
@@ -208,7 +216,7 @@
         //药品名发现改变时，搜索该新的药名的看它是否特殊药
     	  $( "#drug_name" ).change(function(){
     	    	if($("#drug_name").val()!=''||$("#drug_name").val()!=null){
-    	    		$("#psycho").html("")
+    	    		$("#psycho").val("")
     	    		$("#allnumber").val("")
     	    		$("#total").val("")
     	    		searchById();

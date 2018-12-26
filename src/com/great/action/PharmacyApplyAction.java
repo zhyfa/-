@@ -40,6 +40,78 @@ public class PharmacyApplyAction {
 	@Resource
 	private FactoryService factoryService;
 
+	// 通过ic值获取drug_id和drug_name
+	@RequestMapping(value = "/queryAllDrugNameByIC.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody List<Map<String, Object>> queryAllDrugNameByIC(int ic) {
+		List<Map<String, Object>> drugs = pharmacyApplyService.queryAllDrugNameByIC(ic);
+
+		return drugs;
+	}
+
+	// 药库进入申请药品列表页，按照IC排序state=1
+	// 药库获取申请药品表中的ic和cdate
+	@RequestMapping(value = "/stoct_pharmacy_apply_list.action")
+	public ModelAndView stoct_pharmacy_apply_list() {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList();
+		andView.addObject("applyList", applyList);
+		andView.setViewName("drugLibrary/pharmacy_apply_list");
+		return andView;
+	}
+
+	// 药库进入该IC编号的具体申请明细页面
+	@RequestMapping(value = "/stoct_pharmacy_apply_detaile.action")
+	public ModelAndView stoct_pharmacy_apply_detaile(int ic) {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyListByIc(ic);
+		andView.addObject("applyList", applyList);
+		andView.setViewName("drugLibrary/pharmacy_apply_detaile");
+		return andView;
+	}
+
+	// 药库获取申请药品表中的ic和cdate
+	@RequestMapping(value = "/stoct_pharmacy_apply_list3.action")
+	public ModelAndView stoct_pharmacy_apply_list3() {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList3();
+		andView.addObject("applyList", applyList);
+		andView.setViewName("drugLibrary/pharmacy_apply_list3");
+		return andView;
+	}
+
+	// 药库进入该IC编号的具体申请明细页面state=3
+	@RequestMapping(value = "/stoct_pharmacy_apply_detaile3.action")
+	public ModelAndView stoct_pharmacy_apply_detaile3(int ic) {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList3ByIc(ic);
+		andView.addObject("applyList", applyList);
+		andView.addObject("ic", ic);
+		andView.setViewName("drugLibrary/pharmacy_apply_detaile3");
+		return andView;
+	}
+
+	// 进入药房同意申请药品列表页，按照IC排序state=2
+	// 获取申请药品表中的ic和cdate
+	@RequestMapping(value = "/stoct_pharmacy_apply_list2.action")
+	public ModelAndView stoct_pharmacy_apply_list2() {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList2();
+		andView.addObject("applyList", applyList);
+		andView.setViewName("drugLibrary/pharmacy_apply_list2");
+		return andView;
+	}
+
+	// 进入该IC编号的具体申请明细页面
+	@RequestMapping(value = "/stoct_pharmacy_apply_detaile2.action")
+	public ModelAndView stoct_pharmacy_apply_detaile2(int ic) {
+		ModelAndView andView = new ModelAndView();
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList2ByIc(ic);
+		andView.addObject("applyList", applyList);
+		andView.addObject("ic", ic);
+		andView.setViewName("drugLibrary/pharmacy_apply_detaile2");
+		return andView;
+	}
+
 	// 进入药房同意申请药品列表页，按照IC排序state=3
 	// 获取申请药品表中的ic和cdate
 	@RequestMapping(value = "/pharmacy_apply_list3.action")

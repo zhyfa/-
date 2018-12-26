@@ -55,12 +55,11 @@
 			<h3>暂无申请药品基准表</h3>
 		</c:otherwise>
 	</c:choose>
-	
 </body>
 <script type="text/javascript">
 //进入该IC编号的具体申请明细
 function seeDetaile(ic) {
-	window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_detaile.action?ic="+ic;
+	window.location.href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_detaile.action?ic="+ic;
 	window.event.returnValue=false;
 }
 </script>

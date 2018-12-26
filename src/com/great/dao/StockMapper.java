@@ -12,8 +12,11 @@ import com.great.bean.Stock;
 
 @Repository
 public interface StockMapper {
-	
-	//通过drug_id,birthday,factory_id定位到药库药品表的某一行的值减少drug_number数量
+	//通过drug_id,birthday,factory_id定位到药库药品表拥有该三个字段的stock_id和stock_number的集合
+	public List<Map<String, Object>> getIDs(Map<String, Object> map);
+	//删除stock_number=0的这一行
+	public int delRow(int stock_id);
+	//通过stock_id定位到药库药品表的某一行的值减少drug_number数量
 	//药房申请药品成功，药库相对应的药品库存发生该表
 	public int updateByApply(Map<String, Object> map);
 	
