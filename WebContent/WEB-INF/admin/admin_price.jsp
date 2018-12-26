@@ -15,6 +15,26 @@
 <script src="<%=request.getContextPath()%>/js/jquery-ui.js"></script>
 <script>
 	$(function() {
+		$("#from").datepicker({
+			defaultDate : "+1w",
+			changeMonth : true,
+			numberOfMonths : 3,
+			onClose : function(selectedDate) {
+				$("#to").datepicker("option", "minDate", selectedDate);
+			}
+		});
+		$("#to").datepicker({
+			defaultDate : "+1w",
+			changeMonth : true,
+			numberOfMonths : 3,
+			onClose : function(selectedDate) {
+				$("#from").datepicker("option", "maxDate", selectedDate);
+			}
+		});
+	});
+	</script>
+<script>
+	$(function() {
 		var data=[${requestScope.outList}.length];
 		var a="";
 			for (var i = 0; i < ${requestScope.outList}.length; i++) {
@@ -80,11 +100,11 @@
 				grid_color : '#676a73',
 				striped_factor : 0.06,
 				height : '84%',
-				width : '84%',
+				width : '90%',
 				scale : [ {
 					position : 'left',
 					start_scale : 0,
-					scale_space : 100000,
+					scale_space : 10000,
 					label : {
 						color : '#4c4f48'
 					},
@@ -133,7 +153,7 @@
 			showpercent : true,
 			decimalsnum : 1,
 			align : 'left',
-			offsetx : chart.coo.get('originx') + 30,
+			offsetx : chart.coo.get('originx') + 10,
 			offsety : -(chart.get('centery') - chart.coo.get('originy') - 90),
 			animation : animation,
 			radius : 60
@@ -168,16 +188,13 @@
 	<p>查询条件：</p>
 	<label for="from">统计时间</label>
 	<form id="commentForm"
-		action="<%=request.getContextPath()%>/StatisticsServlet" method="post">
+		action="<%=request.getContextPath()%>/report/instock.action" method="post">
 		<input type="text" id="from" name="from"
 			value="${requestScope.startDate}" required> <label for="to">至</label>
 		<input type="text" id="to" name="to" value="${requestScope.endDate}"
 			required> <input type="submit" value="查询"> <input
 			type="hidden" name="method" value="statByAdmin">
 	</form>
-	<div>
-		<p>该段时间内总预约量为：${requestScope.totalCount.TOTAL}</p>
-	</div>
 	<div id='canvasDiv'></div>
 </body>
 

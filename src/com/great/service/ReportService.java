@@ -12,15 +12,19 @@ import com.great.dao.ReportMapper;
 public class ReportService {
 	@Autowired
 	private ReportMapper reportMapper;
-	public List<Map<String, Object>> queryIn(){
-		return reportMapper.queryIn();
+	public List<Map<String, Object>> queryIn(Map<String, Object> map){
+		return reportMapper.queryIn(map);
 	}
 	
-	public List<Map<String, Object>> queryOut(){
-		return reportMapper.queryOut();
+	public List<Map<String, Object>> queryOut(Map<String, Object> map){
+		return reportMapper.queryOut(map);
 	}
 	
-	public List<Map<String, Object>> queryPrice(){
-		return reportMapper.queryPrice();
+	public List<Map<String, Object>> queryPrice(Map<String, Object> map){
+		return reportMapper.queryPrice(map);
+	}
+	
+	public List<Map<String, Object>> queryProfit(Map<String, Object> map){
+		return reportMapper.queryProfit(map);
 	}
 }

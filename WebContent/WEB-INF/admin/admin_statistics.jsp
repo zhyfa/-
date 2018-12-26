@@ -66,7 +66,6 @@
 			data : data,
 			align : 'center',
 			title : '药品出入数量对比',
-			subtitle : '显示当月的进销数量',
 			footnote : '数据来源：数据库',
 			width : 800,
 			height : 400,
@@ -129,7 +128,7 @@
 	<p>查询条件：</p>
 	<label for="from">统计时间</label>
 	<form id="commentForm"
-		action="<%=request.getContextPath()%>/StatisticsServlet" method="post">
+		action="<%=request.getContextPath()%>/report/outstock.action" method="post">
 		<input type="text" id="from" name="from"
 			value="${requestScope.startDate}" required> <label for="to">至</label>
 		<input type="text" id="to" name="to" value="${requestScope.endDate}"

@@ -2,15 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.ReportMapper">
-     <select id="queryIn" resultType="java.util.HashMap">
-     	select a.drug_name,sum(a.plantobuy_number) insum from t_storge a group by(drug_name)
+     <select id="queryIn" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+     	select a.drug_name,sum(a.plantobuy_number) insum from t_storge a where 1=1
+     	<if test="startDate!=null and startDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&gt;=#{startDate}
+    	</if>
+    	<if test="endDate!=null and endDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&lt;=#{endDate}
+    	</if>
+    	<if test="1==1">
+    	group by(drug_name) order by drug_name
+    	</if>
      </select>
      
-     <select id="queryOut" resultType="java.util.HashMap">
+     <select id="queryOut" resultType="java.util.HashMap" parameterType="java.util.HashMap">
      	select a.outsum,b.drug_name from (select a.drug_id,sum(a.sold_num) outsum from t_sold a group by(drug_id)) a,t_drug b where a.drug_id=b.drug_id
+     	<if test="startDate!=null and startDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&gt;=#{startDate}
+    	</if>
+    	<if test="endDate!=null and endDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&lt;=#{endDate}
+    	</if>
      </select>
      
-     <select id="queryPrice" resultType="java.util.HashMap">
-     	select a.outsum*bPrice price,b.drug_name from (select a.drug_id,a.BIR_PRICE bPrice,sum(a.sold_num) outsum from t_sold a group by drug_id,BIR_PRICE) a,t_drug b where a.drug_id=b.drug_id  
+     <select id="queryPrice" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+     	select a.outsum*bPrice price,b.drug_name from (select a.drug_id,a.PRICE bPrice,sum(a.sold_num) outsum from t_sold a group by drug_id,PRICE) a,t_drug b where a.drug_id=b.drug_id  
+     	<if test="startDate!=null and startDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&gt;=#{startDate}
+    	</if>
+    	<if test="endDate!=null and endDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&lt;=#{endDate}
+    	</if>
+    	<if test="1==1">
+    	order by drug_name
+    	</if>
+     </select>
+     
+     <select id="queryProfit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+     	select a.outsum*(p-bPrice) profit,b.drug_name from (select a.drug_id,a.BIR_PRICE bPrice,a.PRICE p,sum(a.sold_num) outsum from t_sold a group by drug_id,BIR_PRICE,PRICE) a,t_drug b where a.drug_id=b.drug_id
+     	<if test="startDate!=null and startDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&gt;=#{startDate}
+    	</if>
+    	<if test="endDate!=null and endDate!=''">
+    	AND TO_CHAR(CDATE,'MM/DD/YYYY')&lt;=#{endDate}
+    	</if>
+    	<if test="1==1">
+    	order by drug_name
+    	</if>
      </select>
 </mapper>
