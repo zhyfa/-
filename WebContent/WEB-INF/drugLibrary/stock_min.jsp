@@ -3,27 +3,25 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ path + "/";
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="<%=basePath%>/js/jquery.min.js"></script>
+<%-- <script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
 <script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
-<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
-
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script> --%>
 <style type="text/css">
 caption{font-size:24px}
 </style>
 </head>
 <body>
-	<table class="layui-table">
+	<table>
 		<caption>药库设置药品最低库存量</caption>
 		<thead>
 			<tr>
@@ -87,7 +85,6 @@ function updateStockMinBefore(drug_id){
 		  ,shade: 0
 		  ,maxmin: true
 		  ,content: '<%=basePath%>/drug/updateStockMinBefore.action?drug_id='+drug_id
-			
 		});
 	}
 </script>

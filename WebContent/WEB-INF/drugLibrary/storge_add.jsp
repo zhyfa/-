@@ -44,9 +44,8 @@
 .checkBox{width:18px;}
  table { white-space: nowrap; width: 95%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse;
 }
- th{text-align:center; font-family:"微软雅黑"; border:0.5px solid #E6E6FA;} 
+ #tab1 th{text-align:center; font-family:"微软雅黑"; border:0.5px solid #E6E6FA; background-color:#DCDCDC;} 
  td{text-align:center; border:0.5px solid #E6E6FA;padding-left:3px}
- #tab1 tr{background-color:#DCDCDC;}
 #con{margin-left:5%;margin-top:50px}  
 </style>
 <body>

@@ -37,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  			<option data-id="${drug.DRUG_ID}">${drug.DRUG_NAME}</option>
 			  	</c:forEach>
 			</datalist>
-    	<input type="button" value="确定" onclick="inputSelect()">
+    	<input class="layui-btn" type="button" value="确定" onclick="inputSelect()">
 <table class="table table-hover">
   <caption>药品价格</caption>
   <thead>

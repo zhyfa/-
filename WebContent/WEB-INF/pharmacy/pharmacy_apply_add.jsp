@@ -24,88 +24,44 @@
 <meta http-equiv="description" content="This is my page">
 
 <script src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico"
-	type="image/x-icon" />
-<script type="text/javascript"
-	src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
 <script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <style>
-.infoTb table {
-	white-space: nowrap;
-	width: 90%;
-	font-size: 14px;
+ .infoTb table { white-space: nowrap; width: 95%;font-size: 16px; 
+} 
+.info tr{background-color:#DCDCDC;}
+ .infoTb th{ text-align:left;  border:0.5px solid #E6E6FA;} 
+ .infoTb td{text-align:left; border:0.5px solid #E6E6FA;padding-left:3px}
+ .infoTb select{border:10px}
+ input{width:120px;height:30px; border:0px ;border-radius: 3px 3px 3px 3px;}
+ caption{padding-left:15%}
+ span{color:red}
+.checkBox{width:18px;}
+ table { white-space: nowrap; width: 95%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse;
 }
+ #tab1 th{text-align:center;  border:0.5px solid #E6E6FA;background-color:#DCDCDC;} 
+ td{text-align:center; border:0.5px solid #E6E6FA;padding-left:3px}
 
-.info tr {
-	background-color: #DCDCDC;
-}
-
-.infoTb th {
-	text-align: left;
-	font-family: "微软雅黑";
-	border: 0.5px solid #E6E6FA;
-}
-
-.infoTb td {
-	text-align: left;
-	border: 0.5px solid #E6E6FA;
-}
-
-.infoTb select {
-	border: 10px
-}
-
-input {
-	width: 120px;
-	height: 30px;
-	border: 0px;
-	border-radius: 3px 3px 3px 3px;
-}
-
-caption {
-	padding-left: 15%
-}
-
-button {
-	border: 0px solid #dae6f0;
-	width: 80px;
-	height: 35px;
-	margin-left: 15%
-}
-
-span {
-	color: red
-}
-
-.btn_opt {
-	border: 0px solid #dae6f0;
-	width: 60px;
-	height: 25px;
-	margin-right: 3px
-}
-
-.checkBox {
-	width: 18px;
-}
-
-table {
-	white-space: nowrap;
-	width: 90%;
-	font-size: 14px;
-	border: 1px solid #E6E6FA;
-	border-collapse: collapse;
-}
+#con{margin-left:5%;margin-top:50px} 
 </style>
 <body>
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往基准表列表页</a><br />
+<%-- <a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往基准表列表页</a><br />
 <a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往待确认列表页</a><br />
-<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往已确认列表页</a>
-	<p>
+<a href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往已确认列表页</a> --%>
+	<div id="con">
 	<form id="myForm">
 		<table class="infoTb" cellspacing="1">
+			<tr>
+				<td colspan="10">
+				
+				</td>
+			</tr>
 			<tr>
 				<th>药品名称：</th>
 				<td><select id="drug_name" name="drug_name">
@@ -124,21 +80,23 @@ table {
 				<td><input type="text" id="allnumber" name="allnumber" readonly="readonly"></td>
 			</tr>
 		</table>
-		</p>
 	</form>
-	<div class="table_toolbar">
-		<input type="button" onclick="DelRow();" value="删除"> <input
-			type="button" onclick="AddRow();" value="添加">
-		<input type="button" value="提交申请" onclick="add()">
+	<div class="table_toolbar" >
+		<button class="layui-btn layui-btn-danger" onclick="DelRow();"><i class="layui-icon">&#xe640;</i>删除</button>
+		<button class="layui-btn" onclick="AddRow();"><i class="layui-icon">&#xe608;</i>添加</button>
+		<button class="layui-btn" onclick="add()"><i class="layui-icon">&#xe605;</i>提交申请</button>
+		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往基准表列表页</a>
+		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往待确认列表页</a>
+		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/pharmacy_apply_list3.action">前往已确认列表页</a>
 	</div>
 	<div class="">
 		<input type="hidden" id="hid" name="hid" />
 		<table id="tab1">
 			<thead>
 				<tr>
-					<td width="10px"><input type="checkbox" class="checkBox"
+					<th width="10px"><input type="checkbox" class="checkBox"
 						title="全选" />
-					</td>
+					</th>
 					<th>序号</th>
 					<th>药品名称</th>
 					<th>药品ID</th>
@@ -149,9 +107,7 @@ table {
 			<tbody id="tbody"></tbody>
 		</table>
 	</div>
-	<p>
-	<div id="result"></div>
-	</p>
+	</div>
 </body>
 <script type="text/javascript">
 		var list1=new Array();

@@ -20,25 +20,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 
 <script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.core.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
 <style>
-ul li {
-	list-style-type: none;
-	margin: 8px 20px;
-}
-a {
-	text-decoration:none;
-}
-#first{
-float:left;
-}
-#second{
-float:left;
-}
+
+#myForm input{width:200px;height:35px; border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;margin-top:10px}
+#myForm select{width:200px;height:35px;border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;margin-top:10px}
+caption{font-size:24px}
+#tb1{margin-top:30px;}
+#tb1 th{text-align:right}
+#con{margin-left:10%}
 </style>
 <script>
 $(document).ready(function(){
@@ -49,40 +46,80 @@ $(document).ready(function(){
 </head>
 
 <body>
+<div id="con">
 <form id="myForm">
-<input type="hidden" name="drug_id" id="drug_id" value="${requestScope.drug.DRUG_ID}">
-		药品名称： <input type="text" name="drug_name" id="drug_name" value="${requestScope.drug.DRUG_NAME}">
-		<span id="showMeg"></span>
-		<br>
-		药品所属类别：<select name="smalltype_id">
-						<c:forEach items="${requestScope.secondType}" var="s">
-							<option value="${s.SMALLTYPE_ID}" <c:if test="${s.SMALLTYPE_ID==requestScope.drug.SMALLTYPE_ID}">selected='true'</c:if> >${s.SMALLTYPE_NAME}</option>
-						</c:forEach>
-				  </select><br>
-		规格：<select name="spec">
-				<option value="2" selected=${requestScope.drug.SPEC}==2?'true':'false'>瓶</option>
-				<option value="1" selected=${requestScope.drug.SPEC}==1?'true':'false' >盒</option>		
-			</select><br>
-		单位：<select name="drug_unit">
-				<option value="颗" ${requestScope.drug.DRUG_UNIT=='颗'?'selected':''}>颗</option>
-				<option value="包" ${requestScope.drug.DRUG_UNIT=='包'?'selected':''}>包</option>
-				<option value="付" ${requestScope.drug.DRUG_UNIT=='付'?'selected':''}>付</option>
-				<option value="毫升" ${requestScope.drug.DRUG_UNIT=='毫升'?'selected':''}>毫升</option>		
-			</select><br>
-		总量：<input type="text" name="drug_size" id="drug_size" value="${requestScope.drug.DRUG_SIZE}"><br>
-		单价（元）：<input type="text" name="price" id="price" value="${requestScope.drug.PRICE}"><br>
-		折扣（100%）：<input type="text" name="discount" id="discount" value="${requestScope.drug.DISCOUNT}"><br>
-		是否特殊药：<select name="psychotropics">
+	<table id="tb1">
+		<caption>修改药品信息</caption>
+		<tr>
+			<th>
+			药品名称：<input type="hidden" name="drug_id" id="drug_id" value="${requestScope.drug.DRUG_ID}"></th>
+			<td><input type="text" name="drug_name" id="drug_name" value="${requestScope.drug.DRUG_NAME}">
+					<span id="showMeg"></span>
+			</td>
+			<th>药品所属类别：</th>
+			<td>
+				<select name="smalltype_id">
+					<c:forEach items="${requestScope.secondType}" var="s">
+						<option value="${s.SMALLTYPE_ID}" <c:if test="${s.SMALLTYPE_ID==requestScope.drug.SMALLTYPE_ID}">selected='true'</c:if> >${s.SMALLTYPE_NAME}</option>
+					</c:forEach>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>规格：</th>
+			<td>
+				<select name="spec">
+					<option value="2" selected=${requestScope.drug.SPEC}==2?'true':'false'>瓶</option>
+					<option value="1" selected=${requestScope.drug.SPEC}==1?'true':'false' >盒</option>		
+				</select>
+			</td>
+			<th>单位：</th>
+			<td>
+				<select name="drug_unit">
+					<option value="颗" ${requestScope.drug.DRUG_UNIT=='颗'?'selected':''}>颗</option>
+					<option value="包" ${requestScope.drug.DRUG_UNIT=='包'?'selected':''}>包</option>
+					<option value="付" ${requestScope.drug.DRUG_UNIT=='付'?'selected':''}>付</option>
+					<option value="毫升" ${requestScope.drug.DRUG_UNIT=='毫升'?'selected':''}>毫升</option>		
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>总量：</th>
+			<td><input type="text" name="drug_size" id="drug_size" value="${requestScope.drug.DRUG_SIZE}"></td>
+			<th>单价（元）：</th>
+			<td><input type="text" name="price" id="price" value="${requestScope.drug.PRICE}"></td>
+		</tr>
+		<tr>
+			<th>折扣（100%）：</th>
+			<td><input type="text" name="discount" id="discount" value="${requestScope.drug.DISCOUNT}"></td>
+			<th>是否特殊药：</th>
+			<td>
+			<select name="psychotropics">
 					<option value="是特殊药" selected=${requestScope.drug.PSYCHOTROPICS}==是特殊药?'true':'false'>是特殊药</option>
 					<option value="不是特殊药" selected=${requestScope.drug.PSYCHOTROPICS}==不是特殊药?'true':'false'>不是特殊药</option>		
-				</select><br>
-		用量：<input type="text" name="use_method" id="use_method" value="${requestScope.drug.USE_METHOD}"><br>
-		药的别名：<input type="text" name="drug_alias" id="drug_alias" value="${requestScope.drug.DRUG_ALIAS}"><br>
-		症状：<input type="text" name="illustrate" id="illustrate" value="${requestScope.drug.ILLUSTRATE}"><br>
-		保质期（月）：<input type="text" name="irradiated" id="irradiated" value="${requestScope.drug.IRRADIATED}"><br>
-		<input type="button" value="确认修改" onclick="submitForm()">
-		<input type="button" value="返回" onclick="javascript:history.back(-1);">
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>用量：</th>
+			<td><input type="text" name="use_method" id="use_method" value="${requestScope.drug.USE_METHOD}"></td>
+			<th>药的别名：</th>
+			<td><input type="text" name="drug_alias" id="drug_alias" value="${requestScope.drug.DRUG_ALIAS}"></td>
+		</tr>
+		<tr>
+			<th>症状：</th>
+			<td><input type="text" name="illustrate" id="illustrate" value="${requestScope.drug.ILLUSTRATE}"></td>
+			<th>保质期（月）：</th>
+			<td><input type="text" name="irradiated" id="irradiated" value="${requestScope.drug.IRRADIATED}"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan="3"><button class="layui-btn" onclick="submitForm()"><i class="layui-icon ">&#xe605;</i>确认修改</button>
+			<button class="layui-btn" onclick="javascript:history.back(-1);"><i class="layui-icon ">&#xe65c;</i>返回</button></td>
+		</tr>
+	</table>
 	</form>
+</div>
 </body>
 <script>
 
@@ -113,7 +150,7 @@ function submitForm(){
 			if(res==0){
 				alert("修改成功");
 				//添加成功或是失败都需要跳回列表页
-				window.location.href="<%=basePath%>/drug/toDrugJSP.action";
+				parent.window.location.href="<%=basePath%>/drug/toDrugJSP.action";
 			}
 			if(res==1){
 				alert("修改失败");

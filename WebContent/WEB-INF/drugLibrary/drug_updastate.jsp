@@ -17,18 +17,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="expires" content="0">    
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<script src="<%=basePath%>/assets/bootstrap/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/assets/bootstrap/css/bootstrap.css">
- <link rel="shortcut icon" href="<%=basePath%>/assets/x-admin/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/font.css">
-    <link rel="stylesheet" href="<%=basePath%>/assets/x-admin/css/xadmin.css">
-    <script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/jquery.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>/assets/x-admin/lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
-
-
 <body>
 <h1 style="text-align: center;">药品禁用修改</h1>
 <input  id="drug1" list="druglist" name="drug" type="text" class="form-control">
@@ -37,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  			<option data-id="${drug.DRUG_ID}">${drug.DRUG_NAME}</option>
 			  	</c:forEach>
 			</datalist>
-    	<input type="button" value="查看" onclick="inputSelect()">
+    	<input class="layui-btn" type="button" value="查看" onclick="inputSelect()">
 <table class="table table-hover">
   <caption>药品信息</caption>
   <thead>
@@ -61,11 +57,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  			<td>${drug1.ILLUSTRATE}</td>
 			  			<c:if test="${drug1.STATE==1}">
 			  				<td>可用</td>
-			  				<td><input type="button" value="禁用" onclick="changedata(${drug1.DRUG_ID},${drug1.STATE})" ></td>
+			  				<td><input class="layui-btn layui-btn-xs layui-btn-danger" type="button" value="禁用" onclick="changedata(${drug1.DRUG_ID},${drug1.STATE})" ></td>
 			  			</c:if>
 			  			<c:if test="${drug1.STATE==2}">
 			  				<td>不可用</td>
-			  			<td><input type="button" value="启用" onclick="changedata(${drug1.DRUG_ID},${drug1.STATE})" ></td>
+			  			<td><input class="layui-btn layui-btn-xs" type="button" value="启用" onclick="changedata(${drug1.DRUG_ID},${drug1.STATE})" ></td>
 			  			</c:if>
 			  			</tr>
 			  	</c:forEach>
@@ -79,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</c:forEach>
 		
 		<li><a onclick="next()">&raquo;</a></li>
-		<li>共${page.totalPage}页，当前第${page.page}页</li>
+		<%-- <li>共${page.totalPage}页，当前第${page.page}页</li> --%>
 	</ul>
 	<input type="hidden" name="pageTwo" value="${page.pageTwo}" id="pageT">
 	<input type="hidden" value="${page.totalPageTwo}" id="totalPageTwo">
@@ -157,10 +153,10 @@ function qyerybyall(page,pageTwo){
 		  		"<td>"+data.queryList[a].ILLUSTRATE+"</td>"
 		  		if(data.queryList[a].STATE==1){
 		  			str+="<td>可用</td>"+
-		  			"<td><input type='button' value='禁用 '  onclick='changedata("+data.queryList[a].DRUG_ID+","+data.queryList[a].STATE+")' /></td> </tr>"
+		  			"<td><input class='layui-btn layui-btn-xs layui-btn-danger' type='button' value='禁用 '  onclick='changedata("+data.queryList[a].DRUG_ID+","+data.queryList[a].STATE+")' /></td> </tr>"
 		  		}else{
 		  			str+="<td>不可用 </td>"+
-		  			"<td><input type='button' value='启用 '  onclick='changedata("+data.queryList[a].DRUG_ID+","+data.queryList[a].STATE+")' /></td> </tr>"
+		  			"<td><input class='layui-btn layui-btn-xs'  type='button' value='启用 '  onclick='changedata("+data.queryList[a].DRUG_ID+","+data.queryList[a].STATE+")' /></td> </tr>"
 			  		}
 		  		
 				}
@@ -177,7 +173,7 @@ function qyerybyall(page,pageTwo){
 	   			str2+="<li><a onclick='addTabs(this)'>"+data.pageShu[a]+"</a></li>"
 	   		}
 	   		str1+=str2+"<li><a onclick='next()'>&raquo;</a></li>"+
-	   		"<li>共"+data.totalPage+"页，当前第"+data.page+"页</li>"+
+	   		/* "<li>共"+data.totalPage+"页，当前第"+data.page+"页</li>"+ */
 	   	"<input type='hidden' name='pageTwo' value='"+data.pageTwo+"' id='pageT'>"+
 	   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
 	         

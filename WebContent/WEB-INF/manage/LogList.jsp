@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 
 <body>
-	<h1 style="text-align: center;">日志查看</h1>
+	<h1 style="text-align: center; margin-top:30px">日志查看</h1>
 
 	<div >
 		<form id="queryadmin" >

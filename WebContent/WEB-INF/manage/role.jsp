@@ -23,12 +23,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
 <style>
-	ul{list-style-type:none;height:40px;margin-top:15px;padding:5px; } 
-	ul>li>ul>li{display:inline;margin-left:20px}
+	ul{list-style-type:none;height:40px;margin-top:15px;padding:15px; } 
+	ul>li>ul>li{display:inline;margin-left:20px;border-bottom:1px solid #fff}
 	/* ul{display:inline;margin-left:20px} */
-	input{background-color:	#dae6f0; width:130px; height:35px;border:0px solid;}
+	input{background-color:	#F0F8FF; width:130px; height:35px;border:0px solid;}
 	input:hover{color:#3CB371}
-	ul.ztree>li{background: #dae6f0;height:45px;}
+	ul.ztree>li{height:45px;}
 	.treecontentpane{position:absolute;left:200px;top:50px}
 </style>
 <script>
@@ -59,22 +59,26 @@ function  show() {
 <body>
 <div>
  <form id="commentForm">
-	<div style="float:left" height="500px">
+	<div style="float:left" height="500px" margin-left="50px">
 	<ul>
-		<li>角色列表：</li>
 		<li>
-		<ul id="roles">
-			
-		</ul>
+		角色列表：
+		</li>
+		<li>
+		<li id="roles">
+		</li>
+		<li>
+			<input type="button" value="确定" onClick="getNotes()">
+			<input type="hidden" name="role_id" id="role_id"><br>
 		</li>
 	</ul>
 	</div>
-		<div class="treecontentpane" style="float:left">
+			<div class="treecontentpane" style="float:left">
      		<ul id="menuTree" class="ztree"></ul>
 		</div>
+		<!-- <input type="button" value="确定" onClick="getNotes()">
+		<input type="hidden" name="role_id" id="role_id"> -->
 		<div>
-		<input type="button" value="确定" onClick="getNotes()">
-		<input type="hidden" name="role_id" id="role_id">
 		
 		</div>
 		</form>
@@ -86,7 +90,6 @@ function  show() {
 
 	//显示选中角色的权限
 	function  quaryByID(roleId){
-		alert("href");
 		$("#role_id").val(roleId)
 		
 		$.ajax({

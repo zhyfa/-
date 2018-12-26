@@ -20,18 +20,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 
 <script src="<%=basePath%>/js/jquery.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.core.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <style>
-ul li {
-	list-style-type: none;
-	margin: 8px 0;
-}
-a {
-	text-decoration:none;
-}
+#tb1{width:95%;}
+.td1{text-align:left; font-size:24px;}
+.td2{text-align:right; padding-right:15px;}
 </style>
 <script>
 $(document).ready(function(){
@@ -61,10 +59,15 @@ function  secondType(bigtype_id){
 </head>
 
 <body>
-<input type="button" value="新增一级药品种类" onclick="addFirstTypeBefor()">
-<input type="button" value="新增二级药品种类" onclick="addSecondTypeBefor()">
-<table class="table table-bordered">
-	<caption>药品种类列表</caption>
+	<table id="tb1" style="margin-top:50px">
+		<tr>
+			<td class="td1">药品种类列表</td>
+			<td class="td2">
+			<button class="layui-btn" onclick="addFirstTypeBefor()"><i class="layui-icon">&#xe608;</i>新增一级药品种类</button>
+			<button class="layui-btn  layui-btn-normal" onclick="addSecondTypeBefor()"><i class="layui-icon">&#xe61f;</i>新增二级药品种类</button></td>
+		</tr>
+	</table>
+<table class="layui-table">
 	<thead>
 		<th>药品种类ID</th>
 		<th>药品类名</th>
@@ -78,8 +81,8 @@ function  secondType(bigtype_id){
 				<td>${s.SMALLTYPE_NAME}</td>
 				<td>${s.BIGTYPE_NAME}</td>
 				<td>
-					<input type='button' value='修改' onclick='updateSmallType(${s.SMALLTYPE_ID})'>
-					<input type='button' value='删除'  onclick='delSmallType(${s.SMALLTYPE_ID})'>
+					<button class="layui-btn layui-btn-xs"  onclick='updateSmallType(${s.SMALLTYPE_ID})'><i class="layui-icon">&#xe642;</i>修改</button>
+					<button class="layui-btn layui-btn-xs  layui-btn-danger"  onclick='delSmallType(${s.SMALLTYPE_ID})'><i class="layui-icon">&#xe640;</i>删除</button>
 				</td>
 			</tr>
 		</c:forEach>
@@ -103,23 +106,63 @@ function  secondType(bigtype_id){
 
 
 
-<input type="button" value="返回" onclick="javascript:history.back(-1);">
+<button class="layui-btn layui-btn-xs" onclick="javascript:history.back(-1);">返回</button>
 
  
 </body>
 <script>
-	function addFirstTypeBefor() {
+function addFirstTypeBefor(){
+    var that = this; 
+    //多窗口模式，层叠置顶
+    layer.open({
+      type: 2 //此处以iframe举例
+      ,title: '增加一级药品'
+      ,area: ['600px', '400px']
+      ,shade: 0
+      ,maxmin: true
+      
+      ,content: '<%=basePath%>/drugType/addFirstTypeBefor.action'
+     
+    });
+  }
+function addSecondTypeBefor(){
+    var that = this; 
+    //多窗口模式，层叠置顶
+    layer.open({
+      type: 2 //此处以iframe举例
+      ,title: '增加二级药品'
+      ,area: ['600px', '400px']
+      ,shade: 0
+      ,maxmin: true
+      
+      ,content: '<%=basePath%>/drugType/addSecondTypeBefor.action'
+     
+    });
+  }
+	<%-- function addFirstTypeBefor() {
 		window.location.href="<%=basePath%>/drugType/addFirstTypeBefor.action";
-	}
-	function addSecondTypeBefor() {
+	} --%>
+	<%-- function addSecondTypeBefor() {
 		window.location.href="<%=basePath%>/drugType/addSecondTypeBefor.action";
-	}
+	} --%>
+	function updateSmallType(smallTypeId){
+	    var that = this; 
+	    //多窗口模式，层叠置顶
+	    layer.open({
+	      type: 2 //此处以iframe举例
+	      ,title: '更新二级药品'
+	      ,area: ['600px', '400px']
+	      ,shade: 0
+	      ,maxmin: true
+	      ,content: '<%=basePath%>/drugType/updateJsp.action?smallTypeId='+smallTypeId
+	     
+	    });
+	  }
 	
-	
-	//更新一个二级类别
+	<%-- //更新一个二级类别
 	function updateSmallType(smallTypeId){
 		window.location.href="<%=basePath%>/drugType/updateJsp.action?smallTypeId="+smallTypeId;
-	}
+	} --%>
 	//删除一个二级类别
 	function delSmallType(smallTypeId){
 		if(window.confirm("确定删除该行信息？")){

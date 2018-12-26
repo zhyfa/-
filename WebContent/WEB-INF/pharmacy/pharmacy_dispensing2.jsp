@@ -24,6 +24,10 @@
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
 </head>
+<style>
+#con{margin-top:30px;margin-left:100px}
+#tb1 input{width:200px;height:35px}
+</style>
 <script type="text/javascript">
 function aaa(){
 	console.log("1111");
@@ -55,40 +59,23 @@ $(document).ready(function(){
 	
 </script>
 <body>
-	药品:
-	<select id="drug_id" name="drug_id">
-		<option value="">请选择药品</option>
-		<c:forEach items="${requestScope.inventoryss}" var="inventory">
-			<option value="${inventory.drug_id}">${inventory.drug_name}</option>
-		</c:forEach>
-	</select>
+	<div id="con">
+	<table id="tb1">
+		<tr>
+			<td>药品:</td>
+			<td>
+				<select id="drug_id" name="drug_id">
+					<option value="">请选择药品</option>
+					<c:forEach items="${requestScope.inventoryss}" var="inventory">
+						<option value="${inventory.drug_id}">${inventory.drug_name}</option>
+					</c:forEach>
+				</select>
+			</td>
+		</tr>
+	</table>
 	<form name="saleForm" id="saleForm">
 	</form>
-<!-- 	<div> -->
-<!-- 		<input type="button" onclick="DelRow();" value="删除"> <input -->
-<!-- 			type="button" onclick="AddRow();" value="添加"> <input -->
-<!-- 			type="button" value="提交" onclick="submitForm()"> <input -->
-<!-- 			type="button" value="生成入库单" onclick="submitTable()"> -->
-<!-- 	</div> -->
-<!-- 	<div class=""> -->
-<!-- 		<input type="hidden" id="hid" name="hid" /> -->
-<!-- 		<table id="tab1" class="detailList" border="1"> -->
-<!-- 			<thead> -->
-<!-- 				<tr> -->
-<!-- 					<th>序号</th> -->
-<!-- 					<th>采购单编号</th> -->
-<!-- 					<th>药品编号</th> -->
-<!-- 					<th>药品名称</th> -->
-<!-- 					<th>生产厂家</th> -->
-<!-- 					<th>生产日期</th> -->
-<!-- 					<th>生产批号</th> -->
-<!-- 					<th>入库数量</th> -->
-<!-- 				</tr> -->
-<!-- 			</thead> -->
-<!-- 			<tbody id="tbody"></tbody> -->
-<!-- 		</table> -->
-<!-- 	</div> -->
-	<%-- 	${requestScope.inventoryss } --%>
+</div>
 </body>
 
 </html>

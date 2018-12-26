@@ -9,25 +9,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
-
-<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 
 <style type="text/css">
-#page {
-	position: absolute;
-	left: 200px;
-	top: 350px;
-}
+
 </style>
 </head>
 <body>
 <body>
-	<table border="1" width="80%" align="center" class="table">
+	<table class="layui-table">
 		<caption>药房设置药品最低存量</caption>
 		<thead>
 			<tr>

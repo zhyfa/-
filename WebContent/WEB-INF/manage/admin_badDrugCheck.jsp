@@ -21,7 +21,7 @@
 <style type="text/css">
 caption{font-size:24px}
 #title{font-size:26px;text-align:left}
-#btnImport{text-align:right;margin-right:30px}
+#btnImport{text-align:right;padding-right:30px}
 </style>
 <body>
 <table width="100%" style="margin-top:40px">

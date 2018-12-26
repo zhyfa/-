@@ -39,7 +39,7 @@ ul{list-style-type:none;height:40px;margin-top:15px;padding:5px; }
 	ul>li>ul>li{display:inline;margin-left:20px}
 	/* ul{display:inline;margin-left:20px} */
 	input:hover{color:#3CB371}
-	ul.ztree>li{background: #dae6f0;height:55px;}
+	ul.ztree>li{height:45px;}
 </style>
 <script>
 $(document).ready(function(){

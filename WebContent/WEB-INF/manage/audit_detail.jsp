@@ -31,7 +31,6 @@ caption{font-size:24px}
 <body>
 	<table class="layui-table">
 		<caption>采购单明细</caption>
-		
 		<tr>
 			<th>明细单编号</th>
 			<td>${requestScope.purchase.AUDITSDETAIL_ID}</td>

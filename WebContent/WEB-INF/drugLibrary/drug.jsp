@@ -18,25 +18,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="expires" content="0">    
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-
 <script src="<%=basePath%>/js/jquery.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.core.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <style>
-ul li {
-	list-style-type: none;
-	margin: 8px 20px;
-}
-a {
-	text-decoration:none;
-}
-#first{
-float:left;
-}
-#second{
-float:left;
-}
+#myForm input{width:200px;height:35px; border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;}
+#myForm select{width:200px;height:35px;border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;}
+#tb1{width:100%;margin-top:30px}
+#td1{text-align:left;font-size:26px}
+#td2{text-align:right; padding-right:15px}
 </style>
 <script>
 $(document).ready(function(){
@@ -65,7 +59,13 @@ function secondType() {
 </head>
 
 <body>
-<button onclick="addDrugBefore()">添加药品</button>
+	<table id="tb1">
+		<tr>
+			<td id="td1">药品列表</td>
+			<td id="td2"><button class="layui-btn" onclick="addDrugBefore()"><i class="layui-icon">&#xe608;</i>添加药品</button> </td>
+		</tr>
+	</table>
+<!-- <button class="layui-btn" onclick="addDrugBefore()">添加药品</button> -->
 <form id="myForm" action="<%=basePath%>/drug/toDrugJSP.action" method="post">
 		药品名字：<input type="text" name="drug_name" id="drug_name" value='${requestScope.drug_name}'>&nbsp;
 		药品列表：<select id="drugSecondType" name="smalltype_id" >
@@ -75,10 +75,10 @@ function secondType() {
 					</c:forEach>
 				</select>&nbsp;
 		药品功能：<input type="text" name="illustrate" id="illustrate" value="${requestScope.illustrate}">&nbsp;
-		<input type="submit" value="搜索"><br />
+		<input class="layui-btn" type="submit" value="搜索" style="width:80px"><br />
 </form>
-	<table border="1" width="80%">
-		<caption>药品列表</caption>
+	<table class="layui-table">
+		<%-- <caption>药品列表</caption> --%>
 		<thead>
 			<th>序号</th>
 			<th>药品名称</th>
@@ -112,10 +112,10 @@ function secondType() {
 					<td>${d.USE_METHOD}</td>
 					<td>${d.DRUG_ALIAS}</td>
 					<td>${d.ILLUSTRATE}</td>
-					<td>${d.IRRADIATED}</td>
-					<td>
-						<a href="#" onclick="toUpdateDrugJSP(${d.DRUG_ID})">修改</a> 
-						<a href="#" onclick="delDrug(${d.DRUG_ID})">删除</a>
+					<td >${d.IRRADIATED}</td>
+					<td width="150px">
+						<button class="layui-btn layui-btn-xs" onclick="toUpdateDrugJSP(${d.DRUG_ID})"><i class="layui-icon">&#xe642;</i>修改</button> 
+						<button class="layui-btn layui-btn-xs layui-btn-danger" onclick="delDrug(${d.DRUG_ID})"><i class="layui-icon">&#xe640;</i>删除</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -138,14 +138,41 @@ function secondType() {
 	
 </body>
 <script>
-function addDrugBefore(){
+function addDrugBefore(auditsdetail_id){
+    var that = this; 
+    //多窗口模式，层叠置顶
+    layer.open({
+      type: 2
+      ,title: '增加药品'
+      ,area: ['600px', '400px']
+      ,shade: 0
+      ,maxmin: true
+      ,content: '<%=basePath%>/drug/toAddDrugJSP.action'
+     
+    });
+  }
+<%-- function addDrugBefore(){
 	window.location.href="<%=basePath%>/drug/toAddDrugJSP.action";
-}
+} --%>
+
 function toUpdateDrugJSP(drug_id){
+    var that = this; 
+    //多窗口模式，层叠置顶
+    layer.open({
+      type: 2
+      ,title: '更新药品信息'
+      ,area: ['600px', '400px']
+      ,shade: 0
+      ,maxmin: true
+      ,content: '<%=basePath%>/drug/toUpdateDrugJSP.action?drug_id='+drug_id
+     
+    });
+  }
+<%-- function toUpdateDrugJSP(drug_id){
 	//alert(drug_id);
 	window.location.href="<%=basePath%>/drug/toUpdateDrugJSP.action?drug_id="+drug_id;
 	window.event.returnValue=false;
-}
+} --%>
 function delDrug(drug_id){
 	if(window.confirm('确定要删除吗')){
 			$.ajax({

@@ -20,17 +20,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 
 <script src="<%=basePath%>/js/jquery.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.core.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/ztree/jquery.ztree.excheck.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/css/zTreeStyle.css"/>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <style>
-ul li {
-	list-style-type: none;
-	margin: 8px 0;
-}
-a {
-	text-decoration:none;
-}
+.info{margin-top:20px}
+.info input{width:200px;height:35px; border:0.5px solid #E6E6FA;
+			border-radius: 3px 3px 3px 3px;margin-top:5px;}
+.info .td{text-align:right;font-size:16px;padding-right:10px}
+#father_id{witdh:200px;height:32px; font-size:14px; border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;}
+#con{margin-left:100px;}
 </style>
 <script>
 
@@ -38,22 +40,27 @@ a {
 </head>
 
 <body>
-<div>
-<div>
-
-	类别名称：<input type="text" id="smalltype_name" name="smalltype_name">
-	<span id="showMeg"></span>
-	<br />
-	所属类别:
-		<select id="father_id" name="father_id">
-			<option>请选择</option>
-			<c:forEach items="${requestScope.firstMenu}" var="f">
-				<option value="${f.BIGTYPE_ID}" selected="${requestScope.drugType.BIGTYPE_ID}">${f.BIGTYPE_NAME}</option>
-			</c:forEach>
-		</select>
-	<br />
-	<input type="button" onclick="add()" value="确定">
-	<input type="button" value="返回" onclick="javascript:history.back(-1);">
+<div id="con">
+	<table class="info">
+		<tr>
+		<td class="td">
+		类别名称：<input type="text" id="smalltype_name" name="smalltype_name">
+		<span id="showMeg"></span>
+		</td>
+		<td>
+		所属类别:
+			<select id="father_id" name="father_id">
+				<option>请选择</option>
+				<c:forEach items="${requestScope.firstMenu}" var="f">
+					<option value="${f.BIGTYPE_ID}" selected="${requestScope.drugType.BIGTYPE_ID}">${f.BIGTYPE_NAME}</option>
+				</c:forEach>
+			</select>
+		<button class="layui-btn" onclick="add()" ><i class="layui-icon ">&#xe605;</i>确定</button>
+		<button class="layui-btn" onclick="javascript:history.back(-1);"><i class="layui-icon ">&#xe65c;</i>返回</button>
+		</td>
+		</tr>
+	</table>
+	</div>
 </body>
 <script>
 
@@ -86,7 +93,7 @@ function add() {
 					alert("添加失败");
 				}
 				//跳回药品种类列表页
-				window.location.href="<%=basePath%>/drugType/toOtherJsp.action";
+				parent.window.location.href="<%=basePath%>/drugType/toJSP.action";
 			}
 		});
 }

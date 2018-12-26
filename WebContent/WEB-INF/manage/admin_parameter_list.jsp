@@ -39,7 +39,7 @@ caption{font-size:24px}
 				</td>
 				<td calss="td">参数值：</td>
 				<td colspan="2"><input type="text" name="parameter_value" id="parameter_value" value="${param.parameter_value}"> 
-					<input type="submit" value="搜索" class="layui-btn" id="btnSearch"> 
+					<input type="submit" value="<i class="搜索" class="layui-btn" id="btnSearch"> 
 					<input type="button" id="addButton"  class="layui-btn" onclick="parameterAdd()" value="新增参数"> 
 				</td>
 			</tr>
@@ -90,9 +90,22 @@ caption{font-size:24px}
 </body>
 
 <script type="text/javascript">
-function parameterAdd(){
+<%-- function parameterAdd(){
 	window.location.href="<%=basePath%>/parameter/intoAddjsp.action";
-}
+} --%>
+
+function parameterAdd(){
+    var that = this; 
+    //多窗口模式，层叠置顶
+    layer.open({
+      type: 2 //此处以iframe举例
+      ,title: '新增参数'
+      ,area: ['600px', '400px']
+      ,shade: 0
+      ,maxmin: true
+      ,content: '<%=basePath%>/parameter/intoAddjsp.action'
+    });
+  }
 function delParameter(parameter_id){
 	if(confirm('确定要删除吗')){
 		$.ajax({

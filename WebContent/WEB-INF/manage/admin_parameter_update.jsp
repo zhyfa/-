@@ -54,7 +54,6 @@ caption{font-size:24px}
 				<td class="td"></td>
 				<td colspan="2">
 				<button type="button" class="layui-btn" onclick="updateParameter()"><i class="layui-icon ">&#xe642;</i>修改</button>
-				<button type="button" class="layui-btn" onclick="javascript:history.back(-1);"><i class="layui-icon ">&#xe65c;</i>返回</button>
 				</td>
 			</tr>
 		</table>
