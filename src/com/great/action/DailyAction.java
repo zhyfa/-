@@ -5,27 +5,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
+import com.great.bean.Admin;
+import com.great.bean.Banned;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
 import com.great.bean.Page;
+import com.great.bean.PharmacyReturn;
+import com.great.bean.Reimburse;
 import com.great.bean.SaleNum;
+import com.great.bean.Sold;
 import com.great.service.DrugService;
 import com.great.service.InventoryService;
+
+import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("/daily")
 public class DailyAction {
-	public ArrayList<SaleNum> orders = new ArrayList<>();
 	@Autowired
 	private InventoryService inventoryService;
 	@Autowired
@@ -37,7 +46,7 @@ public class DailyAction {
 	 * @param pageIndex
 	 * @return
 	 */
-	
+
 	@RequestMapping("/returnBack.action")
 	public ModelAndView returnBack(Integer pageIndex) {
 		if (pageIndex == null) {
@@ -62,26 +71,51 @@ public class DailyAction {
 	 */
 	@RequestMapping("/getInventorys.action")
 	public ModelAndView getInventorys(@Param(value = "drug_id") Integer drug_id) {
-
+//		if(pageIndex==null) {
+//			pageIndex=1;
+//		}
+//		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
 		List<Inventory> inventorys = inventoryService.getInventorysByDrugId(drug_id);
+//		InfoPage page = new InfoPage(inventorys);
 		ModelAndView andView = new ModelAndView();
 		andView.addObject("inventorys", inventorys);
+//		andView.addObject("page", page);
+//		andView.addObject("drug_id1", drug_id);
 		andView.setViewName("pharmacy/inventory_returnToStock");
 		return andView;
 	}
 
 	/**
-	 * @RequestMapping(value =
-	 *                       "/returnBackToStock.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-	 *                       public @ResponseBody String parameterAdd(Parameter
-	 *                       parameter) { returnBackToStock.action
+	 * jyf 退库申请
 	 */
 	@RequestMapping(value = "/returnBackToStockRequest.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody int returnBackToStock(Integer inventory_id) {
-		int res = inventoryService.returnStockRequest(inventory_id);
-		return res;
+	public @ResponseBody int returnBackToStock(HttpServletRequest request ,PharmacyReturn pharmacyReturn) {
+		Admin admin = (Admin) request.getSession().getAttribute("admin");
+		pharmacyReturn.setAdmin_id(admin.getAdmin_id());
+		int res = inventoryService.returnStockRequest(pharmacyReturn);
+		return 1;
 	}
-
+	//returnBackList
+	@RequestMapping("/returnBackList.action")
+	public ModelAndView returnBackList(Integer pageIndex) {
+		if(pageIndex==null) {
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<PharmacyReturn> pharmacyReturns = inventoryService.getPharmacyReturns(null);
+		InfoPage page = new InfoPage(pharmacyReturns);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("pharmacyReturns", pharmacyReturns);
+		andView.addObject("page", page);
+		andView.setViewName("pharmacy/inventory_pharmacyReturnList");
+		return andView;
+	}
+	//revokeRequestReturnBack  //撤销  申请  退库
+	@RequestMapping(value = "/revokeRequestReturnBack.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int revokeRequestReturnBack(PharmacyReturn pharmacyReturn) {
+		int res = inventoryService.revokeRequestReturnBack(pharmacyReturn);
+		return 1;
+	}
 	// 药库端 审核 returnStockReview.action
 	@RequestMapping("/returnStockReviewList.action")
 	public ModelAndView returnStockReview(Integer pageIndex) {
@@ -89,19 +123,21 @@ public class DailyAction {
 			pageIndex = 1;
 		}
 		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
-		List<Inventory> inventorys = inventoryService.getInventorysforStock();
-		InfoPage page = new InfoPage(inventorys);
+		List<PharmacyReturn> pharmacyReturns = inventoryService.getPharmacyReturns(null);
+		InfoPage page = new InfoPage(pharmacyReturns);
 		ModelAndView andView = new ModelAndView();
-		andView.addObject("inventorys", inventorys);
+		andView.addObject("pharmacyReturns", pharmacyReturns);
 		andView.addObject("page", page);
 		andView.setViewName("drugLibrary/stock_returnStockReviewList");
 		return andView;
 	}
 
 	@RequestMapping(value = "/returnBackToStockPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody int returnBackToStockPass(Inventory inventory) {
-		int res = inventoryService.returnStockRequestPass(inventory);
-		if (res == 1) {
+	public @ResponseBody int returnBackToStockPass(PharmacyReturn pharmacyReturn) {
+		Inventory inventory = inventoryService.getInventoryByInventoryId(pharmacyReturn);
+		pharmacyReturn.setDrug_id(inventory.getDrug_id());
+		int res = inventoryService.returnStockRequestPass(pharmacyReturn);
+		if (res==1) {
 			return 1;
 		} else {
 			return 2;
@@ -109,9 +145,9 @@ public class DailyAction {
 	}
 
 	@RequestMapping(value = "/returnBackToStockNotPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody int returnBackToStockNotPass(Integer inventory_id) {
-		int res = inventoryService.returnStockRequestNotPass(inventory_id);
-		if (res == 1) {
+	public @ResponseBody int returnBackToStockNotPass(PharmacyReturn pharmacyReturn) {
+//		int res = inventoryService.returnStockRequestNotPass(inventory_id);
+		if (true) {
 			return 1;
 		} else {
 			return 2;
@@ -146,15 +182,35 @@ public class DailyAction {
 
 	@RequestMapping(value = "/badDrugRequest.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public int badDrugRequest(Integer inventory_id) {
-		int res = inventoryService.badDrugRequest(inventory_id);
-		if (res == 1) {
-			return 1;
-		} else {
-			return 2;
-		}
+	public int badDrugRequest(HttpServletRequest request , Reimburse reimburse) {
+		Admin admin = (Admin) request.getSession().getAttribute("admin");
+		reimburse.setAdmin_id(admin.getAdmin_id());
+		int res = inventoryService.badDrugRequest(reimburse);
+		return res;
 	}
-
+	//badDrugList  报损详情
+	@RequestMapping("/badDrugList.action")
+	public ModelAndView badDrugList(Integer pageIndex) {
+		if(pageIndex==null) {
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Reimburse> reimburses = inventoryService.getReimburses(null);
+		InfoPage page = new InfoPage(reimburses);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("reimburses", reimburses);
+		andView.addObject("page", page);
+		andView.setViewName("pharmacy/pharmacy_reimburse");
+		return andView;
+	}
+	
+	//revokeRequest 撤销报损
+	@RequestMapping(value = "/revokeRequest.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public int revokeRequest( Reimburse reimburse) {
+		int res = inventoryService.revokeRequest(reimburse);
+		return res;
+	}
 	// badDrugCheck admin 报损审批
 	@RequestMapping("/badDrugCheck.action")
 	public ModelAndView badDrugCheck(Integer pageIndex) {
@@ -162,31 +218,32 @@ public class DailyAction {
 			pageIndex = 1;
 		}
 		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
-		List<Inventory> inventorys = inventoryService.getInventorysForAdmin();
-		InfoPage page = new InfoPage(inventorys);
+//		List<Inventory> inventorys = inventoryService.getInventorysForAdmin();
+		List<Reimburse> reimburses = inventoryService.getReimburses(null);
+		InfoPage page = new InfoPage(reimburses);
 		ModelAndView andView = new ModelAndView();
-		andView.addObject("inventorys", inventorys);
+		andView.addObject("reimburses", reimburses);
 		andView.addObject("page", page);
 		andView.setViewName("manage/admin_badDrugCheck");
 		return andView;
 	}
 
-	// badDrugPass.action badDrugNotPass.action
+	// badDrugPass.action badDrugNotPass.action     dmin 报损审批   同意
 	@RequestMapping(value = "/badDrugPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public int badDrugPass(Inventory inventory) {
-		int res = inventoryService.badDrugPass(inventory);
+	public int badDrugPass(Integer reimburse_id) {
+		int res = inventoryService.badDrugPass(reimburse_id);
 		if (res == 1) {
 			return 1;
 		} else {
 			return 2;
 		}
 	}
-
+//dmin 报损审批   不同意
 	@RequestMapping(value = "/badDrugNotPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public int badDrugNotPass(Integer inventory_id) {
-		int res = inventoryService.badDrugNotPass(inventory_id);
+	public int badDrugNotPass(Integer reimburse_id) {
+		int res = inventoryService.badDrugNotPass(reimburse_id);
 		if (res == 1) {
 			return 1;
 		} else {
@@ -297,28 +354,67 @@ public class DailyAction {
 		return andView;
 	}
 
-	// getDrug
+	// getInventoryByIdForSold
 	@RequestMapping(value = "/getInventoryByIdForSold.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody List<Inventory> getDrug(Integer drug_id) {
-		List<Inventory> inventorys = inventoryService.getInventorysByDrugIdForSold(drug_id);
+	public @ResponseBody List<Drug> getDrug(Integer drug_id) {
+		List<Drug> inventorys = inventoryService.getInventorysByDrugIdForSold(drug_id);
 		return inventorys;
 	}
-
-	// soldDrug
-	@RequestMapping(value = "/soldDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody Integer soldDrug(Integer inventory_id, Integer saleNum) {
-		SaleNum saleNums = new SaleNum();
-		saleNums.setInventory_id(inventory_id);
-		saleNums.setSaleNum(saleNum);
-		orders.add(saleNums);
-		return saleNum;
+	// 效验 禁忌 药
+	@RequestMapping(value = "/checkBanned.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int checkBanned(@RequestParam String  data) {
+		JSONArray ja = JSONArray.fromObject(data); 
+		List<Map<String,String>> list=new ArrayList();
+		for(Object jstr:ja){
+	        list.add((Map<String, String>) jstr);
+	    }
+		for(int i=0;i<list.size();i++) {
+			Integer drug_id =Integer.valueOf(list.get(i).get("drug_id"));
+			for(int j=0;j<list.size();j++) {
+				Integer drug_id1 =Integer.valueOf(list.get(j).get("drug_id"));
+				Banned banned = new Banned();
+				banned.setPharmacy_id(drug_id);
+				banned.setPharmacy_id1(drug_id1);
+				List<Map<String, Object>> checkBan = inventoryService.checkBan(banned);
+				if(checkBan.size()>0) {
+					return 2; //禁忌药
+				}
+			}
+		}
+		return 1;
 	}
 
+
 	@RequestMapping(value = "/soldOrder.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody Integer soldOrder() {
-		for (int i = 0; i < orders.size(); i++) {
-			SaleNum saleNum = orders.get(i);
-			inventoryService.UpdateSaleNum(saleNum);
+	public @ResponseBody Integer soldOrder(HttpServletRequest request,  @RequestParam String data) {
+		Admin admin = (Admin)request.getSession().getAttribute("admin");
+		
+		JSONArray ja = JSONArray.fromObject(data); 
+		List<Map<String,String>> list=new ArrayList();
+		for(Object jstr:ja){
+	        list.add((Map<String, String>) jstr);
+	    }
+		int j = 0;
+		Sold sold = new Sold();
+		for(int i=0;i<list.size();i++) {
+			Integer inventory_id = Integer.valueOf(list.get(i).get("inventory_id"));
+			Integer saleNum = Integer.valueOf(list.get(i).get("saleNum"));
+			Integer drug_id = Integer.valueOf(list.get(i).get("drug_id"));
+			Drug drug = drugService.getDrugByDrudId(drug_id);
+			ArrayList<Integer> birPrices = inventoryService.getBirPrice(drug_id);
+			
+			sold.setBir_price(birPrices.get(0));
+			sold.setSold_num(saleNum);
+			sold.setInventory_id(inventory_id);
+			sold.setDrug_id(drug_id);
+			sold.setAdmin_id(admin.getAdmin_id());
+			sold.setPrice(drug.getPrice()*drug.getDiscount()/100);
+			sold.setPerson("购药人");
+			sold.setPurpose(drug.getPsychotropics());
+			j+=inventoryService.UpdateSaleNum(sold);
+		}
+		if(j<list.size()) {
+			 return 2;
 		}
 		return 1;
 	}

@@ -21,6 +21,9 @@ public class Inventory {
 	private String shiji;//导出excel时预留实际数量的列
 	private String beizhu;//导出excel时预留备注的列
 	
+	
+	
+	
 	public Integer getInventory_min() {
 		return inventory_min;
 	}

@@ -9,11 +9,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath %>/js/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 </head>
 <body>
 <button onclick="javascript:history.back(-1);">返回</button>
-<table border="1">
+<table border="1"  class="table">
 	<caption></caption>
 	<thead>
 		<th>序号</th>
@@ -28,7 +30,8 @@
 	</thead>
 	<tbody>
 		<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
-			<tr>
+			<!-- var demo = {"active","success","warning","danger"}; -->
+			<tr class="active">
 				<td>${st.count }</td>
 				<td>${inventory.inventory_id }</td>
 				<td>${inventory.drug_id }</td>
@@ -38,24 +41,45 @@
 				<td>${inventory.parameter_name }</td>
 				<td>${inventory.cdate }</td>
 				<td>
-					<button onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id })"  ${inventory.state!=1?'hidden':'' }>退库申请</button>
+					<button onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id },${inventory.inventory_number },'${inventory.production_date }')"  ${inventory.state!=1?'hidden':'' }>退库申请</button>
 					<button onclick="createReturnBackForm()" ${inventory.state!=4?'hidden':'' }>生成水印单</button>
 				</td>
 			</tr>
 		</c:forEach>
 	</tbody>
 </table>
+
 <%-- ${requestScope.inventorys } --%>
 </body>
 <script type="text/javascript">
-function returnBackToStockRequest(inventory_id,drug_id){
-	if(confirm("确认退库嘛？")){
+function returnBackToStockRequest(inventory_id,drug_id,inventory_number,production_date){
+	var drug_number = prompt('输入退库数量：', 1);
+	var reg = /^[0-9]*$/;
+	if(drug_number==null){
+		return false;
+	}
+	if(drug_number>inventory_number){
+		alert("大于剩余库存");
+		return false;
+	}
+	if(drug_number.length>20 || drug_number=="" || drug_number==0){
+		alert("输入错误,请输入数字");
+		return false;
+	}
+	if(!reg.test(drug_number)){
+		alert("请输入数字");
+		return false;
+	}
+	var illustrate = prompt('输入退库说明：', '卖不出去');
+	if(illustrate==null){
+		return false;
+	}
 		$.ajax({
 			type : "post",
 			url : "<%=basePath%>/daily/returnBackToStockRequest.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"inventory_id":inventory_id},
+			data : {"inventory_id":inventory_id,"drug_id":drug_id,"drug_number":drug_number,"birthday":production_date,"illustrate":illustrate},
 			success : function(res) {
 				if(res==1){
 					alert("申请成功");
@@ -65,7 +89,7 @@ function returnBackToStockRequest(inventory_id,drug_id){
 				}
 			}
 		});
-	}
+	
 }
 function createReturnBackForm(){
 	alert("111");

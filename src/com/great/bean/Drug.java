@@ -30,6 +30,7 @@ public class Drug implements Serializable{
 	
 	private Integer stock_number;//药库库存数量
 	private Integer inventory_number;//药房库存数量
+	private Integer inventory_id;//药房库存数量
 	
 	private String bigtype_name;//大类别名字
 	private String smalltype_name;//小类别名字
@@ -219,6 +220,12 @@ public class Drug implements Serializable{
 	}
 	public void setCdate(String cdate) {
 		this.cdate = cdate;
+	}
+	public Integer getInventory_id() {
+		return inventory_id;
+	}
+	public void setInventory_id(Integer inventory_id) {
+		this.inventory_id = inventory_id;
 	}
 
 

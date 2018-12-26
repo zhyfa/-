@@ -25,6 +25,7 @@
 </style>
 </head>
 <body>
+<a href="<%=basePath%>/daily/returnBackList.action">退库申请详情</a>
 <table border="1" class="table">
 	<caption>药房退库</caption>
 	<thead>

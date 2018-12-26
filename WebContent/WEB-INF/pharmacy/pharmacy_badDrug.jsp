@@ -26,7 +26,7 @@
 </style>
 </head>
 <body>
-<button onclick="javascript:history.back(-1);">返回</button>
+<a href="<%=basePath%>/daily/badDrugList.action">报损详情</a>
 <table border="1" class="table">
 	<caption>药房报损</caption>
 	<thead>
@@ -74,7 +74,6 @@
 </body>
 <script type="text/javascript">
 	function returnBack(drug_id){
-		alert(drug_id);
 		window.location.href="<%=basePath%>/daily/badDrugRequestBefore.action?drug_id="+drug_id;
 	}
 </script>

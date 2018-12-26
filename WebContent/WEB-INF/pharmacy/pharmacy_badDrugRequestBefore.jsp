@@ -42,7 +42,7 @@
 				<td>${inventory.parameter_name }</td>
 <%-- 				<td>${inventory.cdate }</td> --%>
 				<td>
-					<button onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id })"  ${inventory.state!=1?'hidden':'' }>报损申请</button>
+					<button onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id },${inventory.inventory_number })"  ${inventory.state!=1?'hidden':'' }>报损申请</button>
 					<button onclick="createReturnBackForm()" ${inventory.state!=7?'hidden':'' }>生成报损水印单</button>
 				</td>
 			</tr>
@@ -52,15 +52,34 @@
 <%-- ${requestScope.inventorys } --%>
 </body>
 <script type="text/javascript">
-function returnBackToStockRequest(inventory_id,drug_id){
-	
-	if(confirm("确认报损嘛？")){
+function returnBackToStockRequest(inventory_id,drug_id,inventory_number){
+	var reimburse_num = prompt('输入报损数量：', 1);
+	if(reimburse_num==null){
+		return false;
+	}
+	var reg = /^[0-9]*$/;
+	if(!reg.test(reimburse_num) ){
+		alert("请输入数字");
+		return false;
+	}
+	if(reimburse_num.length>20 || reimburse_num=="" || reimburse_num==undefined || reimburse_num==0){
+		alert("输入错误，请重新输入");
+		return false;
+	}
+	if(reimburse_num>inventory_number){
+		alert("大于剩余值");
+		return false;
+	}
+	var illustrate = prompt('输入报损说明：', '损坏');
+	if(illustrate==null){
+		return false;
+	}
 		$.ajax({
 			type : "post",
 			url : "<%=basePath%>/daily/badDrugRequest.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"inventory_id":inventory_id},
+			data : {"inventory_id":inventory_id,"reimburse_num":reimburse_num,"illustrate":illustrate,"drug_id":drug_id},
 			success : function(res) {
 				alert(res);
 				if(res==1){
@@ -71,7 +90,7 @@ function returnBackToStockRequest(inventory_id,drug_id){
 				}
 			}
 		});
-	}
+	
 }
 function createReturnBackForm(){
 	alert("111");

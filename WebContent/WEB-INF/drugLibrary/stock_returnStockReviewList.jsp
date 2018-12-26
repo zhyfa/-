@@ -31,34 +31,35 @@ caption{font-size:24px}
 		</td>
 	</tr>
 	</table>
+
 <table class="layui-table">
 	
 	<thead>
 		<th>序号</th>
-		<th>药房库存id</th>
-		<th>药品id</th>
-		<th>药品名字</th>
-		<th>生产日期</th>
-		<th>数量</th>
+		<th>药房退药id</th>
+		<th>药库库存id</th>
+		<th>药名</th>
+		<th>退库人</th>
+		<th>退库数量</th>
+		<th>退库说明</th>
 		<th>状态</th>
-		<th>创建日期</th>
 		<th>操作</th>
 	</thead>
 	<tbody>
-			<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
+			<c:forEach items="${requestScope.pharmacyReturns }" var="pharmacyReturn" varStatus="st">
 				<tr class="active">
 					<td>${st.count }</td>
-					<td>${inventory.inventory_id}</td>
-					<td>${inventory.drug_id}</td>
-					<td>${inventory.drug_name}</td>
-					<td>${inventory.production_date}</td>
-					<td>${inventory.inventory_number}${inventory.spec==1?'盒':'瓶'}</td>
-					<td>${inventory.parameter_name}</td>
-					<td>${inventory.cdate }</td>
+					<td>${pharmacyReturn.pharmacy_return_id }</td>
+					<td>${pharmacyReturn.inventory_id }</td>
+					<td>${pharmacyReturn.drug_name }</td>
+					<td>${pharmacyReturn.admin_name }</td>
+					<td>${pharmacyReturn.drug_number }</td>
+					<td>${pharmacyReturn.illustrate }</td>
+					<td>${pharmacyReturn.parameter_name }</td>
 					<td>
-						<button class="layui-btn layui-btn-xs" onclick="returnBackToStockPass(${inventory.inventory_id },${inventory.drug_id },${inventory.admin_id },${inventory.inventory_number },'${inventory.production_date }')" ${inventory.state!=3?'hidden':''}><i class="layui-icon">&#xe605;</i>通过</button>
-						<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="returnBackToStockNotPass(${inventory.inventory_id })"  ${inventory.state!=3?'hidden':'' }><i class="layui-icon">&#x1006;</i>驳回</button>
-
+						<button onclick="returnBackToStockPass(${pharmacyReturn.pharmacy_return_id },${pharmacyReturn.inventory_id },${pharmacyReturn.drug_number })" ${pharmacyReturn.state!=1?'hidden':'' }>同意退库</button>
+						<button onclick="returnBackToStockNotPass(${pharmacyReturn.pharmacy_return_id })" ${pharmacyReturn.state!=1?'hidden':'' }>驳回退库</button>
+						<button onclick="createReturnBackForm()" ${pharmacyReturn.state==1?'hidden':'' }>生成水印单</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -81,14 +82,14 @@ caption{font-size:24px}
 	</div>
 </body>
 <script type="text/javascript">
-function returnBackToStockPass(inventory_id,drug_id,admin_id,inventory_number,production_date){
+function returnBackToStockPass(pharmacy_return_id,inventory_id,drug_number){
 	if(confirm("确认审核通过嘛？")){
 		$.ajax({
 			type : "post",
 			url : "<%=basePath%>/daily/returnBackToStockPass.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"inventory_id":inventory_id,"drug_id":drug_id,"admin_id":admin_id,"inventory_number":inventory_number,"production_date":production_date},
+			data : {"pharmacy_return_id":pharmacy_return_id,"inventory_id":inventory_id,"drug_number":drug_number},
 			success : function(res) {
 				if(res==1){
 					alert("通过成功");
@@ -101,14 +102,14 @@ function returnBackToStockPass(inventory_id,drug_id,admin_id,inventory_number,pr
 	}
 	
 }
-function returnBackToStockNotPass(inventory_id){
+function returnBackToStockNotPass(pharmacy_return_id){
 	if(confirm("确认驳回申请嘛？")){
 		$.ajax({
 			type : "post",
 			url : "<%=basePath%>/daily/returnBackToStockNotPass.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"inventory_id":inventory_id},
+			data : {"pharmacy_return_id":pharmacy_return_id},
 			success : function(res) {
 				if(res==1){
 					alert("驳回成功");
