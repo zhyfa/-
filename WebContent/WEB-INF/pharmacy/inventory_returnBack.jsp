@@ -9,25 +9,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
 
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
 <script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script src="<%=basePath%>/js/jquery.serializejson.js"></script>
+<script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 
 <style type="text/css">
-#page {
-	position: absolute;
-	left: 200px;
-	top: 350px;
-}
+#tb1{margin-top:30px;width:100%}
+#td1{text-align:left;font-size:24px}
+#td2{text-align:right;padding-right:15px}
 </style>
 </head>
 <body>
-<a href="<%=basePath%>/daily/returnBackList.action">退库申请详情</a>
-<table border="1" class="table">
-	<caption>药房退库</caption>
+<table id="tb1">
+	<tr>
+		<td id="td1">药房退库</td>
+		<td id="td2"><a class="layui-btn" href="<%=basePath%>/daily/returnBackList.action"><i class="layui-icon">&#xe63c;</i>退库申请详情</a></td>
+	</tr>
+</table>
+<table  class="layui-table">
+	<%-- <caption>药房退库</caption> --%>
 	<thead>
 		<tr>
 			<th>序号</th>
@@ -48,7 +54,7 @@
 				<td>${inventory.drug_size }${inventory.drug_unit }/${inventory.spec==1?'盒':'瓶' }</td>
 				<td>${inventory.inventory_number==null?0:inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
 				<td>
-					<button onclick="returnBack(${inventory.drug_id })">退库</button>
+					<button class="layui-btn layui-btn-xs layui-btn-danger" onclick="returnBack(${inventory.drug_id })"><i class="layui-icon">&#xe66c;</i>退库</button>
 				</td>
 			</tr>
 		</c:forEach>

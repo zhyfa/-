@@ -26,85 +26,39 @@
 <script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico"
 	type="image/x-icon" />
-<script type="text/javascript"
-	src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
 <script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <style>
-.infoTb table {
-	white-space: nowrap;
-	width: 90%;
-	font-size: 14px;
+ .infoTb table { white-space: nowrap; width: 95%;font-size: 16px; 
+} 
+.info tr{background-color:#DCDCDC;}
+ .infoTb th{ text-align:left;  border:0.5px solid #E6E6FA;} 
+ .infoTb td{text-align:left; border:0.5px solid #E6E6FA;padding-left:3px}
+ .infoTb select{border:10px}
+ input{width:120px;height:30px; border:0px ;border-radius: 3px 3px 3px 3px;}
+ caption{padding-left:15%}
+ span{color:red}
+.checkBox{width:18px;}
+ table { white-space: nowrap; width: 95%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse;
 }
+ #tab1 th{text-align:center;  border:0.5px solid #E6E6FA;background-color:#DCDCDC;} 
+ td{text-align:center; border:0.5px solid #E6E6FA;padding-left:3px}
 
-.info tr {
-	background-color: #DCDCDC;
-}
-
-.infoTb th {
-	text-align: left;
-	font-family: "微软雅黑";
-	border: 0.5px solid #E6E6FA;
-}
-
-.infoTb td {
-	text-align: left;
-	border: 0.5px solid #E6E6FA;
-}
-
-.infoTb select {
-	border: 10px
-}
-
-input {
-	width: 120px;
-	height: 30px;
-	border: 0px;
-	border-radius: 3px 3px 3px 3px;
-}
-
-caption {
-	padding-left: 15%
-}
-
-button {
-	border: 0px solid #dae6f0;
-	width: 80px;
-	height: 35px;
-	margin-left: 15%
-}
-
-span {
-	color: red
-}
-
-.btn_opt {
-	border: 0px solid #dae6f0;
-	width: 60px;
-	height: 25px;
-	margin-right: 3px
-}
-
-.checkBox {
-	width: 18px;
-}
-
-table {
-	white-space: nowrap;
-	width: 90%;
-	font-size: 14px;
-	border: 1px solid #E6E6FA;
-	border-collapse: collapse;
-}
+#con{margin-left:5%;margin-top:50px} 
 </style>
-<a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list.action">前往基准表列表页</a><br />
+<%-- <a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list.action">前往基准表列表页</a><br />
 <a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list2.action">前往待确认列表页</a><br />
-<a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list3.action">前往已确认列表页</a>
+<a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list3.action">前往已确认列表页</a> --%>
 <body>
-	<p>
-	<h4>请输入此次申请表的编号:</h4><br />
+	<div id="con">
+	<h2>请输入此次申请表的编号:</h2><br />
 	<input type="text" name="ic" id="ic"  style="border:1px solid red;">
 	<br />
 	<form id="myForm">
@@ -112,10 +66,6 @@ table {
 			<tr>
 				<th>药品名称：</th>
 				<td><select id="drug_id" name="drug_id">
-<!-- 						<option value="">请选择</option> -->
-<%-- 						<c:forEach items="${requestScope.drugNames}" var="drugs"> --%>
-<%-- 							<option value="${drugs.DRUG_ID}">${drugs.DRUG_NAME}</option> --%>
-<%-- 						</c:forEach> --%>
 				</select></td>
 				<th>是否特殊药品：</th>
 				<td><input type="text" id="psycho" name="psychotropics"
@@ -135,20 +85,22 @@ table {
 					readonly="readonly"></td>
 			</tr>
 		</table>
-		</p>
 	</form>
 	<div class="table_toolbar">
-		<input type="button" onclick="DelRow();" value="删除"> <input
-			type="button" onclick="AddRow();" value="添加"> <input
-			type="button" value="提交申请" onclick="add()">
+		<button class="layui-btn" onclick="AddRow();" > <i class="layui-icon">&#xe608;</i>添加 </button>
+		<button class="layui-btn layui-btn-danger" onclick="DelRow();" > <i class="layui-icon">&#xe640;</i>删除</button>
+		<button class="layui-btn" onclick="add()"> <i class="layui-icon">&#xe605;</i>提交申请</button>
+		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list.action">前往基准表列表页</a>
+		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list2.action">前往待确认列表页</a>
+		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list3.action">前往已确认列表页</a>
 	</div>
 	<div class="">
 		<input type="hidden" id="hid" name="hid" />
 		<table id="tab1">
 			<thead>
 				<tr>
-					<td width="10px"><input type="checkbox" class="checkBox"
-						title="全选" /></td>
+					<th width="10px"><input type="checkbox" class="checkBox"
+						title="全选" /></th>
 					<th>序号</th>
 					<th>药品名称</th>
 					<th>是否特殊药品</th>
@@ -161,9 +113,7 @@ table {
 			<tbody id="tbody"></tbody>
 		</table>
 	</div>
-	<p>
-	<div id="result"></div>
-	</p>
+	</div>
 </body>
 <script type="text/javascript">
 		var list1=new Array();
@@ -268,24 +218,15 @@ table {
 			
 			var factory_id=document.getElementById('factory_id');
 			var factory_name=factory_id.options[factory_id.selectedIndex].text;//获取文本
-			
-			
-			
 			var psycho = $("#psycho").val();
-			var total =$("#total").val();//同意申请的总数量
-			var allnumber =$("#allnumber").val();//库存的总数量
-			var birthday =$("#birthday").val();
-			var allow=''
-			
-			
+			var total =(Number)($("#total").val());
+			var allnumber =(Number)($("#allnumber").val());
 			if(total>allnumber){
 				alert("申请总量大于库存总量！");
 				return;
 			}
-				
-			
-			
-			
+			var birthday =$("#birthday").val();
+			var allow=''
 			if(total != ''){
 				allow="同意"
 			}else{
@@ -303,7 +244,6 @@ table {
             		"</td><td>"+total+"</td>"+
             		"</td><td>"+allow+"</td></tr>"
             );
-            
         }
         
         
@@ -406,13 +346,11 @@ table {
 			success : function(res) {
 				if(res==0){
 					alert("添加成功");
-					window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action";
+					window.location.href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list2.action";
 				}
 				if(res==1){
 					alert("添加失败");
 				}
-				//跳转至药房端的申请药品列表页
-				//window.location.href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action";
 			}
  		})
 	}

@@ -9,59 +9,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <style>
-#submitForm{
-margin-left: 200px;
-}
+#con{margin-left:100px;margin-top:30px}
+th{text-align:right; margin-left:10px}
+
+input{width:200px;height:30px;  border:0.5px solid #E6E6FA; border-radius: 3px 3px 3px 3px; margin-top:10px}
 </style>
 <body>
+<div id="con">
 <form id="submitForm" class="form-horizontal" role="form">
-	<div class="form-group">
-<!-- 		<label for="lastname" class="col-sm-2 control-label">药品id:</label> -->
-		<div class="col-sm-10">
-			<input type="text" value="${requestScope.drug.drug_id }" name="drug_id" hidden="hidden">
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="lastname" class="col-sm-2 control-label">药品名字：</label>
-		<div class="col-sm-10">
-			<input type="text" value="${requestScope.drug.drug_name }" name="drug_name" readonly="readonly">
-		</div>
-	</div>
-<%-- 	<div class="form-group">
-		<label for="lastname" class="col-sm-2 control-label">大类别：</label>
-		<div class="col-sm-10">
-			<input type="text" value="${requestScope.drug.bigtype_name }" readonly="readonly">
-		</div>
-	</div> --%>
-	<div class="form-group">
-		<label for="lastname" class="col-sm-2 control-label">类别：</label>
-		<div class="col-sm-10">
-			<input type="text" value="${requestScope.drug.smalltype_name }" readonly="readonly">
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="lastname" class="col-sm-2 control-label">规格：</label>
-		<div class="col-sm-10">
-			<input type="text" value="${requestScope.drug.drug_size }${requestScope.drug.drug_unit }/${requestScope.drug.spec==1?'盒':'瓶' }" readonly="readonly">
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="lastname" class="col-sm-2 control-label">药房最低量数：</label>
-		<div class="col-sm-10">
-			<input type="text" value="${requestScope.drug.inventory_min }" name="inventory_min" id="inventory_min">${requestScope.drug.spec==1?'盒':'瓶' }
-		</div>
-	</div>
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			<input type="submit" class="btn btn-default" value="设置药库最低限量" onclick="updateStockMin()">
-		</div>
-	</div>
+	<input type="text" value="${requestScope.drug.drug_id }" name="drug_id" hidden="hidden">
+	<table id="tb1">
+		<tr>
+			<th>药品名字：</th>
+			<td><input type="text" value="${requestScope.drug.drug_name }" name="drug_name" readonly="readonly"></td>
+		</tr>
+		<tr>
+			<th>类别：</th>
+			<td>
+				<input type="text" value="${requestScope.drug.smalltype_name }" readonly="readonly">
+			</td>
+		</tr>
+		<tr>
+			<th>规格：</th>
+			<td>
+				<input type="text" value="${requestScope.drug.drug_size }${requestScope.drug.drug_unit }/${requestScope.drug.spec==1?'盒':'瓶' }" readonly="readonly">
+			</td>
+		</tr>
+		<tr>
+			<th>药房最低量数：</th>
+			<td>
+				<input type="text" value="${requestScope.drug.inventory_min }" name="inventory_min" id="inventory_min">${requestScope.drug.spec==1?'盒':'瓶' }
+			</td>
+		</tr>
+		<tr>
+		<th></th>
+		<td><input class="layui-btn" type="submit" class="btn btn-default" value="设置药库最低限量" onclick="updateStockMin()"></td>
+		</tr>
+	</table>
 </form>
+</div>
 </body>
 <script type="text/javascript">
 function updateStockMin(){

@@ -46,7 +46,7 @@ caption{font-size:24px}
 		<th>操作</th>
 	</thead>
 	<tbody>
-			<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
+			<c:forEach items="${requestScope.reimburses }" var="inventory" varStatus="st">
 				<!-- var demo = {"active","success","warning","danger"}; -->
 				<tr class="success">
 					<td>${st.count }</td>

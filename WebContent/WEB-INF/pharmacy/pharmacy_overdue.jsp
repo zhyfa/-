@@ -10,19 +10,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script src="<%=basePath%>/js/jquery.serializejson.js"></script>
+<script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <style>
-#page {
-	position: absolute;
-	left: 200px;
-	top: 350px;
-}
+caption{font-size:24px}
 </style>
 <body>
-	<table border="1" class="table">
+	<table class="layui-table">
 		<caption>过期</caption>
 		<thead>
 			<tr>
@@ -47,31 +48,12 @@
 						<td>${overdue.drug_name }</td>
 						<td>${overdue.production_date }</td>
 						<td>${overdue.irradiated }个月</td>
-						<td>${overdue.msg }</td>
+						<td style="color: red;">${overdue.msg}</td>
 					</tr>
 				</c:if>
 			</c:forEach>
 		</tbody>
-
 	</table>
-	<!-- 	<div id="page"> -->
-	<%-- 		一共有：${requestScope.page.count }条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --%>
-	<%-- 		${requestScope.page.page }/${requestScope.page.all }页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --%>
-	<%-- 		<a href="<%=basePath%>/earlyWaring/overdue.action?pageIndex=1">首页</a>&nbsp; --%>
-	<!-- 		<a -->
-	<%-- 			href="<%=basePath%>/earlyWaring/overdue.action?pageIndex=${requestScope.page.pre }">上一页</a>&nbsp; --%>
-	<%-- 		<c:forEach items="${requestScope.page.prePages }" var="prePage"> --%>
-	<%-- 			<a href="<%=basePath%>/earlyWaring/overdue.action?pageIndex=${prePage }">${prePage }</a>&nbsp; --%>
-	<%-- 		</c:forEach> --%>
-	<%-- 		<a style="color: black;">${requestScope.page.page }</a>&nbsp; --%>
-	<%-- 		<c:forEach items="${requestScope.page.nextPages }" var="nextPage"> --%>
-	<%-- 			<a href="<%=basePath%>/earlyWaring/overdue.action?pageIndex=${nextPage }">${nextPage }</a>&nbsp; --%>
-	<%-- 		</c:forEach> --%>
-	<!-- 		<a -->
-	<%-- 			href="<%=basePath%>/earlyWaring/overdue.action?pageIndex=${requestScope.page.next }">下一页</a>&nbsp; --%>
-	<!-- 		<a -->
-	<%-- 			href="<%=basePath%>/earlyWaring/overdue.action?pageIndex=${requestScope.page.all }">末页</a>&nbsp; --%>
-	<!-- 	</div> -->
-	<%-- 	${requestScope.overdues } --%>
+
 </body>
 </html>

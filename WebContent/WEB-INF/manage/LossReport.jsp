@@ -17,41 +17,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="expires" content="0">    
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery.min.js"></script>
-<script
-	src="<%=basePath%>/assets/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript"
-	src="<%=basePath%>/assets/x-admin/lib/layui/layui.js"
-	charset="utf-8"></script>
-<script type="text/javascript"
-	src="<%=basePath%>/assets/x-admin/js/xadmin.js"></script>
-<script type="text/javascript" charset="utf8"
-	src="<%=basePath%>/media/js/jquery.js"></script>
-<script type="text/javascript"
-	src="<%=basePath%>/js/jquery-ui.js"></script>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/jquery-ui.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/css/jquery-ui.theme.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/css/style.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/assets/bootstrap/css/bootstrap.css">
-<link rel="shortcut icon"
-	href="<%=basePath%>/assets/x-admin/favicon.ico"
-	type="image/x-icon" />
-<link rel="stylesheet"
-	href="<%=basePath%>/assets/x-admin/css/font.css">
-<link rel="stylesheet"
-	href="<%=basePath%>/assets/x-admin/css/xadmin.css">
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script src="<%=basePath%>/js/jquery.serializejson.js"></script>
+<script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
-
-
+<style>
+#tb1{margin-top:30px;width:100%}
+#td1{text-align:left;font-size:24px}
+#td2{text-align:right;padding-right:15px}
+</style>
 <body>
-	<h1 style="text-align: center;">报损查看界面</h1>
-	<a onclick="a()">导出所有数据</a>
-			<table class="table table-hover"  style="border: 1px solid color:red">
+	<table id="tb1">
+		<tr>
+			<td id="td1">报损查看界面</td>
+			<td id="td2"><a class="layui-btn" onclick="a()"> <i class="layui-icon">&#xe609;</i>导出所有数据</a></td>
+		</tr>
+	</table>
+			<table class="layui-table" >
 					<thead>
 						<tr>
 							<th>报损序号</th>

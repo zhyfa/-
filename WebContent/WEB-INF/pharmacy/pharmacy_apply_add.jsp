@@ -82,8 +82,8 @@
 		</table>
 	</form>
 	<div class="table_toolbar" >
-		<button class="layui-btn layui-btn-danger" onclick="DelRow();"><i class="layui-icon">&#xe640;</i>删除</button>
 		<button class="layui-btn" onclick="AddRow();"><i class="layui-icon">&#xe608;</i>添加</button>
+		<button class="layui-btn layui-btn-danger" onclick="DelRow();"><i class="layui-icon">&#xe640;</i>删除</button>
 		<button class="layui-btn" onclick="add()"><i class="layui-icon">&#xe605;</i>提交申请</button>
 		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/pharmacy_apply_list.action">前往基准表列表页</a>
 		<a class="layui-btn" href="<%=basePath%>/pharmacyApply/pharmacy_apply_list2.action">前往待确认列表页</a>

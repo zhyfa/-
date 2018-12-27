@@ -171,7 +171,7 @@
 						chart.target.textAlign('start')
 						.textBaseline('bottom')
 						.textFont('600 16px Verdana')
-						.fillText('销售总额',x-20,y-20,false,'#c52120')
+						.fillText('销售总额',x-20,y-25,false,'#c52120')
 						.textFont('600 11px Verdana')
 						.fillText('Total',x-20,y-10,false,'#c52120');
 
@@ -179,7 +179,7 @@
 						chart.target.textAlign('end')
 						.textBaseline('bottom')
 						.textFont('600 16px Verdana')
-						.fillText('利润总额',x+20+coo.width,y-20,false,'#34a1d9')
+						.fillText('利润总额',x+20+coo.width,y-25,false,'#34a1d9')
 						.textFont('600 11px Verdana')
 						.fillText('Total',x+20+coo.width,y-10,false,'#34a1d9');
 						
@@ -190,6 +190,9 @@
 	});
 </script>
 </head>
+<style type="text/css">
+input{width:200px;height:30px;border:0.5px solid #E6E6FA; border-radius: 3px 3px 3px 3px;}
+</style>
 <body>
 	<h1>利润分析</h1>
 	<label for="from">统计时间</label>
@@ -198,7 +201,7 @@
 		<input type="text" id="from" name="from"
 			value="${requestScope.startDate}" required> <label for="to">至</label>
 		<input type="text" id="to" name="to" value="${requestScope.endDate}"
-			required> <input type="submit" value="查询"> <input
+			required> <input style="width:80px" type="submit" value="查询"> <input
 			type="hidden" name="method" value="statByAdmin">
 	</form>
 	<div id='canvasDiv'></div>

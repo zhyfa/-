@@ -24,10 +24,13 @@
 <meta http-equiv="description" content="This is my page">
 
 <script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <script>
 $(document).ready(function(){
@@ -45,18 +48,21 @@ $(document).ready(function(){
 });
 </script>
 <style>
-
+#myForm input{width:180px;height:35px;border:0.5px solid #E6E6FA;margin-top:20px}
+#con{margin-top:30px}
 </style>
 <body>
-<br />
+<div id="con">
+<h2>特殊药品入库明细表</h2>
 <form id="myForm" action="<%=basePath%>/specialDrugs/warehousing.action" method="post" onsubmit="return check()">
 查询入库起始时间：<input type="date" id="start" name="start" value="${requestScope.start}" >&nbsp;&nbsp;
 查询入库终止时间：<input type="date" id="end" name="end" value="${requestScope.end}">&nbsp;&nbsp;
 药品名字：<input type="text" name="drug_name" id="drug_name" value='${requestScope.drug_name}'>&nbsp;
-<input type="submit" value="搜索"><br />
+<input class="layui-btn" type="submit" value="搜索" style="width:80px; margin-bottom:20px" ><br />
 </form>
-	<table class="table table-bordered">
-	<caption style="text-align:center"><h4>特殊药品入库明细表</h4></caption>
+</div>
+	<table class="layui-table">
+	<%-- <caption style="text-align:center"><h4>特殊药品入库明细表</h4></caption> --%>
 	<thead>
 	<tr>
 			<th>序号</th>

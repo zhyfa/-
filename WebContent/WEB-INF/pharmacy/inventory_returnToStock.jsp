@@ -8,14 +8,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script src="<%=basePath%>/js/jquery.serializejson.js"></script>
+<script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <body>
-<button onclick="javascript:history.back(-1);">返回</button>
-<table border="1"  class="table">
+<button class="layui-btn" onclick="javascript:history.back(-1);"><i class="layui-icon">&#xe65c;</i>返回</button>
+<table class="layui-table">
 	<caption></caption>
 	<thead>
 		<th>序号</th>
@@ -41,8 +46,8 @@
 				<td>${inventory.parameter_name }</td>
 				<td>${inventory.cdate }</td>
 				<td>
-					<button onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id },${inventory.inventory_number },'${inventory.production_date }')"  ${inventory.state!=1?'hidden':'' }>退库申请</button>
-					<button onclick="createReturnBackForm()" ${inventory.state!=4?'hidden':'' }>生成水印单</button>
+					<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="returnBackToStockRequest(${inventory.inventory_id },${inventory.drug_id },${inventory.inventory_number },'${inventory.production_date }')"  ${inventory.state!=1?'hidden':'' }><i class="layui-icon">&#xe66c;</i>退库</button>
+					<button class="layui-btn layui-btn-xs" onclick="createReturnBackForm()" ${inventory.state!=4?'hidden':'' }><i class="layui-icon">&#xe609;</i>导出</button>
 				</td>
 			</tr>
 		</c:forEach>
