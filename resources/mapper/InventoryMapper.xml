@@ -124,12 +124,12 @@
 		update t_inventory set inventory_number=inventory_number+#{reimburse_num} where inventory_id = #{inventory_id}
 	</update>
 	<!-- jyf 获得药房 库存记录  报损申请   通过-->
-	<update id="badDrugPass" parameterType="java.lang.Integer">
-		update t_reimburse <set>state=2</set> where reimburse_id=#{_parameter}
+	<update id="badDrugPass" parameterType="com.great.bean.Reimburse">
+		update t_reimburse <set>state=2</set> where reimburse_id=#{reimburse_id}
 	</update>
 	<!-- jyf 获得药房 库存记录 报损申请   不通过-->
-	<update id="badDrugNotPass" parameterType="java.lang.Integer">
-		update t_reimburse <set>state=3</set> where reimburse_id=#{_parameter}
+	<update id="badDrugNotPass" parameterType="com.great.bean.Reimburse">
+		update t_reimburse <set>state=3</set> where reimburse_id=#{reimburse_id}
 	</update>
 	
 	<!-- jyf 药房 过期 -->

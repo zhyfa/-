@@ -101,12 +101,12 @@ public class EarlyWaringAction {
 	//unsalable.action
 	@RequestMapping("/unsalable.action") 
 	public ModelAndView unsalable(Integer pageIndex) throws ParseException {
-		if(pageIndex==null) {
-			pageIndex=1;
-		}
+//		if(pageIndex==null) {
+//			pageIndex=1;
+//		}
 //		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
-		List<Inventory> inventorys = unsalableService.getInventorys();
 		
+		List<Inventory> inventorys = unsalableService.getInventorys();
 		Unsalable unsalable = unsalableService.getUnsalableRule();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//设置 日期格式
 		Date now = new Date();//获取当前时间
@@ -123,12 +123,16 @@ public class EarlyWaringAction {
 			Date parse = sdf.parse(cdate);//获取所有 的 记录的 插入时间
 			if(parse.before(now1)) {
 				Integer soldNum = unsalableService.getSoldNum(inventory.getDrug_id());
+				if(soldNum==null) {
+					soldNum=0;
+				}
 				if(soldNum<unsalable.getUnsalable_number()) {
 					inventory.setMsg("滞销了");
 				}
 				inventoryss.add(inventory);
 			}
 		}
+		
 		ModelAndView andView = new ModelAndView();
 		andView.addObject("inventorys", inventoryss);
 		andView.setViewName("pharmacy/pharmacy_unsalable");
