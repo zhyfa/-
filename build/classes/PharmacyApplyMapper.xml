@@ -3,6 +3,12 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.PharmacyApplyMapper"> 
 
+<!-- 	通过ic值获取drug_id和drug_name -->
+	<select id="queryAllDrugNameByIC" parameterType="int" resultType="java.util.HashMap">
+     	select b.drug_id,b.drug_name from t_pharmacy_apply a,t_drug b where a.drug_id=b.drug_id and a.ic=#{0} and a.state=1
+     </select>
+
+
 	<!--获取申请药品表中state=3的ic和cdate -->
      <select id="applyList3" resultType="java.util.HashMap">
      	select distinct ic,to_char(cdate,'YYYY-MM-DD') cdate from t_pharmacy_apply where state=3

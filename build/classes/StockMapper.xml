@@ -2,22 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.StockMapper">
+
+<!-- 删除stock_number=0的这一行 -->
+<delete id="delRow" parameterType="int">
+	delete FROM t_stock where stock_id=#{stock_id}
+</delete>
+
+<!-- 通过drug_id,birthday,factory_id定位到药库药品表拥有该三个字段的stock_id和stock_number的集合 -->
+<select id="getIDs" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	select stock_id,stock_number from t_stock 
+	where factory_id=#{factory_id} and drug_id=#{drug_id} and to_char(birthday,'YYYY-MM-DD')=#{birthday}
+	order by stock_id
+</select>
+
+
 <!-- 把获取的值通过drug_id,birthday,factory_id定位到药库药品表的某一行的值减少drug_number数量 -->
 <update id="updateByApply" parameterType="java.util.HashMap">
-	update t_stock set stock_number=stock_number-#{DRUG_NUMBER} 
-	where to_char(birthday,'YYYY-MM-DD')=#{BIRTHDAY} and factory_id=#{FACTORY_ID} and drug_id=#{DRUG_ID}
+	update t_stock set stock_number=stock_number-#{drug_number} 
+	where stock_id=#{stock_id}
 </update>
 
 
 <!-- 通过drug_id，factory_id,birthday查询药库库存表中该药品的库存总量-->
 <select id="getDrugNum" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-	select stock_number FROM t_stock 
+	select sum(stock_number) stock_number FROM t_stock 
 	where factory_id=#{factory_id} and drug_id=#{drug_id} and to_char(birthday,'YYYY-MM-DD')=#{birthday}
 </select>
 
 <!-- 通过drug_id，factory_id查询药库库存表中该药品的生产日期-->
 <select id="getByDrugIdAndFactoryId" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-	select to_char(birthday,'YYYY-MM-DD') birthday FROM t_stock 
+	select distinct to_char(birthday,'YYYY-MM-DD') birthday FROM t_stock 
 	where factory_id=#{factory_id} and drug_id=#{drug_id} order by birthday
 </select>
 

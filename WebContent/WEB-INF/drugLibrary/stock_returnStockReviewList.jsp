@@ -58,7 +58,7 @@ caption{font-size:24px}
 					<td>${pharmacyReturn.parameter_name }</td>
 					<td>
 						<button onclick="returnBackToStockPass(${pharmacyReturn.pharmacy_return_id },${pharmacyReturn.inventory_id },${pharmacyReturn.drug_number })" ${pharmacyReturn.state!=1?'hidden':'' }>同意退库</button>
-						<button onclick="returnBackToStockNotPass(${pharmacyReturn.pharmacy_return_id })" ${pharmacyReturn.state!=1?'hidden':'' }>驳回退库</button>
+						<button onclick="returnBackToStockNotPass(${pharmacyReturn.pharmacy_return_id },${pharmacyReturn.inventory_id },${pharmacyReturn.drug_number })" ${pharmacyReturn.state!=1?'hidden':'' }>驳回退库</button>
 						<button onclick="createReturnBackForm()" ${pharmacyReturn.state==1?'hidden':'' }>生成水印单</button>
 					</td>
 				</tr>
@@ -102,14 +102,14 @@ function returnBackToStockPass(pharmacy_return_id,inventory_id,drug_number){
 	}
 	
 }
-function returnBackToStockNotPass(pharmacy_return_id){
+function returnBackToStockNotPass(pharmacy_return_id,inventory_id,drug_number){
 	if(confirm("确认驳回申请嘛？")){
 		$.ajax({
 			type : "post",
 			url : "<%=basePath%>/daily/returnBackToStockNotPass.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"pharmacy_return_id":pharmacy_return_id},
+			data : {"pharmacy_return_id":pharmacy_return_id,"inventory_id":inventory_id,"drug_number":drug_number},
 			success : function(res) {
 				if(res==1){
 					alert("驳回成功");

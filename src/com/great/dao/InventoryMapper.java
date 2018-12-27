@@ -49,13 +49,13 @@ public interface InventoryMapper {
 	//撤销  申请 
 	public int delPharmacyReturnById(PharmacyReturn pharmacyReturn);
 	public int revokePharmacyReturn(PharmacyReturn pharmacyReturn);
-	// 审批 通过 申请
+	// 退库 审批 通过 申请
 	public int returnStockRequestPass(PharmacyReturn pharmacyReturn);
 	public int stockAdd(PharmacyReturn pharmacyReturn);
 	public Inventory getInventoryByInventoryId(PharmacyReturn pharmacyReturn);
 
-
-	public int returnStockRequestNotPass(Integer inventory_id);
+	// 退库 审批 驳回 申请
+	public int returnStockRequestNotPass(PharmacyReturn pharmacyReturn);
 
 	// lossRequest 报损申请
 	public int badDrugRequest(Reimburse reimburse);

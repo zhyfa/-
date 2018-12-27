@@ -77,7 +77,7 @@ public class InventoryService {
 		return 1;
 	};
 
-//审批同意
+// 退库 审批同意
 	@Transactional
 	public int returnStockRequestPass(PharmacyReturn pharmacyReturn) {
 		int res = inventoryMapper.returnStockRequestPass(pharmacyReturn);
@@ -88,10 +88,12 @@ public class InventoryService {
 	public Inventory getInventoryByInventoryId(PharmacyReturn pharmacyReturn) {
 		return inventoryMapper.getInventoryByInventoryId(pharmacyReturn);
 	};
-	
-	
-	public int returnStockRequestNotPass(Integer inventory_id) {
-		return inventoryMapper.returnStockRequestNotPass(inventory_id);
+	//退库 审批驳回	
+	@Transactional
+	public int returnStockRequestNotPass(PharmacyReturn pharmacyReturn) {
+		int res = inventoryMapper.returnStockRequestNotPass(pharmacyReturn);
+		int res1 = inventoryMapper.revokePharmacyReturn(pharmacyReturn);
+		return 1;
 	};
 
 	// 报损申请

@@ -1,8 +1,12 @@
 package com.great.action;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.github.pagehelper.PageHelper;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
+import com.great.bean.Inventory;
 import com.great.bean.Overdue;
+import com.great.bean.Unsalable;
 import com.great.service.DrugService;
 import com.great.service.InventoryService;
+import com.great.service.UnsalableService;
 
 @Controller
 @RequestMapping("/earlyWaring") 
@@ -26,6 +33,8 @@ public class EarlyWaringAction {
 	private DrugService drugService;
 	@Autowired
 	private InventoryService inventoryService;
+	@Autowired
+	private UnsalableService unsalableService;
 	/**
 	 * jyf药房设置药品最底限量  预警用的
 	 */
@@ -83,6 +92,46 @@ public class EarlyWaringAction {
 		andView.setViewName("pharmacy/pharmacy_overdue");
 		andView.addObject("overdues", overdues);
 		//andView.addObject("page", page);
+		return andView;
+	}
+	/**
+	 * 滞销 
+	 * @throws ParseException 
+	 */
+	//unsalable.action
+	@RequestMapping("/unsalable.action") 
+	public ModelAndView unsalable(Integer pageIndex) throws ParseException {
+		if(pageIndex==null) {
+			pageIndex=1;
+		}
+//		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<Inventory> inventorys = unsalableService.getInventorys();
+		
+		Unsalable unsalable = unsalableService.getUnsalableRule();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//设置 日期格式
+		Date now = new Date();//获取当前时间
+		Calendar rightNow = Calendar.getInstance();
+		rightNow.setTime(now);
+		rightNow.add(Calendar.DAY_OF_YEAR,-unsalable.getUnsalable_day());//日期-规则天数天
+		Date now1=rightNow.getTime(); // 得到 当前时间  -  滞销时间    判断药品插入时间小于这个时间的卖出了多少规格药
+	   
+		List<Inventory> inventoryss = new ArrayList();
+		for(int i =0;i<inventorys.size();i++) {
+			Inventory inventory = inventorys.get(i);
+			Integer drug_id = inventory.getDrug_id();
+			String cdate = inventory.getCdate();
+			Date parse = sdf.parse(cdate);//获取所有 的 记录的 插入时间
+			if(parse.before(now1)) {
+				Integer soldNum = unsalableService.getSoldNum(inventory.getDrug_id());
+				if(soldNum<unsalable.getUnsalable_number()) {
+					inventory.setMsg("滞销了");
+				}
+				inventoryss.add(inventory);
+			}
+		}
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("inventorys", inventoryss);
+		andView.setViewName("pharmacy/pharmacy_unsalable");
 		return andView;
 	}
 }

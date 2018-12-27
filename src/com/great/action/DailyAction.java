@@ -146,7 +146,7 @@ public class DailyAction {
 
 	@RequestMapping(value = "/returnBackToStockNotPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody int returnBackToStockNotPass(PharmacyReturn pharmacyReturn) {
-//		int res = inventoryService.returnStockRequestNotPass(inventory_id);
+		int res = inventoryService.returnStockRequestNotPass(pharmacyReturn);
 		if (true) {
 			return 1;
 		} else {

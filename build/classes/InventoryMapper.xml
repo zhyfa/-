@@ -96,7 +96,7 @@
 	
 	<!-- jyf 获得药房 库存记录 退库申请   不通过-->
 	<update id="returnStockRequestNotPass" parameterType="com.great.bean.PharmacyReturn">
-		update t_pharmacy_return <set>state=3</set> where pharmacy_return_id=#{pharmacy_return_id}
+		update t_pharmacy_return set state=3 where pharmacy_return_id=#{pharmacy_return_id}
 	</update>
 	
 	<!-- 12.25 jyf 插进报损表 里 -->
