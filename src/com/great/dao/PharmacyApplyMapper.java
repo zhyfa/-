@@ -3,6 +3,10 @@ package com.great.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.great.bean.Detaile1;
+import com.great.bean.Detaile2;
+import com.great.bean.Detaile3;
+
 public interface PharmacyApplyMapper {
 	
 	// 通过ic值获取drug_id和drug_name
@@ -44,5 +48,9 @@ public interface PharmacyApplyMapper {
 
 	// 进入该IC编号的具体申请明细页面
 	public List<Map<String, Object>> applyListByIc(int ic);
+	//~~~~~~~~~~~~~~~~~~~~~~~打印专用~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		public List<Detaile1> queryDetaile1(int ic);
+		public List<Detaile2> queryDetaile2(int ic);
+		public List<Detaile3> queryDetaile3(int ic);
 
 }

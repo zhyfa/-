@@ -1,10 +1,15 @@
 package com.great.service;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 import com.great.bean.Banned;
 import com.great.bean.Drug;
+import com.great.bean.ExcelBean;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
 import com.great.bean.Overdue;
@@ -20,6 +26,7 @@ import com.great.bean.Reimburse;
 import com.great.bean.SaleNum;
 import com.great.bean.Sold;
 import com.great.dao.InventoryMapper;
+import com.great.until.ExcelUtils;
 
 @Service
 public class InventoryService {
@@ -158,4 +165,22 @@ public class InventoryService {
 	public ArrayList<Integer> getBirPrice(Integer drug_id) {
 		return inventoryMapper.getBirPrice(drug_id);
 	}
+	
+	//~~~~~~~~~~xsm:库存退货表导出Excel输出成Excel~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		public XSSFWorkbook getStocksByinventoryId() throws IllegalArgumentException, IllegalAccessException,
+		InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
+			List<Inventory> InventoryList = inventoryMapper.getStocksByinventoryId();
+			List<ExcelBean> ems = new ArrayList<>();
+			Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
+				XSSFWorkbook book = null;
+				ems.add(new ExcelBean("药房库存id", "inventory_id", 0));
+				ems.add(new ExcelBean("药品名字", "drug_name", 0));
+				ems.add(new ExcelBean("生产日期", "production_date", 0));
+				ems.add(new ExcelBean("数量", "inventory_number", 0));
+				ems.add(new ExcelBean("状态", "parameter_name", 0));
+				ems.add(new ExcelBean("创建日期", "cdate", 0));
+				map.put(0, ems);
+				book = ExcelUtils.createExcelFile(Inventory.class, InventoryList, map, "药房退库表");
+				return book;
+			}
 }

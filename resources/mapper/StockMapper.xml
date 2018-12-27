@@ -118,4 +118,15 @@ select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.dr
 		INSERT INTO T_STOCK (STOCK_ID, DRUG_ID, STOCK_NUMBER, BIRTHDAY, STATE, CDATE, ADMIN_ID, FACTORY_ID) 
 		VALUES (SEQ_T_STOCK.NEXTVAL, #{drug_id}, #{stock_number}, to_date('${birthday}','yyyy-MM-DD hh24:mi:ss'), 1, sysdate, #{admin_id}, #{factory_id})
 	</insert>
+	<!-- xsm  根据药库id得到药库的记录 进行退货操作的打印 表单 -->
+	<select id="getStocksBystockId" parameterType="java.lang.Integer" resultType="com.great.bean.Stock"> 
+	 select a.*,b.drug_name,c.parameter_name,d.admin_name,e.factory_name from T_STOCK a,T_DRUG b, T_PARAMETER c ,T_ADMIN d ,T_FACTORY e 
+       where a.stock_id=#{_stock_id} and a.drug_id=b.drug_id and c.parameter_type='药库库存状态' and c.parameter_value=a.state and a.admin_id=d.admin_id and a.factory_id = e.factory_id
+
+	</select>
+	<!-- xsm  根据药库id得到药库的记录 进行退货操作的打印 表单 -->
+	<select id="getStock"  resultType="com.great.bean.ReturnGood"> 
+	select a.*,b.birthday,b.cdate, c.drug_name,d.admin_name,e.factory_name from T_return a ,T_stock b,T_drug c,T_admin d,T_factory e
+where a.stock_id=b.stock_id and a.drug_id=c.drug_id and b.admin_id=d.admin_id and e.factory_id=b.factory_id
+</select>
 </mapper>

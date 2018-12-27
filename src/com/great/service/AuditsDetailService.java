@@ -1,13 +1,22 @@
 package com.great.service;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.great.bean.AuditsDetail;
+import com.great.bean.Detaile1;
+import com.great.bean.ExcelBean;
 import com.great.dao.AuditsDetailMapper;
+import com.great.until.ExcelUtils;
 
 @Service
 public class AuditsDetailService {
@@ -48,5 +57,32 @@ public class AuditsDetailService {
 	}
 	public Map<String,Object> getdetailInfo(AuditsDetail auditsDetail){
 		return detailDao.getdetailInfo(auditsDetail);
+	}
+	
+	//~~~~~~~~~~~~~xsm：打印表格~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public XSSFWorkbook queryaudits() throws IllegalArgumentException, IllegalAccessException,
+	InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
+		List<AuditsDetail> InventoryList = detailDao.queryaudits();
+		List<ExcelBean> ems = new ArrayList<>();
+		Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
+		XSSFWorkbook book = null;
+		ems.add(new ExcelBean("明细ID", "auditsdetail_id", 0));
+		ems.add(new ExcelBean("药品名称", "drug_name", 0));
+		ems.add(new ExcelBean("是否为特殊药", "psycho", 0));
+		ems.add(new ExcelBean("药品类型", "drug_type", 0));
+		ems.add(new ExcelBean("包装类型", "spec", 0));
+		ems.add(new ExcelBean("使用类型", "drug_unit", 0));
+		ems.add(new ExcelBean("规格", "per_piece", 0));
+		ems.add(new ExcelBean("单价", "price", 0));
+		ems.add(new ExcelBean("是否为精神药品", "sicks", 0));
+		ems.add(new ExcelBean("工厂", "factory", 0));
+		ems.add(new ExcelBean("数量", "total", 0));
+		ems.add(new ExcelBean("保质期", "irradiated", 0));
+		ems.add(new ExcelBean("总价", "total_price", 0));
+		ems.add(new ExcelBean("申请成员", "admin_name", 0));
+		ems.add(new ExcelBean("申请日期", "cdate", 0));
+		map.put(0, ems);
+		book = ExcelUtils.createExcelFile(AuditsDetail.class, InventoryList, map, "采购明细表");
+		return book;
 	}
 }

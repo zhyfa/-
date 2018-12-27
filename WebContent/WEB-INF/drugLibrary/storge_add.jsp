@@ -44,8 +44,9 @@
 .checkBox{width:18px;}
  table { white-space: nowrap; width: 95%;font-size: 14px; border:1px solid #E6E6FA;border-collapse:collapse;
 }
- #tab1 th{text-align:center; font-family:"微软雅黑"; border:0.5px solid #E6E6FA; background-color:#DCDCDC;} 
+ th{text-align:center; font-family:"微软雅黑"; border:0.5px solid #E6E6FA;} 
  td{text-align:center; border:0.5px solid #E6E6FA;padding-left:3px}
+ #tab1 tr{background-color:#DCDCDC;}
 #con{margin-left:5%;margin-top:50px}  
 </style>
 <body>
@@ -137,6 +138,7 @@
                 <button type="button" class="layui-btn layui-btn-danger" onclick="DelRow();" ><i class="layui-icon ">&#xe640;</i> 删除</button>
                 <button type="button" class="layui-btn"  onclick="submitForm()"><i class="layui-icon ">&#xe605;</i>提交</button>
                 <button type="button" class="layui-btn"  onclick="submitTable()"><i class="layui-icon ">&#xe609;</i>导出</button>
+            	<button type="button" class="layui-btn"  onclick="submitexcel()"><i class="layui-icon ">&#xe609;</i>导出表格</button>
             	<button type="button" class="layui-btn layui-btn-normal" onclick="getChart()"><i class="layui-icon ">&#xe62c;</i>查看采购图形表</button>
             </div>
             <div class="">
@@ -391,6 +393,12 @@
 //进入采购图形统计页面
 function getChart(){
 	window.location.href="<%=basePath%>/stock/goStockChartJSP.action";
+}
+
+//导出excel
+
+function submitexcel(){
+	window.location.href="<%=basePath%>/Printing/submitexcel.action";
 }
     </script>
 </html>

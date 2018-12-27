@@ -86,4 +86,8 @@ public interface InventoryMapper {
 	public List<Map<String, Object>> checkBan(Banned banned);
 
 	public ArrayList<Integer> getBirPrice(Integer drug_id);
+	
+	
+//	药房退货到药库打印Excel
+	public List<Inventory> getStocksByinventoryId();
 }

@@ -88,7 +88,6 @@ caption{font-size:24px}
   </table>
   <button type="button" class="layui-btn layui-btn-sm" onclick="update()" >提交</button>
 </form>
-
  <table id="bannedshow" class="table table-hover">
   	<caption>配伍禁忌的药品显示</caption>
   	<thead>
@@ -215,6 +214,7 @@ function qyerybyall(page,pagetwo){
 		dataType : "JSON",
 		data : {"drugid":drugid,"dqpage":page,"pageTwo":pagetwo},
 		success : function(data) {
+			console.log("data:"+data);
 			var str="";
 			for(var a=0 ;a<data.queryList.length;a++){
 				str+="<tr>"+
@@ -222,7 +222,7 @@ function qyerybyall(page,pagetwo){
 		  		"<td>"+data.queryList[a].DRUG_NAME+"</td>"+
 		  		"<td>"+data.queryList[a].DRUG_ID1+"</td>"+
 		  		"<td>"+data.queryList[a].DRUG_NAME1+"</td>"+
-		  		"<td><input type='button' value='删除' onclick='delebanned("+data.queryList[a].DRUG_ID+","+data.queryList[a].DRUG_ID1+")'/></td>"+
+		  		"<td><button class='layui-btn layui-btn-danger layui-btn-xs' 'delebanned("+data.queryList[a].DRUG_ID+","+data.queryList[a].DRUG_ID1+" )'><i class='layui-icon'>&#xe640;</i>删除</button></td>"+
 		  		"</tr>"
 				}
 			$("#bannedshowbody").html(str);
@@ -234,7 +234,6 @@ function qyerybyall(page,pagetwo){
 	   			str2+="<li><a onclick='addTabs(this)'>"+data.pageShu[a]+"</a></li>"
 	   		}
 	   		str1=str1+str2+"<li><a onclick='next()'>&raquo;</a></li>"+
-	   		"<li>共"+data.totalPage+"页，当前第"+data.page+"页</li>"+
 	   	"<input type='hidden' name='pageTwo' value='"+data.pageTwo+"' id='pageT'>"+
 	   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
 	         
@@ -308,6 +307,29 @@ function  change(){
 	
 	var drugname1=$('#drug2').val();
 	console.log("name="+drugname1);
+	if(drugname1==null||drugname1==""||drugid1==""||drugid1==null){
+		return;
+	}
+	
+	var trList = $("#bannedbeforbody").children("tr");
+	if(trList.length>0){
+	    for (var i = 0; i < trList.length; i++) {
+	        var json = {};
+	        var tdArr = trList.eq(i).find("td");
+	        json.roiName = tdArr.eq(0).text();
+	        json.roiInfo = tdArr.eq(2).text();
+	      if(json.roiName==drugid&&json.roiInfo==drugid1){
+	    	  alert("该数据已存在！请重新选择");
+	    	  $("#drug2").val("");
+	    	  return;
+	      };
+	      if(json.roiName==drugid1&&json.roiInfo==drugid){
+	    	  alert("该数据已存在！请重新选择");
+	    	  $("#drug2").val("");
+	    	  return;
+	      };
+	         };
+	        };
 	
 	var str="";
 	str+="<tr><td>"+drugid+"</td>";

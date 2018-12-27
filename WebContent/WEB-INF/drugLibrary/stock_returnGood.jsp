@@ -20,6 +20,7 @@
 	<table border="1" class="table">
 		<caption>退货</caption>
 		<thead>
+		<tr>
 			<th>序号</th>
 			<th>药品id</th>
 			<th>药品名称</th>
@@ -29,6 +30,7 @@
 			<th>供应商</th>
 			<th>状态</th>
 			<th>操作</th>
+			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${requestScope.stocks }" var="stock" varStatus="st">
@@ -71,8 +73,11 @@
 			});
 		}
 	}
+	
 	function returnGoodForm(stock_id) {
 		alert(stock_id);
+		window.location.href="<%=basePath%>/Printing/returnGoodForm.action?stock_id="+stock_id;
+		
 	}
 </script>
 </html>

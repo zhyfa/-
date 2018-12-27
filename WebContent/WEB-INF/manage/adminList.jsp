@@ -148,7 +148,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   }else{
     		   pageTwo++;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   this.allquery(page,pageTwo);
     	   }
     	   
@@ -162,7 +161,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   }else{
     		   pageTwo--;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   this.allquery(page,pageTwo);
     	   }
     	   
@@ -173,9 +171,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
        
        function xiangxi(adminid){
-    		alert(adminid);
-    		window.open ("<%=basePath%>/admin/queryadminbyid.action?adminid="+adminid, "newwindow", "height=800, width=600, top=200,left=500,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
-    	}
+    	   layer.open({
+   			type: 2, 
+   			title:["处理页面详情"],
+   			area: ['50%', '80%'],
+   			maxmin:true,
+   			scrollbar: false ,
+   			content:['<%=basePath%>/admin/queryadminbyid.action?adminid='+adminid,'yes'],
+   			end: function () {
+               location.reload();
+           }
+   		});    	
+    	   }
 
     	function changeadmin(adminid){
     		layer.open({
@@ -269,7 +276,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
 		         
 		    $("#changepage").html(str1); 
-		   	console.log(str1)
 				},
 			});
        }

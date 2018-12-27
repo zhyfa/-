@@ -12,7 +12,7 @@
     	</select>
   	  <!-- 查询所有用户 -->
 	<select id="getallLog" parameterType="com.great.bean.Page" resultType="java.util.HashMap">
-    	SELECT A.* FROM (select b.ADMIN_NAME,b.ROLE_ID,c.ROLE_NAME,a.LOG_ID,a.ADMIN_ID,a.LOG_OPERATION,a.LOG_STATE,a.LOG_CDATE,rownum R from T_ADMIN B,T_LOG A,T_ROLE C where a.ADMIN_ID=b.ADMIN_ID and B.ROLE_ID=C.ROLE_ID)A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
+    	SELECT A.* FROM (select b.ADMIN_NAME,b.ROLE_ID,c.ROLE_NAME,a.LOG_ID,a.ADMIN_ID,a.LOG_OPERATION,a.LOG_STATE,to_char(a.LOG_CDATE,'YYYY-MM-DD HH24:mi:ss') as LOG_CDATE,rownum R from T_ADMIN B,T_LOG A,T_ROLE C where a.ADMIN_ID=b.ADMIN_ID and B.ROLE_ID=C.ROLE_ID)A WHERE A.R&gt;=#{StartCount} AND A.R&lt;=#{endCount}
     	</select>
 	       <!-- 模糊查询条件开始 -->
 	       <!--总条数  -->
@@ -35,7 +35,7 @@
     	</select>
 	       <!--数据  -->
 	     <select id="queryLogbysome" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-    	 SELECT S.* FROM(select T_ADMIN.ADMIN_NAME,T_LOG.LOG_ID,T_LOG.ADMIN_ID,T_LOG.LOG_OPERATION,to_char(T_LOG.LOG_CDATE,'YYYY-MM-DD') as LOG_CDATE,rownum R from T_ADMIN ,T_LOG  
+    	 SELECT S.* FROM(select T_ADMIN.ADMIN_NAME,T_LOG.LOG_ID,T_LOG.ADMIN_ID,T_LOG.LOG_OPERATION,to_char(T_LOG.LOG_CDATE,'YYYY-MM-DD HH24:mi:ss') as LOG_CDATE,rownum R from T_ADMIN ,T_LOG  
     	<where>
     	T_LOG.ADMIN_ID=T_ADMIN.ADMIN_ID
 		<if test="adminname!=null and adminname!='' ">

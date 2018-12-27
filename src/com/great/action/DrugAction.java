@@ -205,7 +205,7 @@ public class DrugAction {
 		page = new Page();
 		page.setPageTwo(1);
 		page.setPage(1);
-		page.setTotal(drugService.queryCount(map));
+		page.setTotal(drugService.queryCountdrug(map));
 		page.csh();
 		map.put("StartCount", page.getStartCount());
 		map.put("endCount", page.getEndCount());

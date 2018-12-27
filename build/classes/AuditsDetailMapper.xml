@@ -53,4 +53,10 @@
   	select * from T_AUDITSDETAIL where drug_id=#{drug_id} and AUDITSDETAIL_ID=#{auditsdetail_id}
   </select>
   
+   <!--根据审批单号和药品id显示药品信息-->
+  <select id="queryaudits" resultType="com.great.bean.AuditsDetail">
+  	select a.AUDITSDETAIL_ID, a.DRUG_ID,a.DRUG_NAME, a.PSYCHO,a.DRUG_TYPE, a.SPEC, a.DRUG_UNIT, a.PER_PIECE, a.PRICE, a.SICKS, a.FACTORY, a.TOTAL, a.IRRADIATED,TOTAL_PRICE,a.ADMIN_ID,b.admin_name,a.CDATE,STAT,a.STOCK_NUM 
+	from t_auditsdetail a,t_admin b where a.admin_id=b.admin_id 
+ </select>
+  
 </mapper>

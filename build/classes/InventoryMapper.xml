@@ -162,4 +162,11 @@
 	<select id="getBirPrice" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		select price from t_auditsdetail where drug_id=#{_parameter} 
 	</select>
+	
+	
+	<!--xsm:药房退库表到药库生成Excel  -->
+	<select id="getStocksByinventoryId"  resultType="com.great.bean.Inventory">
+		 select a.*,b.drug_name,b.spec,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d
+         where a.drug_id=b.drug_id and a.admin_id=c.admin_id and a.state=d.parameter_value and d.parameter_type='药房库存状态'
+</select>
 	</mapper>

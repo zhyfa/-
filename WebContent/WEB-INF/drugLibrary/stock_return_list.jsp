@@ -21,7 +21,7 @@
 caption{font-size:24px}
 </style>
 <body>
-
+<button class="layui-btn" onclick="returnGoodForm()" ><i class="layui-icon">&#xe609;</i>导出</button>
 	<table class="layui-table">
 	<caption>药库库存详情</caption>
 		<thead>
@@ -67,6 +67,11 @@ caption{font-size:24px}
 <script type="text/javascript">
 	function returnGood(drug_id) {
 		window.location.href="<%=basePath%>/stock/returnGoodsBefore.action?drug_id="+drug_id;
+	}
+	
+	function returnGoodForm() {
+		window.location.href="<%=basePath%>/Printing/returnGoodForms.action";
+		
 	}
 </script>
 </html>

@@ -1,18 +1,28 @@
 package com.great.service;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.great.bean.Detaile1;
+import com.great.bean.Detaile2;
+import com.great.bean.Detaile3;
+import com.great.bean.ExcelBean;
 import com.great.dao.InventoryMapper;
 import com.great.dao.PharmacyApplyMapper;
 import com.great.dao.StockMapper;
+import com.great.until.ExcelUtils;
 
 @Service
 public class PharmacyApplyService {
@@ -147,5 +157,67 @@ public class PharmacyApplyService {
 		// TODO Auto-generated method stub
 		return pharmacyApplyMapper.applyListByIc(ic);
 	}
+	//~~~~~~~~~~~~~~~~~~~~打印专用~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			public XSSFWorkbook queryDetaile1(int ic) throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
+				List<Detaile1> InventoryList = pharmacyApplyMapper.queryDetaile1(ic);
+				List<ExcelBean> ems = new ArrayList<>();
+				Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
+				XSSFWorkbook book = null;
+				ems.add(new ExcelBean("药品名称", "DRUG_NAME", 0));
+				ems.add(new ExcelBean("是否特殊药", "PSYCHOTROPICS", 0));
+				ems.add(new ExcelBean("申请数量", "DRUG_NUMBER", 0));
+				ems.add(new ExcelBean("申请时间", "CDATE", 0));
+				ems.add(new ExcelBean("申请者", "ADMIN_NAME", 0));
+				map.put(0, ems);
+				book = ExcelUtils.createExcelFile(Detaile1.class, InventoryList, map, "药房申请药品的基准表");
+				return book;
+			}
+			
+
+
+		public XSSFWorkbook queryDetaile2(int ic) throws IllegalArgumentException, IllegalAccessException,
+		InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
+			List<Detaile2> InventoryList = pharmacyApplyMapper.queryDetaile2(ic);
+			List<ExcelBean> ems = new ArrayList<>();
+			Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
+			XSSFWorkbook book = null;
+			ems.add(new ExcelBean("药品ID", "DRUG_ID", 0));
+			ems.add(new ExcelBean("药品名称", "DRUG_NAME", 0));
+			ems.add(new ExcelBean("是否特殊药", "PSYCHOTROPICS", 0));
+			ems.add(new ExcelBean("生产日期", "BIRTHDAY", 0));
+			ems.add(new ExcelBean("生产工厂", "FACTORY_NAME", 0));
+			ems.add(new ExcelBean("工厂ID", "FACTORY_ID", 0));
+			ems.add(new ExcelBean("数量", "DRUG_NUMBER", 0));
+			ems.add(new ExcelBean("同意时间", "CDATE", 0));
+			ems.add(new ExcelBean("申请者", "ADMIN_NAME1", 0));
+			ems.add(new ExcelBean("审批者", "ADMIN_NAME2", 0));
+			ems.add(new ExcelBean("意见", "MEG", 0));
+			map.put(0, ems);
+			book = ExcelUtils.createExcelFile(Detaile2.class, InventoryList, map, "药房申请药品的待确认表");
+			return book;
+		}
+
+
+
+		public XSSFWorkbook queryDetaile3(int ic) throws IllegalArgumentException, IllegalAccessException,
+		InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
+			List<Detaile3> InventoryList = pharmacyApplyMapper.queryDetaile3(ic);
+			List<ExcelBean> ems = new ArrayList<>();
+			Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
+			XSSFWorkbook book = null;
+			ems.add(new ExcelBean("药品名称", "DRUG_NAME", 0));
+			ems.add(new ExcelBean("是否特殊药", "PSYCHOTROPICS", 0));
+			ems.add(new ExcelBean("生产日期", "BIRTHDAY", 0));
+			ems.add(new ExcelBean("生产工厂", "FACTORY_NAME", 0));
+			ems.add(new ExcelBean("数量", "DRUG_NUMBER", 0));
+			ems.add(new ExcelBean("同意时间", "CDATE", 0));
+			ems.add(new ExcelBean("申请者", "ADMIN_NAME1", 0));
+			ems.add(new ExcelBean("审批者", "ADMIN_NAME2", 0));
+			ems.add(new ExcelBean("意见", "MEG", 0));
+			map.put(0, ems);
+			book = ExcelUtils.createExcelFile(Detaile3.class, InventoryList, map, "药房申请药品的基准表");
+			return book;
+		}
 
 }

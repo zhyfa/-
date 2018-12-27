@@ -18,4 +18,6 @@ public interface AuditsDetailMapper {
 	public Map<String,Object> queryByDrugId(int drug_id);
 	public List<Map<String,Object>> getdetail(AuditsDetail auditsDetail);
 	public Map<String,Object> getdetailInfo(AuditsDetail auditsDetail);
+	//打印的
+	public List<AuditsDetail> queryaudits();
 }

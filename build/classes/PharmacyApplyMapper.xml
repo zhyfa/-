@@ -73,4 +73,25 @@
      	select a.psychotropics,a.drug_number,to_char(a.cdate,'YYYY-MM-DD hh:mm:ss') cdate,b.admin_name,c.drug_name from t_pharmacy_apply a,t_admin b,t_drug c 
 		where a.admin_id1=b.admin_id and a.drug_id=c.drug_id and a.ic=#{0}
      </select>
+     <!-- ~~~~~~~~~~~~~~~~~~~~`打印专用户 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+     <!-- detailed1 -->
+     <select id="queryDetaile1" parameterType="int" resultType="com.great.bean.Detaile1">
+     	select a.psychotropics,a.drug_number,to_char(a.cdate,'YYYY-MM-DD hh:mm:ss') cdate,b.admin_name,c.drug_name from t_pharmacy_apply a,t_admin b,t_drug c 
+		where a.admin_id1=b.admin_id and a.drug_id=c.drug_id and a.ic=#{0}
+     </select>
+     
+     <!--      进入state=2的该IC编号的具体申请明细页面 -->
+	<select id="queryDetaile2" parameterType="int" resultType="com.great.bean.Detaile2">
+     	select a.drug_id,a.factory_id,to_char(a.birthday,'YYYY-MM-DD') birthday,a.meg,a.drug_number,a.psychotropics,a.drug_number,to_char(a.cdate,'YYYY-MM-DD hh:mm:ss') cdate,b.admin_name admin_name1,c.drug_name,d.factory_name ,e.admin_name admin_name2
+		from t_pharmacy_apply a,t_admin b,t_drug c,t_factory d,t_admin e
+		where a.admin_id1=b.admin_id and a.admin_id2=e.admin_id and a.drug_id=c.drug_id and a.factory_id=d.factory_id and a.ic=#{0}
+     </select>
+     
+     	<!--      进入state=3的该IC编号的具体申请明细页面 -->
+	<select id="queryDetaile3" parameterType="int" resultType="com.great.bean.Detaile3">
+     	select to_char(a.birthday,'YYYY-MM-DD') birthday,a.meg,a.psychotropics,a.drug_number,to_char(a.cdate,'YYYY-MM-DD hh:mm:ss') cdate,b.admin_name admin_name1,c.drug_name,d.factory_name ,e.admin_name admin_name2
+		from t_pharmacy_apply a,t_admin b,t_drug c,t_factory d,t_admin e
+		where a.admin_id1=b.admin_id and a.admin_id2=e.admin_id and a.drug_id=c.drug_id and a.factory_id=d.factory_id and a.ic=#{0}
+     </select>
+	  
 </mapper>

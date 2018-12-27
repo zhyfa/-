@@ -89,4 +89,8 @@ public interface StockMapper {
 	 * @return
 	 */
 	public int updateStateByStockId(Integer stock_id);
+	//~~~~~~~~~~~~~~~~~~~~xsm：库存退货表导出Excel~~~~~~~~~~~~~~
+		public List<Stock> getStocksBystockId(int stock_id);
+
+		public List<ReturnGood> getStock();
 }

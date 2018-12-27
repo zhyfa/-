@@ -82,6 +82,9 @@ caption{font-size:24px}
 	</div>
 </body>
 <script type="text/javascript">
+function createReturnBackForm(){
+	window.location.href="<%=basePath%>/Printing/createReturnBackForm.action";
+}
 function returnBackToStockPass(pharmacy_return_id,inventory_id,drug_number){
 	if(confirm("确认审核通过嘛？")){
 		$.ajax({
