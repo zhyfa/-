@@ -78,9 +78,9 @@ select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.dr
 </select>
 <!-- 蒋亚福 得到药库的每种药品数量 -->
 <select id="getStocks" parameterType="com.great.bean.Stock" resultType="com.great.bean.Drug">
-	 select  a.*,b.stock_number from 
-    T_DRUG a left join (select drug_id,sum(stock_number) stock_number from T_STOCK where state=1  group by drug_id) b 
-     on a.drug_id=b.drug_id and a.state=1
+	select  a.*,b.stock_number from 
+     T_DRUG a,(select drug_id,sum(stock_number) stock_number from T_STOCK where state in (1,4)  group by drug_id) b 
+      where a.drug_id=b.drug_id
 </select>
 <!-- 蒋亚福 效验药库药品数量是否足够 -->
 <select id="checkStockNum" resultType="com.great.bean.Stock">
@@ -98,20 +98,35 @@ select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.dr
 <select id="getStocksByDrugId" parameterType="java.lang.Integer" resultType="com.great.bean.Stock"> 
 	 select a.*,b.drug_name,c.parameter_name,d.admin_name,e.factory_name from T_STOCK a,T_DRUG b, T_PARAMETER c ,T_ADMIN d ,T_FACTORY e 
        where a.drug_id=#{_parameter} and a.drug_id=b.drug_id and c.parameter_type='药库库存状态' and c.parameter_value=a.state and a.admin_id=d.admin_id and a.factory_id = e.factory_id
-        order by a.cdate desc
+       and a.state=1 order by a.cdate desc
 </select>
-<!-- 蒋亚福 插入数据库 药库退货给 -->
+<!-- 蒋亚福 插入数据库 药库 退货de -->
 <insert id="returnGoodAdd" parameterType="com.great.bean.ReturnGood">
-	insert into T_RETURN(stock_id,drug_id,stock_number) 
-	 values(#{stock_id},#{drug_id},#{stock_number})
+	insert into T_RETURN(stock_id,drug_id,stock_number,factory_id) 
+	 values(#{stock_id},#{drug_id},#{stock_number},#{factory_id})
 </insert>
-<!-- 蒋亚福 插入数据库 退货表state=3 -->
-<update id="updateStateByStockId" parameterType="java.lang.Integer">
-	update T_STOCK 
-	<set>
-		state=3 
-	</set>
-	where stock_id=#{_parameter} 
+<update id="deleteStateByStockId" parameterType="com.great.bean.ReturnGood">
+	update t_stock set state=3 where stock_id = #{stock_id}
+</update>
+<!-- 蒋亚福 退货详情表 -->
+<select id="getReturns" parameterType="com.great.bean.ReturnGood" resultType="com.great.bean.ReturnGood">
+select a.*,b.drug_name,c.factory_name,d.parameter_name from t_return a,t_drug b,t_factory c,t_parameter d 
+  where a.drug_id = b.drug_id and a.factory_id=c.factory_id and a.state = d.parameter_value and d.parameter_type='退工厂状态' order by a.return_date desc
+</select>
+<!-- 蒋亚福 撤回退货-->
+<update id="revokeReturnGood" parameterType="com.great.bean.ReturnGood">
+	update t_stock set state=1 where stock_id = #{stock_id}
+</update>
+<delete id="revokeReturnGood1" parameterType="com.great.bean.ReturnGood">
+	delete from t_return where stock_id=#{stock_id}
+</delete>
+<!-- 蒋亚福 退货同意 -->
+<update id="ReturnGoodPass" parameterType="com.great.bean.ReturnGood">
+	update t_return set state=2 where stock_id = #{stock_id}
+</update>
+<!-- 蒋亚福 退货驳回 -->
+<update id="ReturnGoodNotPass" parameterType="com.great.bean.ReturnGood">
+	update t_return set state=3 where stock_id = #{stock_id}
 </update>
 	<!-- zsl 根据药品id增加药库库存 -->
 	<insert id="addStockNum" parameterType="com.great.bean.Stock">
@@ -126,7 +141,7 @@ select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.dr
 	</select>
 	<!-- xsm  根据药库id得到药库的记录 进行退货操作的打印 表单 -->
 	<select id="getStock"  resultType="com.great.bean.ReturnGood"> 
-	select a.*,b.birthday,b.cdate, c.drug_name,d.admin_name,e.factory_name from T_return a ,T_stock b,T_drug c,T_admin d,T_factory e
-where a.stock_id=b.stock_id and a.drug_id=c.drug_id and b.admin_id=d.admin_id and e.factory_id=b.factory_id
-</select>
+		select a.*,b.birthday,b.cdate, c.drug_name,d.admin_name,e.factory_name from T_return a ,T_stock b,T_drug c,T_admin d,T_factory e
+		  where a.stock_id=b.stock_id and a.drug_id=c.drug_id and b.admin_id=d.admin_id and e.factory_id=b.factory_id
+	</select>
 </mapper>
