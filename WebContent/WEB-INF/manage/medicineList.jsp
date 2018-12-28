@@ -99,7 +99,6 @@ z-index:10;height:180px; line-height:150px; background:#000;filter:alpha(opacity
                     <a title="出库"  onclick="x_admin_show('采购','${pageContext.request.contextPath}/user/user_add.action',600,400)" href="javascript:;">
 	                <i class="icon iconfont">&#xe6cb;</i>
 	              </a> 
-	              
                 </p>
             </div>
         </div>
