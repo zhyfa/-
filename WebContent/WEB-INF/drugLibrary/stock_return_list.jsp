@@ -22,7 +22,6 @@ caption{font-size:24px}
 </style>
 <body>
 <button class="layui-btn" onclick="returnGoodForm()" ><i class="layui-icon">&#xe609;</i>导出</button>
-<a href="<%=basePath%>/stock/returnGoodsInfo.action">退货详情</a>
 	<table class="layui-table">
 	<caption>药库库存详情</caption>
 		<thead>

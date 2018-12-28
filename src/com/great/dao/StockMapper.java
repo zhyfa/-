@@ -88,17 +88,7 @@ public interface StockMapper {
 	 * 
 	 * @return
 	 */
-	public int deleteStateByStockId(ReturnGood returnGood);
-	public List<ReturnGood> getReturns(ReturnGood returnGood);
-	
-	//撤回退货
-	public int revokeReturnGood (ReturnGood returnGood);
-	public int revokeReturnGood1 (ReturnGood returnGood);
-	//admin 同意
-	public int ReturnGoodPass (ReturnGood returnGood);
-	//admin 驳回
-	public int ReturnGoodNotPass (ReturnGood returnGood);
-	
+	public int updateStateByStockId(Integer stock_id);
 	//~~~~~~~~~~~~~~~~~~~~xsm：库存退货表导出Excel~~~~~~~~~~~~~~
 		public List<Stock> getStocksBystockId(int stock_id);
 

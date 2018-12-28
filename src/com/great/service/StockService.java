@@ -121,76 +121,51 @@ public class StockService {
 	 */
 	@Transactional
 	public int returnGoodAdd(ReturnGood returnGood) {
-		int res = stockMapper.deleteStateByStockId(returnGood);
+		int res = stockMapper.updateStateByStockId(returnGood.getStock_id());
 		int res1 = stockMapper.returnGoodAdd(returnGood);
 		return 1;
 
 	};
-
-	public List<ReturnGood> getReturns(ReturnGood returnGood) {
-		return stockMapper.getReturns(returnGood);
-	};
-
-	// 撤回退药
-	@Transactional
-	public int revokeReturnGood(ReturnGood returnGood) {
-		stockMapper.revokeReturnGood(returnGood);
-		stockMapper.revokeReturnGood1(returnGood);
-		return 1;
-	};
-
-	// admin 同意
-	public int ReturnGoodPass(ReturnGood returnGood) {
-		return stockMapper.ReturnGoodPass(returnGood);
-
-	};
-
-	// admin 驳回
-	public int ReturnGoodNotPass(ReturnGood returnGood) {
-		return stockMapper.ReturnGoodNotPass(returnGood);
-
-	};
-
 	public int addStockNum(Stock stock) {
 		return stockMapper.addStockNum(stock);
 	}
 
-	// ~~~~~~~~~~xsm:库存退货表导出Excel输出成Excel~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~xsm:库存退货表导出Excel输出成Excel~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	public XSSFWorkbook getStocksBystockId(int stock_id) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
+	InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
 		List<Stock> InventoryList = stockMapper.getStocksBystockId(stock_id);
 		List<ExcelBean> ems = new ArrayList<>();
 		Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
 		XSSFWorkbook book = null;
-		ems.add(new ExcelBean("药品名称", "drug_name", 0));
-		ems.add(new ExcelBean("数量", "stock_number", 0));
-		ems.add(new ExcelBean("生产日期", "cdate", 0));
-		ems.add(new ExcelBean("采购人", "admin_name", 0));
-		ems.add(new ExcelBean("供应商", "factory_name", 0));
+		ems.add(new ExcelBean("药品名称","drug_name", 0));
+		ems.add(new ExcelBean("数量","stock_number", 0));
+		ems.add(new ExcelBean("生产日期","cdate", 0));
+		ems.add(new ExcelBean("采购人","admin_name", 0));
+		ems.add(new ExcelBean("供应商","factory_name", 0));
 		ems.add(new ExcelBean("状态", "parameter_name", 0));
 		map.put(0, ems);
 		book = ExcelUtils.createExcelFile(Stock.class, InventoryList, map, "药库退还厂家明细表");
 		return book;
 	}
 
-	public XSSFWorkbook getStock() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException,
-			ClassNotFoundException, IntrospectionException, ParseException {
+	public XSSFWorkbook getStock() throws IllegalArgumentException, IllegalAccessException,
+	InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException {
 		List<ReturnGood> InventoryList = stockMapper.getStock();
 		List<ExcelBean> ems = new ArrayList<>();
 		Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
 		XSSFWorkbook book = null;
-		ems.add(new ExcelBean("库存ID", "stock_id", 0));
-		ems.add(new ExcelBean("药品ID", "drug_id", 0));
-		ems.add(new ExcelBean("药品名称", "drug_name", 0));
-		ems.add(new ExcelBean("入库人员", "admin_name", 0));
-		ems.add(new ExcelBean("生产日期", "birthday", 0));
+		ems.add(new ExcelBean("库存ID","stock_id", 0));
+		ems.add(new ExcelBean("药品ID","drug_id", 0));
+		ems.add(new ExcelBean("药品名称","drug_name", 0));
+		ems.add(new ExcelBean("入库人员","admin_name", 0));
+		ems.add(new ExcelBean("生产日期","birthday", 0));
 		ems.add(new ExcelBean("入库日期", "cdate", 0));
-		ems.add(new ExcelBean("退还日期", "return_date", 0));
-		ems.add(new ExcelBean("退还数量", "stock_number", 0));
+		ems.add(new ExcelBean("退还日期","return_date", 0));
+		ems.add(new ExcelBean("退还数量","stock_number", 0));
 		ems.add(new ExcelBean("供应商", "factory_name", 0));
 		map.put(0, ems);
 		book = ExcelUtils.createExcelFile(ReturnGood.class, InventoryList, map, "药库退还厂家明细表");
 		return book;
 	}
-
+	
 }
