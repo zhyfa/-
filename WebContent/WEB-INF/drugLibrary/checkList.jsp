@@ -17,6 +17,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
 	<link rel="stylesheet" href="<%=basePath%>/css/bootstrap.css">  
+	<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
 	<style type="text/css">
 	 body { padding-top: 60px;text-align: center; }
 	</style>
@@ -71,11 +73,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   var pageTwo=(Number)($("#pageT").attr("value"));
     	   var totalPageTwo=(Number)($("#totalPageTwo").attr("value"));
     	   if(pageTwo>=totalPageTwo){
-    		   alert("没有更多页了！");
+    		  alert("没有更多页了！");
     	   }else{
     		   pageTwo++;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   window.location.href="${pageContext.request.contextPath}/creditInfo/checkDaily.action?dqPage="+page+"&pageTwo="+pageTwo;
     	   }
     	   
@@ -85,11 +86,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   var pageTwo=(Number)($("#pageT").attr("value"));
     	   var totalPageTwo=(Number)($("#totalPageTwo").attr("value"));
     	   if(pageTwo<=1){
-    		   alert("没有更多页了！");
+    		  alert("没有更多页了！");
     	   }else{
     		   pageTwo--;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   window.location.href="${pageContext.request.contextPath}/creditInfo/checkDaily.action?dqPage="+page+"&pageTwo="+pageTwo;
     	   }
        }

@@ -226,8 +226,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				dataType : "JSON",
 				data : {"admin_name":adminname,"role_id":role_id,"admin_state":stateid,"dqpage":page,"pageTwo":pagetwo},
 				success : function(data) {
+					if(data.queryList.length<=0){
+						console.log("?????????");
+						var str="<tr><td colspan='7' style='text-align:center'>暂无数据</td></tr>"
+						$("#adindiv").html(str);
+						   $("#changepage").html(""); 
+						
+					}else{
 					var str="";
-					 
 		                 for(var i=0;i<data.queryList.length;i++) {
 		                str+= "<div class='col-sm-6 col-md-3'>"+
 		        				"<div class='thumbnail'>"+
@@ -276,6 +282,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   	"<input type='hidden' value='"+data.totalPageTwo+"' id='totalPageTwo'>"
 		         
 		    $("#changepage").html(str1); 
+					}
 				},
 			});
        }

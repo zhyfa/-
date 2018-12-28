@@ -125,7 +125,7 @@ public class StockAction {
 			map.put("stocks", stocks);
 
 			
-		} else if (admin.getRole_id() == 3) {
+		} else if (admin.getRole_id() == 3 || admin.getRole_id() == 1) {
 			List<Inventory> inventorys = stockService.checkInventoryNum();
 			for(Inventory inventory:inventorys) {
 				if(inventory.getInventory_number()==null) {

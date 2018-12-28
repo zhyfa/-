@@ -110,7 +110,6 @@ function addadmin(){
 	var password = $.md5(pwd);
 	var checkname = document.getElementById("checkname").innerText;
 	$("#adminpwd").val(password);
-	console.log(password);
 	var stateid =$("#stateid").val();
 	if(adminname==null|adminname==""){
 		alert("请输入注册名称");
