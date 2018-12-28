@@ -58,17 +58,12 @@ caption{font-size:24px}
 					<td>${storgeApply.SUBMIT_DATE}</td>
 					<td>${storgeApply.PARAMETER_NAME}</td>
 					<td>
-						<c:if test="${storgeApply.STAT==6}">
+					<button class="layui-btn layui-btn-xs" onclick="storgeApplyDetail(${storgeApply.STORGE_ID})"><i class="layui-icon">&#xe63c;</i>详情</button>
+						<c:if test="${storgeApply.STAT==1}">
 						<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="deleteStorgeApply(${storgeApply.STORGE_ID})"><i class="layui-icon">&#xe640;</i>删除</button>
 						</c:if>
 						<c:if test="${storgeApply.STAT==6}">
 						<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="deleteStorgeApply(${storgeApply.STORGE_ID})"><i class="layui-icon">&#xe640;</i>删除</button>
-						</c:if>
-						<c:if test="${storgeApply.STAT==2}">
-						<button class="layui-btn layui-btn-xs" onclick="storgeApplyDetail(${storgeApply.STORGE_ID})"><i class="layui-icon">&#xe63c;</i>详情</button>
-						</c:if>
-						<c:if test="${storgeApply.STAT==3}">
-						<button class="layui-btn layui-btn-xs" onclick="storgeApplyDetail(${storgeApply.STORGE_ID})"><i class="layui-icon">&#xe63c;</i>详情</button>
 						</c:if>
 					</td>
 				</tr>
@@ -97,31 +92,16 @@ caption{font-size:24px}
 </body>
 <script type="text/javascript">
 function storgeApplyDetail(storge_id){
-    var that = this; 
-    //多窗口模式，层叠置顶
-    layer.open({
-      type: 2
-      ,title: '查看入库单详情'
-      ,area: ['600px', '400px']
-      ,shade: 0
-      ,maxmin: true
-      ,content: '<%=basePath%>/storge/storgeApplyDetail.action?storge_id='+storge_id
+   
+      window.location.href="<%=basePath%>/storge/storgeApplyDetail.action?storge_id="+storge_id;
      
-    });
+   
   }
   
   function toNewApply(){
-		     var that = this; 
-		     //多窗口模式，层叠置顶
-		     layer.open({
-		       type: 2 //此处以iframe举例
-		       ,title: '新建入库表'
-		       ,area: ['600px', '400px']
-		       ,shade: 0
-		       ,maxmin: true
-		       ,content: '<%=basePath%>/storge/storgeApply.action'
+		     
+	  window.location.href="<%=basePath%>/storge/storgeApply.action";
 		      
-		     });
 		   }
   
 </script>

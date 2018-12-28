@@ -85,22 +85,12 @@ caption{font-size:24px}
 </body>
 <script type="text/javascript">
 function PurchaseDetail(auditsdetail_id){
-    var that = this; 
-    //多窗口模式，层叠置顶
-    layer.open({
-      type: 2
-      ,title: '查看采购详情'
-      ,area: ['600px', '400px']
-      ,shade: 0
-      ,maxmin: true
-      ,content: '<%=basePath%>/stock/purchaseDetail.action?auditsdetail_id='+auditsdetail_id
-     
-    });
+      window.location.href="<%=basePath%>/stock/purchaseDetail.action?auditsdetail_id="+auditsdetail_id
   }
   function returnPurchase(auditsdetail_id){
 	  if(confirm("是否驳回该采购申请？")){
 	  $.ajax({
-			url:"<%=basePath%>/stock/deleteDetail.action",
+			url:"<%=basePath%>/stock/returnPurchase.action",
 			type: "POST",
 			data:{
 				"auditsdetail_id":auditsdetail_id,

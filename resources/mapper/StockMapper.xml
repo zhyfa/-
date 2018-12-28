@@ -53,33 +53,33 @@
 </select>
 
 
-<!-- 获取这半年的采购药品名字及数量 -->
+<!-- 获取这半年的采购药品名字及数量   采购表中获取stat=5的drug_id和total -->
 <select id="getHalfYear" resultType="java.util.HashMap">
-	select b.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(add_months(sysdate,-5),'mm') first_day from dual),'YYYY-MM-DD') and 
+	select b.drug_name, SUM(a.total) count from t_auditsdetail a,t_drug b where a.drug_id=b.drug_id and a.stat=5 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(add_months(sysdate,-5),'mm') first_day from dual),'YYYY-MM-DD') and 
 				 to_char((select last_day(add_months(sysdate,-0)) last_day from dual),'YYYY-MM-DD') group by b.drug_name
 </select>
 
 <!-- 获取这一周的采购药品名字及数量 -->
 <select id="getWeek" resultType="java.util.HashMap">
-	select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(sysdate, 'iw') from dual),'YYYY-MM-DD') and 
+	select B.drug_name, SUM(a.total) count from t_auditsdetail a,t_drug b where a.drug_id=b.drug_id and a.stat=5 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(sysdate, 'iw') from dual),'YYYY-MM-DD') and 
 				 to_char((select trunc(sysdate, 'iw')+6 from dual),'YYYY-MM-DD') group by B.drug_name
 </select>
 
 <!-- 获取这一个月的采购药品名字及数量 -->
 <select id="getMonth" resultType="java.util.HashMap">
-select B.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(sysdate,'mm') from dual),'YYYY-MM-DD') and 
+select B.drug_name, SUM(a.total) count from t_auditsdetail a,t_drug b where a.drug_id=b.drug_id and a.stat=5 and to_char(a.cdate,'YYYY-MM-DD') between to_char((select trunc(sysdate,'mm') from dual),'YYYY-MM-DD') and 
 				 to_char((select last_day(sysdate) from dual),'YYYY-MM-DD') group by B.drug_name
 </select>
 
 <!-- 获取时间段内的采购药品名字及数量 -->
 <select id="getOrdersByTime" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-	select b.drug_name, SUM(a.stock_number) count from t_stock a,t_drug b where a.drug_id=b.drug_id and a.state=1 and to_char(a.cdate,'YYYY-MM-DD') between #{start} and 
+	select b.drug_name, SUM(a.total) count from t_auditsdetail a,t_drug b where a.drug_id=b.drug_id and a.stat=5 and to_char(a.cdate,'YYYY-MM-DD') between #{start} and 
 				 #{end} group by b.drug_name
 </select>
 <!-- 蒋亚福 得到药库的每种药品数量 -->
 <select id="getStocks" parameterType="com.great.bean.Stock" resultType="com.great.bean.Drug">
 	select  a.*,b.stock_number from 
-     T_DRUG a,(select drug_id,sum(stock_number) stock_number from T_STOCK where state in (1,4)  group by drug_id) b 
+     T_DRUG a,(select drug_id,sum(total) stock_number from T_STOCK where state in (1,4)  group by drug_id) b 
       where a.drug_id=b.drug_id
 </select>
 <!-- 蒋亚福 效验药库药品数量是否足够 -->

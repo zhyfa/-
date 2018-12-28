@@ -18,6 +18,7 @@
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+
 </head>
 <style>
 caption{font-size:24px}

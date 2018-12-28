@@ -61,7 +61,8 @@ function checkData(){
        return false;  
    }  
    if(".xls" != suffix && ".xlsx" != suffix ){  
-       mizhu.alert('提示', '选择Excel格式的文件导入','alert_red');
+      /*  alert("选择Excel格式的文件导入！");  */
+       mizhu.alert('提示', '选择Excel格式的文件导入！','alert_red');
        return false;  
    }  
    return true;  

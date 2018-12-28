@@ -69,15 +69,12 @@
 					<td>${s.ADMIN_NAME}</td>
 				</tr>
 		</c:forEach>
-		
 	</tbody>
 </table>
-	
+<input type="button" onclick="javascript:history.back(-1);" value="返回" class="layui-btn" style="width:80px;">	
 </body>
 <script type="text/javascript">
 	function exportTable(ic) {
-		console.log("ic1:"+ic)
-		console.log("ic1:????????????")
 		window.location.href="<%=basePath%>/Printing/detaile1.action?ic="+ic
 	}
 </script>

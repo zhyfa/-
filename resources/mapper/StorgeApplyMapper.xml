@@ -31,6 +31,6 @@
 	
 	<!-- 更新入库单实际入库数量 -->
 	<update id="updateRealStorge" parameterType="com.great.bean.StorgeApply">
-		update T_STORGEAPPLY set REAL_STORGETOTAL=#{real_storgetotal}, REAL_STORGETYPE=#{real_storgetype}, STAT=#{stat},STORGE_DATE=#{storge_date} where STORGE_ID=#{storge_id}
+		update T_STORGEAPPLY set REAL_STORGETOTAL=#{real_storgetotal}, REAL_STORGETYPE=#{real_storgetype}, STAT=#{stat},STORGE_DATE=sysdate where STORGE_ID=#{storge_id}
 	</update>
 </mapper>

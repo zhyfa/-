@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.dao.DrugTypeMapper">
+	 <!-- 通过Id查询一个一级信息 -->
+  <select id="BigtypeById" parameterType="int" resultType="String">
+     SELECT bigtype_name from t_bigtype where bigtype_id=#{0}
+  </select>  
+	
+	 <!-- 通过Id查询一个二级信息 -->
+  <select id="typeById" parameterType="int" resultType="java.util.HashMap">
+     SELECT A.smalltype_id,A.smalltype_name,a.father_id,B.bigtype_name FROM t_smalltype A,t_bigtype B WHERE b.bigtype_id = a.father_id AND a.state=1 AND a.smalltype_id=#{1}
+  </select>  
+	
 	<!-- 	检查该二级类别名是否可用 -->
 	<select id="checkSecondTypeName" parameterType="String" resultType="Integer">
      SELECT smalltype_id,smalltype_name from t_smalltype where smalltype_name=#{0}
@@ -44,10 +54,7 @@
  	 </select>  
  	 
  	 
- 	  <!-- 通过Id查询它的信息 -->
-  <select id="typeById" parameterType="int" resultType="java.util.HashMap">
-     SELECT A.smalltype_id,A.smalltype_name,a.father_id,B.bigtype_name FROM t_smalltype A,t_bigtype B WHERE b.bigtype_id = a.father_id AND a.state=1 AND a.smalltype_id=#{1}
-  </select>  
+ 	 
 <!--   一般不用的，只有修改没有删除，删除一个二级目录 -->
   <update id="delSecondTypeById" parameterType="int">
   		update t_smalltype set state=2 where smalltype_id=#{1}

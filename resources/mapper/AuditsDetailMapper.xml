@@ -37,7 +37,7 @@
   </update>
   <!--更新明细的入库数据-->
   <update id="updateStock" parameterType="com.great.bean.AuditsDetail" >
-  	UPDATE T_AUDITSDETAIL SET STAT=#{stat}, STOCK_NUM=#{stock_num},STOCK_DATE=sysdate where AUDITSDETAIL_ID=#{auditsdetail_id}
+  	UPDATE T_AUDITSDETAIL SET STAT=#{stat}, STOCK_NUM=#{stock_num},STOCK_DATE=sysdate where AUDITSDETAIL_ID=#{auditsdetail_id} and DRUG_ID=#{drug_id}
   </update>
    <!--根据药品id查询明细-->
   <select id="queryByDrugId" parameterType="int" resultType="java.util.HashMap">

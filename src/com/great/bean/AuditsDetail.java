@@ -180,6 +180,15 @@ public class AuditsDetail implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public String toString() {
+		return "AuditsDetail [auditsdetail_id=" + auditsdetail_id + ", drug_id=" + drug_id + ", drug_name=" + drug_name
+				+ ", psycho=" + psycho + ", drug_type=" + drug_type + ", spec=" + spec + ", drug_unit=" + drug_unit
+				+ ", per_piece=" + per_piece + ", price=" + price + ", sicks=" + sicks + ", factory=" + factory
+				+ ", total=" + total + ", irradiated=" + irradiated + ", admin_id=" + admin_id + ", admin_name="
+				+ admin_name + ", total_price=" + total_price + ", cdate=" + cdate + ", stat=" + stat + ", stock_num="
+				+ stock_num + ", stock_date=" + stock_date + "]";
+	}
 	
 	
 }

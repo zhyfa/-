@@ -60,6 +60,10 @@ a {
 
 //检查该二级类别名是否可用
 $("#sName").blur(function checkSecondTypeName(){
+	$("#showMeg").text("");
+	if($("#sName").val()=='${requestScope.drugType.SMALLTYPE_NAME}'){
+		return;
+	}
 	$.ajax({
 		url:"<%=basePath%>/drugType/checkSecondTypeName.action",
 		type: "POST",
@@ -75,6 +79,7 @@ $("#sName").blur(function checkSecondTypeName(){
 });
 
 function update() {
+	
 	$.ajax({
 			url:"<%=basePath%>/drugType/updateSecondDrugType.action",
 			type: "POST",
@@ -83,7 +88,7 @@ function update() {
 				if(res=='0'){
 					alert("修改成功");
 					//跳回药品种类列表页
-					window.location.href="<%=basePath%>/drugType/toOtherJsp.action";
+					parent.window.location.href="<%=basePath%>/drugType/toJSP.action";
 				}else{
 					alert("修改失败");
 				}

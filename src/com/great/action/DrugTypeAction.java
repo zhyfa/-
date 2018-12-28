@@ -22,13 +22,37 @@ public class DrugTypeAction {
 	@Resource
 	private DrugTypeService drugTypeService;
 
+	// 修改一个一级目录的名称
+	@RequestMapping(value = "/updateFirstType.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody String updateFirstType(int bigtypeId, String bigtypeName) {
+		String oldbigtypeName = drugTypeService.BigtypeById(bigtypeId);
+		if (!oldbigtypeName.equals(bigtypeName)) {
+			Integer result1 = drugTypeService.checkBigTypeName(bigtypeName);
+			if (result1 != null) {
+				return "1";
+			}
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("bigtypeName", bigtypeName);
+		map.put("bigtypeId", bigtypeId);
+		int result = drugTypeService.updateFirstType(map);
+		String str = result > 0 ? "0" : "1";
+		return str;
+	}
+
 	// 修改一个二级目录
 	@RequestMapping(value = "/updateSecondDrugType.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody String updateSecondDrugType(int samlltypeId, int fatherId, String smalltypeName) {
-		Integer result1 = drugTypeService.checkSecondTypeName(smalltypeName);
+		Map<String, Object> map1 = drugTypeService.typeById(samlltypeId);
+		String oldsmalltypeName = map1.get("SMALLTYPE_NAME").toString();
+
 		String str = "";
-		if (result1 != null) {
-			return "1";
+		if (!oldsmalltypeName.equals(smalltypeName)) {
+			Integer result1 = drugTypeService.checkSecondTypeName(smalltypeName);
+			if (result1 != null) {
+				return "1";
+			}
 		}
 
 		Map<String, Object> map = new HashMap<>();
@@ -88,13 +112,13 @@ public class DrugTypeAction {
 
 	}
 
-/*	// 进入药品种类页面
-	@RequestMapping("/toJSP.action")
-	public ModelAndView toDrugMenuJSP() {
-		ModelAndView andView = new ModelAndView();
-		andView.setViewName("drugLibrary/drug_type");
-		return andView;
-	}*/
+	/*
+	 * // 进入药品种类页面
+	 * 
+	 * @RequestMapping("/toJSP.action") public ModelAndView toDrugMenuJSP() {
+	 * ModelAndView andView = new ModelAndView();
+	 * andView.setViewName("drugLibrary/drug_type"); return andView; }
+	 */
 
 	// 另一个页面（测试）
 	@RequestMapping("/toJSP.action")
@@ -123,17 +147,6 @@ public class DrugTypeAction {
 	public @ResponseBody List<Map<String, Object>> secondTypeById(int father_id) {
 		List<Map<String, Object>> secondTypeById = drugTypeService.secondTypeById(father_id);
 		return secondTypeById;
-	}
-
-	// 修改一个一级目录的名称
-	@RequestMapping(value = "/updateFirstType.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public @ResponseBody String updateFirstType(int bigtypeId, String bigtypeName) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("bigtypeName", bigtypeName);
-		map.put("bigtypeId", bigtypeId);
-		int result = drugTypeService.updateFirstType(map);
-		String str = result > 0 ? "0" : "1";
-		return str;
 	}
 
 	// 查询二级目录
