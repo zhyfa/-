@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.aop.Log;
 import com.great.bean.InfoPage;
 import com.great.service.DrugTypeService;
 
@@ -72,6 +73,7 @@ public class DrugTypeAction {
 	}
 
 	// 添加一个二级目录
+	@Log(thing = "添加目录")
 	@RequestMapping(value = "/addSecondType.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody String addSecondType(String smalltype_name, int father_id) {
 		Integer result1 = drugTypeService.checkSecondTypeName(smalltype_name);

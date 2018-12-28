@@ -237,6 +237,64 @@ public class StockAction {
 		} else {
 			return 0;
 		}
-
+	}
+	//returnGoodsInfo.action
+	@RequestMapping("/returnGoodsInfo.action")
+	public ModelAndView returnGoodsInfo(Integer pageIndex) {
+		if(pageIndex==null){
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<ReturnGood> returnGoods = stockService.getReturns(null);
+		InfoPage page = new InfoPage(returnGoods);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("returnGoods", returnGoods);
+		andView.addObject("page", page);
+		andView.setViewName("drugLibrary/returnGoodsInfo");
+		return andView;
+	};
+	//revokeReturnGood
+	@RequestMapping(value = "/revokeReturnGood.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int revokeReturnGood(ReturnGood returnGood) {
+		int result = stockService.revokeReturnGood(returnGood);
+		if (result == 1) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+	//returnFactoryReviewList.action
+	@RequestMapping("/returnFactoryReviewList.action")
+	public ModelAndView returnFactoryReviewList(Integer pageIndex) {
+		if(pageIndex==null){
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<ReturnGood> returnGoods = stockService.getReturns(null);
+		InfoPage page = new InfoPage(returnGoods);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("returnGoods", returnGoods);
+		andView.addObject("page", page);
+		andView.setViewName("manage/admin_returnFactoryReviewList");
+		return andView;
+	};
+	//ReturnGoodPass.action
+	@RequestMapping(value = "/ReturnGoodPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int ReturnGoodPass(ReturnGood returnGood) {
+		int result = stockService.ReturnGoodPass(returnGood);
+		if (result == 1) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+	@RequestMapping(value = "/ReturnGoodNotPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int ReturnGoodNotPass(ReturnGood returnGood) {
+		int result = stockService.ReturnGoodNotPass(returnGood);
+		if (result == 1) {
+			return 1;
+		} else {
+			return 2;
+		}
 	}
 }

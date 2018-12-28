@@ -39,9 +39,8 @@
 
     <!-- jyf 获得药房 库存数量 -->
 	<select id="getInventorys" resultType="com.great.bean.Drug">
-	select a.*,b.inventory_number from t_drug a left join
-       (select drug_id,sum(inventory_number) inventory_number from t_inventory where state in(1) group by drug_id) b 
-          on a.drug_id=b.drug_id and a.state=1
+	select a.*,b.inventory_number from t_drug a, (select drug_id,sum(inventory_number) inventory_number from t_inventory where state in(1) group by drug_id) b 
+          where a.drug_id=b.drug_id and a.state=1
 	</select>
 	<!-- jyf 获得药房 库存记录 根据 id  给药房 退药库  用的-->
 	<select id="getInventorysByDrugId" parameterType="java.lang.Integer"  resultType="com.great.bean.Inventory">
@@ -141,7 +140,7 @@
 	<select id="getDrugByIdforChuku" parameterType="java.lang.Integer" resultType="com.great.bean.Drug">
 	select a.*,b.* from t_drug a,
           (select drug_id,sum(inventory_number) inventory_number from  t_inventory where state=1 group by drug_id having drug_id=#{_parameter}) b 
-          where a.drug_id=b.drug_id
+          where a.drug_id=b.drug_id 
 	</select>
 	<select id="getInventorysByDrugIdForSold" parameterType="java.lang.Integer" resultType="com.great.bean.Drug">
 	 	select a.*,b.*,c.admin_name,d.parameter_name from t_inventory a,t_drug b,t_admin c ,t_parameter d

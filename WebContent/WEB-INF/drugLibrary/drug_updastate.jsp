@@ -26,14 +26,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <body>
-<h1 style="text-align: center;">药品禁用修改</h1>
-<input  id="drug1" list="druglist" name="drug" type="text" class="form-control">
+<h1 style="text-align: center;">药品启用禁用修改界面</h1>
+<table><tr><td>
+<label class="input-group">请在下列输入（选择）药品</label> 
+</td></tr>
+<tr><td>
+<input  id="drug1" list="druglist" name="drug" type="text" class="form-control" style="width:200px">
 			<datalist id="druglist">
 				<c:forEach items="${requestScope.page.queryList}" var="drug">
 			  			<option data-id="${drug.DRUG_ID}">${drug.DRUG_NAME}</option>
 			  	</c:forEach>
 			</datalist>
-    	<input class="layui-btn" type="button" value="查看" onclick="inputSelect()">
+			</td><td>
+    	<input class="layui-btn" type="button" value="查看" onclick="inputSelect()"></td>
+  </tr></table>  	
 <table class="table table-hover">
   <caption>药品信息</caption>
   <thead>

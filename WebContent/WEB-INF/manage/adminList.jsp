@@ -58,28 +58,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		onclick="x_admin_show('添加新成员'  ,'${pageContext.request.contextPath }/admin/addadminbefore.action',600,400)"
 		href="javascript:;"> <i class="layui-icon">&#xe642;</i>添加用户
 	</a>
-	<div style="padding: 100px 100px 10px;">
-		<form id="queryadmin" class="navbar-form navbar-left">
-			<div class="input-group">
-				<label class="input-group ">请在下列输入（选择）查询条件</label> 
-				<select name="role_id" class="form-control" id="role_id">
+			<label class="input-group">请在下列输入（选择）查询条件</label> 
+			<table>
+			<tr><td>
+				<select name="role_id"  class="form-control" id="role_id" style="width:250px;float: left">
 					<option value=0>"未选择需要查询的职位"</option>
 					<c:forEach items="${requestScope.rolelist}" var="role" varStatus="sta">
 						<option value="${role.roleId}">${role.roleName}</option>
 					</c:forEach>
-				</select> <select name="admin_state" class="form-control" id="stateid">
+				</select> 
+				<select name="admin_state" class="form-control" id="stateid" style="width:250px;float: left">
 					<option value=0>"未选择查询的状态"</option>
 					<c:forEach items="${requestScope.parameterlist}" var="parameter"
 						varStatus="sta">
 						<option value="${parameter.PARAMETER_VALUE}">${parameter.PARAMETER_NAME}</option>
 					</c:forEach>
-				</select> <input type="text" class="form-control" placeholder="请输入需要查询的姓名"
-					name="admin_name" id="adminname">
-			</div>
-			<input type="button" class="btn btn-primary" value="查询" onclick="queryadmin()">
-		</form>
-	</div>
-	
+				</select> 
+				<input type="text" class="form-control" placeholder="请输入需要查询的姓名"
+					name="admin_name" id="adminname" style="width:250px;float: left">
+			<input type="button" class="btn btn-primary" value="查询" onclick="queryadmin()" style="width:250px;float: left">
+	</td></tr>
+	</table>
+	<br>
 	<div id="adindiv">
 	<c:forEach items="${page.queryList}" var="admins" varStatus="sta">
 			<div class="col-sm-6 col-md-3">
@@ -114,7 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 		</c:forEach>
 	</div>
-	<div  style="float:inherit;">
+	<div  style="float:content; clear:both;display:block">
 	<ul class="pagination pagination-lg" id="changepage">
 		<li><a onclick="up()">&laquo;</a></li>
 		

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.aop.Log;
 import com.great.bean.Admin;
 import com.great.bean.Page;
 import com.great.service.AdminService;
@@ -48,6 +49,7 @@ public class AdminAction {
 			//返回显示
 		}
 	//删除admin成员
+	@Log(thing = "删除成员")
 	@RequestMapping(value = "/admindelete.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	public @ResponseBody String deleteadmin(int adminid) {
 		//查询数据库

@@ -44,10 +44,10 @@
 </head>
 	
 <body>
-	<br />
-	<button class="layui-btn" onclick="exportTable()"> <i class="layui-icon">&#xe609;</i>导出Excel表格</button>
-	<table class="layui-table">
-	<caption style="text-align:center"><h2>药房申请药品的基准页面</h2></caption>
+	<br/>
+	<input type="button" onclick="exportTable(${requestScope.ic})" value="导出Excel表格">
+	<table class="table table-bordered">
+	<caption style="text-align:center"><h4>药房申请药品的基准页面</h4></caption>
 	<thead>
 	<tr>
 			<th>序号</th>
@@ -75,8 +75,10 @@
 	
 </body>
 <script type="text/javascript">
-	function exportTable() {
-		alert("导出Excel表格");
+	function exportTable(ic) {
+		console.log("ic1:"+ic);
+		console.log("~~~~~~~~~~~");
+		window.location.href="<%=basePath%>/Printing/detaile1.action?ic="+ic
 	}
 </script>
 </html>

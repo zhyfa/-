@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.aop.Log;
 import com.great.bean.Page;
 import com.great.service.LossReportService;
 
@@ -33,7 +34,7 @@ public class RoomReportAction {
 	
 	@Resource
 	private LossReportService LossReportService;
-	
+	@Log(thing = "查询报损药品总和")
 	@RequestMapping(value = "/lossReport.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 	 public ModelAndView toHomepage(HttpServletRequest request,Integer dqPage,Integer pageTwo ) {
 		if(dqPage==null) {

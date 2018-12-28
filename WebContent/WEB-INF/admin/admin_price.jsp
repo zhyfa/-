@@ -49,7 +49,6 @@
 			data[i]=eval("(" + t + ")");
 			}
 		
-		console.log(data);
 		//是否启用动画
 		var animation = false;
 
