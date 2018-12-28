@@ -129,7 +129,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	});
 	function checkForm(){
 		var checkPwd = document.getElementById("checkPwd").innerText;
-		console.log(checkPwd);
 		if(checkPwd=="×"){
 			alert("请输入正确的原密码，如忘记密码请联系管理员修改密码");
 			return false;

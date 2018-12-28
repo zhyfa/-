@@ -43,7 +43,7 @@
 	
 <body>
 	<br />
-	<input type="button" onclick="exportTable()" value="导出Excel表格">
+	<input type="button" onclick="exportTable(${requestScope.ic})" value="导出Excel表格">
 	<table class="table table-bordered">
 	<caption style="text-align:center"><h4>药房申请药品的待确认页面</h4></caption>
 	<thead>
@@ -79,8 +79,9 @@
 </table>
 </body>
 <script type="text/javascript">
-	function exportTable() {
-		alert("导出Excel表格");
-	}
+	function exportTable(ic) {
+		console.log("ic2:"+ic)
+		window.location.href="<%=basePath%>/Printing/detaile2.action?ic="+ic	
+				}
 </script>
 </html>

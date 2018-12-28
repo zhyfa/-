@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.dao.UnsalableMapper">
+
+	<select id="getInventorys" resultType="com.great.bean.Inventory">
+		select * from t_inventory
+	</select>
+	<select id="getUnsalableRule" resultType="com.great.bean.Unsalable">
+		select * from t_unsalable where state = 2
+	</select>
+	<select id="getSoldNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select sum(sold_num) from t_sold where drug_id=#{_parameter} group by drug_id
+	</select>
+</mapper>

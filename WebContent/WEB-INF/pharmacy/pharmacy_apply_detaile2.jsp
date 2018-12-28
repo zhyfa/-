@@ -44,8 +44,7 @@
 	
 <body>
 	<br />
-	<!-- <input type="button" onclick="exportTable()" value="导出Excel表格"> -->
-		<button class="layui-btn" onclick="exportTable()"><i class="layui-icon">&#xe609;</i>导出Excel表格</button>
+		<button class="layui-btn" onclick="exportTable(${requestScope.ic})"><i class="layui-icon">&#xe609;</i>导出Excel表格</button>
 	<table class="table table-bordered">
 	<caption style="text-align:center"><h4>药房申请药品的待确认页面</h4></caption>
 	<thead>
@@ -82,8 +81,9 @@
 	<input type="button" onclick='submit("${requestScope.ic}")' value="确认">
 </body>
 <script type="text/javascript">
-	function exportTable() {
-		alert("导出Excel表格");
+	function exportTable(ic) {
+		console.log("ic2:"+ic)
+		window.location.href="<%=basePath%>/Printing/detaile2.action?ic="+ic
 	}
 	//确认后，把该表格中的所有数据的state改成3
 	function submit(ic) {
