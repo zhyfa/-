@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface DrugTypeMapper {
+
+	// 通过bigtype_id查询该ID的名字
+	public String BigtypeById(int bigType_id);
+
 	// 检查该二级类别名是否可用
 	public Integer checkSecondTypeName(String smalltype_name);
 

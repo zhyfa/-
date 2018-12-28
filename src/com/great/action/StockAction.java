@@ -30,6 +30,7 @@ import com.great.bean.ReturnGood;
 import com.great.bean.Stock;
 import com.great.bean.Unsalable;
 import com.great.service.InventoryService;
+import com.great.service.PharmacyApplyService;
 import com.great.service.StockService;
 import com.great.service.UnsalableService;
 
@@ -42,6 +43,8 @@ public class StockAction {
 	private UnsalableService unsalableService;
 	@Autowired
 	private InventoryService inventoryService;
+	@Autowired
+	private PharmacyApplyService pharmacyApplyService;
 	// 通过drug_id，factory_id,birthday查询药库库存表中该药品的库存总量
 	@RequestMapping(value = "/getDrugNum.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody Map<String, Object> getDrugNum(int factory_id,int drug_id,String birthday) {
@@ -73,8 +76,8 @@ public class StockAction {
 	@RequestMapping("/auditing.action")
 	public ModelAndView toPharmacyApplyJSP() {
 		ModelAndView andView = new ModelAndView();
-		//List<Map<String, Object>> drugNames = stockService.getAllDrugName();
-		//andView.addObject("drugNames", drugNames);
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList();
+		andView.addObject("applyList", applyList);
 		andView.setViewName("drugLibrary/pharmacy_apply_add");
 		return andView;
 	}

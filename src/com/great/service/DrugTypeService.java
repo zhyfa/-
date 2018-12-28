@@ -15,6 +15,11 @@ public class DrugTypeService {
 	@Resource
 	private DrugTypeMapper drugTypeMapper;
 
+	// 通过bigtype_id查询该ID的名字
+	public String BigtypeById(int bigType_id) {
+		return drugTypeMapper.BigtypeById(bigType_id);
+	};
+
 	// 检查该二级类别名是否可用
 	public Integer checkSecondTypeName(String smalltype_name) {
 		// TODO Auto-generated method stub
