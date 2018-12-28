@@ -24,6 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+
     
 <script type="text/javascript">
 function del(){
@@ -126,9 +127,7 @@ caption{font-size:24px}
 		<c:forEach items="${page.pageShu}" var="pageshu">
 			<li ><a onclick="addTabs(this)">${pageshu}</a></li>
 		</c:forEach>
-		
 		<li><a onclick="next()">&raquo;</a></li>
-	
 	</ul>
 	<input type="hidden" name="pageTwo" value="${page.pageTwo}" id="pageT">
 	<input type="hidden" value="${page.totalPageTwo}" id="totalPageTwo">
@@ -142,11 +141,11 @@ function delebanned(drugid,drugid1){
 		data : {"drugid":drugid,"drugid1":drugid1},
 		success : function(data) {
 			if(data=="1"){
-				alert("删除成功");
+				alert("删除成功!");
 				window.location.href = "<%=basePath%>/drug/banned.action";
 
 			}else{
-				alert("删除失败");
+				mizhu.alert("删除失败!");
 			}
 		},
 	});
@@ -157,8 +156,6 @@ function delebanned(drugid,drugid1){
     	   console.log(obj);
            var page = (Number)($(obj).text());
            var pageTwo=(Number)($("#pageT").attr("value"));
-           console.log(page);
-           console.log(pageTwo);
            this.qyerybyall(page,pageTwo);
        }
        
@@ -166,11 +163,10 @@ function delebanned(drugid,drugid1){
     	   var pageTwo=(Number)($("#pageT").attr("value"));
     	   var totalPageTwo=(Number)($("#totalPageTwo").attr("value"));
     	   if(pageTwo>=totalPageTwo){
-    		   alert("没有更多页了！");
+    		 alert("没有更多页了！");
     	   }else{
     		   pageTwo++;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   this.qyerybyall(page,pageTwo);
     	   }
     	   
@@ -184,7 +180,6 @@ function delebanned(drugid,drugid1){
     	   }else{
     		   pageTwo--;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   this.qyerybyall(page,pageTwo);
     	   }
     	   
@@ -200,7 +195,6 @@ function qyerybyall(page,pagetwo){
 	var $options=$("#druglist3").children();
 	 for(var i=0;i<$options.length;i++){
         if($options.eq(i).val().trim()==$("#drug3").val().trim()){
-            console.log("???????"+$options.eq(i).attr("data-id"))
             var drugid=$options.eq(i).attr("data-id");
         }
     }
@@ -214,7 +208,11 @@ function qyerybyall(page,pagetwo){
 		dataType : "JSON",
 		data : {"drugid":drugid,"dqpage":page,"pageTwo":pagetwo},
 		success : function(data) {
-			console.log("data:"+data);
+			if(data.queryList.length<=0){
+				var str="<tr><td colspan='7' style='text-align:center'>暂无数据</td></tr>"
+				$("#bannedshowbody").html(str);
+				   $("#changepage").html(""); 
+			}else{
 			var str="";
 			for(var a=0 ;a<data.queryList.length;a++){
 				str+="<tr>"+
@@ -239,6 +237,7 @@ function qyerybyall(page,pagetwo){
 	         
 	   	console.log("?????"+str1+"::::")
 	    $("#changepage").html(str1); 
+			}
 		},
 });
 }
@@ -265,16 +264,16 @@ function  update(){
 		    		data:{"data":arrs},
 		    		success:function(data){
 		    			if(data==1){
-		    				alert("增加成功");
+		    				 alert("增加成功！");
 		    				window.location.href = "<%=basePath%>/drug/banned.action";
 		    			}else{
-		    				alert("增加失败");
+		    				 alert("增加失败！");
 		    			}
 		    		},
 		    		});
 		    
 	    }else{
-	    	alert("请选择------")
+	   	 alert("请选择内容！");
 	    }
 	    
 	    
@@ -286,21 +285,19 @@ function  change(){
 	 var $options=$("#druglist").children();
 	 for(var i=0;i<$options.length;i++){
          if($options.eq(i).val().trim()==$("#drug1").val().trim()){
-             console.log("???????"+$options.eq(i).attr("data-id"))
              var drugid=$options.eq(i).attr("data-id");
          }
      }
 	
 	var drugname=$('#drug1').val();
-	console.log("name="+drugname);
 	
 	if(drugname==null||drugname==""||drugid==""||drugid==null){
+			alert("请选择正确的药品！");
 		return;
 	}
 	 var $optionss=$("#drugtwo").children();
 	 for(var i=0;i<$optionss.length;i++){
          if($optionss.eq(i).val().trim()==$("#drug2").val().trim()){
-             console.log("!!!!!!!"+$optionss.eq(i).attr("data-id"))
              var drugid1=$optionss.eq(i).attr("data-id");
          }
      }
@@ -309,6 +306,7 @@ function  change(){
 	console.log("name="+drugname1);
 	if(drugname1==null||drugname1==""||drugid1==""||drugid1==null){
 		return;
+		alert("请选择正确的药品！");
 	}
 	
 	var trList = $("#bannedbeforbody").children("tr");
@@ -319,12 +317,12 @@ function  change(){
 	        json.roiName = tdArr.eq(0).text();
 	        json.roiInfo = tdArr.eq(2).text();
 	      if(json.roiName==drugid&&json.roiInfo==drugid1){
-	    	  alert("该数据已存在！请重新选择");
+	    	alert("该数据已存在！请重新选择");
 	    	  $("#drug2").val("");
 	    	  return;
 	      };
 	      if(json.roiName==drugid1&&json.roiInfo==drugid){
-	    	  alert("该数据已存在！请重新选择");
+	    	alert("该数据已存在！请重新选择");
 	    	  $("#drug2").val("");
 	    	  return;
 	      };
@@ -355,7 +353,7 @@ function  inputSelect(){
 	var drugname=$('#drug1').val();
 	console.log("name="+drugname);
 	if(drugname==null||drugname==""||drugid==""||drugid==null){
-		  alert("提交的数据不能为空");
+		 alert("提交的数据不能为空");
 		return;
 	}
 	$.ajax({

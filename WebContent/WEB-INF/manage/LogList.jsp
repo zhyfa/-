@@ -142,11 +142,8 @@ function allqurry(page,pagetwo){
 	var adminname=$("#adminname").val();
 	var operation=$("#log_operation").val();
 	var startdata=$("#datepicker").val();
-	console.log("startdata:"+startdata)
 		var enddata=$("#datepickerend").val();
-	console.log("enddata:"+enddata)
 			if(startdata!=null&&enddata!=null){
-				console.log("不空");
 				var start=new Date(startdata.replace("-", "/").replace("-", "/"));
 		    	var end=new Date(enddata.replace("-", "/").replace("-", "/"));
 				if(start>end){
@@ -169,7 +166,13 @@ function allqurry(page,pagetwo){
 				"operation":operation
 				},
 		success : function(data) {
-			console.log(data)
+			if(data.queryList.length<=0){
+				console.log("?????????");
+				var str="<tr><td colspan='7' style='text-align:center'>暂无数据</td></tr>"
+				$("#body").html(str);
+				   $("#changepage").html(""); 
+				
+			}else{
 				var str="";
 				for(var a=0 ;a<data.queryList.length;a++){
 					str+="<tr>"+
@@ -195,7 +198,7 @@ function allqurry(page,pagetwo){
 		         
 		    $("#changepage").html(str1); 
 			
-			
+			}
 		},
 		});
 }

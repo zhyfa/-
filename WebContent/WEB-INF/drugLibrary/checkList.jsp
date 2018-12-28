@@ -73,12 +73,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   var pageTwo=(Number)($("#pageT").attr("value"));
     	   var totalPageTwo=(Number)($("#totalPageTwo").attr("value"));
     	   if(pageTwo>=totalPageTwo){
-    		 /*   alert("没有更多页了！"); */
     		   mizhu.alert('提示', '没有更多页了！','alert_red');
     	   }else{
     		   pageTwo++;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   window.location.href="${pageContext.request.contextPath}/creditInfo/checkDaily.action?dqPage="+page+"&pageTwo="+pageTwo;
     	   }
     	   
@@ -88,12 +86,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   var pageTwo=(Number)($("#pageT").attr("value"));
     	   var totalPageTwo=(Number)($("#totalPageTwo").attr("value"));
     	   if(pageTwo<=1){
-    		 /*   alert("没有更多页了！"); */
     		   mizhu.alert('提示', '没有更多页了！','alert_red');
     	   }else{
     		   pageTwo--;
     		   var page=(pageTwo-1)*5+1;
-    		   alert(pageTwo);
     		   window.location.href="${pageContext.request.contextPath}/creditInfo/checkDaily.action?dqPage="+page+"&pageTwo="+pageTwo;
     	   }
        }
