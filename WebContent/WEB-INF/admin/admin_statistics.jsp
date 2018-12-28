@@ -122,6 +122,9 @@
 		line.draw();
 	});
 </script>
+<style type="text/css">
+input{width:200px;height:30px;border:0.5px solid #E6E6FA; border-radius: 3px 3px 3px 3px;}
+</style>
 </head>
 <body>
 	<h1>渠道量统计</h1>
@@ -132,7 +135,7 @@
 		<input type="text" id="from" name="from"
 			value="${requestScope.startDate}" required> <label for="to">至</label>
 		<input type="text" id="to" name="to" value="${requestScope.endDate}"
-			required> <input type="submit" value="查询"> <input
+			required> <input style="width:80px" type="submit" value="查询"> <input
 			type="hidden" name="method" value="statByAdmin">
 	</form>
 	<div>

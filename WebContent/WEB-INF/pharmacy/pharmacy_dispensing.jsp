@@ -10,20 +10,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript"
-	src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
 <script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
-<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
-<link rel="stylesheet"
-	href="<%=basePath%>/js/jqueryUI/jquery-ui.min.css">
-<script type="text/javascript"
-	src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
+<style>
+caption{font-size:24px}
+#con{margin-top:30px;margin-left:30px}
+</style>
+
 <script type="text/javascript">
 
 $(document).ready(function(){
@@ -41,14 +41,14 @@ $(document).ready(function(){
 				var msg = "";
 				for (var i = 0; i < res.length; i++) {
 					var inventory = res[i];
-					msg += "库存id:<input style='width:50px;' name='inventory_id' value='"+inventory.inventory_id+"' readonly='readonly'>&nbsp;";
-					msg += "数量：<input style='width:50px;' name='inventory_number' id='inventory_number' value='"+inventory.inventory_number+"' readonly='readonly'>&nbsp;";
+					msg += "库存id:<input style='text-align:center; width:50px;height:30px; margin-top:10px; border:0px;' name='inventory_id' value='"+inventory.inventory_id+"' readonly='readonly'>&nbsp;";
+					msg += "数量：<input style='width:50px; text-align:center; border:0px;' name='inventory_number' id='inventory_number' value='"+inventory.inventory_number+"' readonly='readonly'>&nbsp;";
 					msg += inventory.spec==1?'盒':'瓶';
-					msg += "  单价：<input style='width:50px;' name='price' value='"+inventory.price+"' readonly='readonly'>";
-					msg += "元  \折扣："+inventory.discount+"折&nbsp;";
-					msg += "销售数量：<input name='"+i+"' id='"+i+"' value=''>";
+					msg += "  单价：<input style='width:50px; text-align:center; border:0px;' name='price' value='"+inventory.price+"' readonly='readonly'>";
+					msg += "元  \&nbsp;&nbsp;折扣："+inventory.discount+"折&nbsp;";
+					msg += "&nbsp;&nbsp;销售数量：<input style='width:50px; text-align:center; height:25px; border:0.5px solid #E6E6FA;' name='"+i+"' id='"+i+"' value=''>";
 					msg += "&nbsp;"+inventory.psychotropics+"&nbsp;";
-					msg += "<a href='#' id='submit"+i+"' onclick='aaa("+inventory.inventory_id+
+					msg += "<a class='layui-btn layui-btn-xs' href='#' id='submit"+i+"' onclick='aaa("+inventory.inventory_id+
 							","+inventory.inventory_number+
 							","+i+
 							")'>出药</a><br>";
@@ -172,39 +172,39 @@ function aaa(inventory_id,inventory_number,numberid,drug_name){
 		}
 	}
 </script>
-<style>
-body{
-margin-top: 50px;}
-</style>
+
 <body>
-	药品:
-	<select id="drug_id" name="drug_id">
-		<option value="">请选择药品</option>
-		<c:forEach items="${requestScope.inventoryss}" var="inventory">
-			<option value="${inventory.drug_id}">${inventory.drug_name}</option>
-		</c:forEach>
-	</select>
-	<div id="msg">
-		<p></p>
+<div id="con">
+	<div id="drugName">药品:
+		<select id="drug_id" name="drug_id" style="width:200px;height:35px;border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;">
+			<option value="">请选择药品</option>
+			<c:forEach items="${requestScope.inventoryss}" var="inventory">
+				<option value="${inventory.drug_id}">${inventory.drug_name}</option>
+			</c:forEach>
+		</select>
+		<div id="msg" >
+			<p></p>
+		</div>
 	</div>
 	<form name="saleForm" id="saleForm"></form>
 	<form id="myForm">
-		<table>
+		<table class="layui-table">
 			<caption>订单表</caption>
 			<thead>
-				<th width=50>选择</th>
-				<th width=50>库存id</th>
-				<th width=50>药品id</th>
-				<th width=100>药品名</th>
-				<th width=100>销售数量</th>
+				<th >选择</th>
+				<th >库存id</th>
+				<th >药品id</th>
+				<th >药品名</th>
+				<th >销售数量</th>
 <!-- 				<th width=100>单价</th> -->
 			</thead>
 			<tbody id="asdf">
 			</tbody>
 		</table>
-		<a onclick="submitOrder()">提交订单</a>
-		<a onclick="delOrder()">删除选中订单</a>
+		<a class="layui-btn layui-btn-danger" onclick="submitOrder()"> <i class="layui-icon">&#xe605;</i>提交订单</a>
+		<a class="layui-btn" onclick="delOrder()"> <i class="layui-icon">&#xe640;</i>删除选中订单</a>
 	</form>
+</div>
 </body>
 
 </html>

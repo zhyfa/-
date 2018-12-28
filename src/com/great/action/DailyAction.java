@@ -154,7 +154,7 @@ public class DailyAction {
 		}
 	}
 
-	// 药房药品报损开始=====================================================================
+	// 药房药品报损开始===========================================================================================
 	@RequestMapping("/badDrug.action")
 	public ModelAndView badDrug(Integer pageIndex) {
 		if (pageIndex == null) {
@@ -231,8 +231,8 @@ public class DailyAction {
 	// badDrugPass.action badDrugNotPass.action     dmin 报损审批   同意
 	@RequestMapping(value = "/badDrugPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public int badDrugPass(Integer reimburse_id) {
-		int res = inventoryService.badDrugPass(reimburse_id);
+	public int badDrugPass(Reimburse reimburse) {
+		int res = inventoryService.badDrugPass(reimburse);
 		if (res == 1) {
 			return 1;
 		} else {
@@ -242,8 +242,8 @@ public class DailyAction {
 //dmin 报损审批   不同意
 	@RequestMapping(value = "/badDrugNotPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public int badDrugNotPass(Integer reimburse_id) {
-		int res = inventoryService.badDrugNotPass(reimburse_id);
+	public int badDrugNotPass(Reimburse reimburse) {
+		int res = inventoryService.badDrugNotPass(reimburse);
 		if (res == 1) {
 			return 1;
 		} else {

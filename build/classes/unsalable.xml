@@ -4,7 +4,7 @@
 <mapper namespace="com.great.dao.UnsalableMapper">
 
 	<select id="getInventorys" resultType="com.great.bean.Inventory">
-		select * from t_inventory
+		select a.*,b.drug_name from t_inventory a,t_drug b where a.drug_id=b.drug_id
 	</select>
 	<select id="getUnsalableRule" resultType="com.great.bean.Unsalable">
 		select * from t_unsalable where state = 2

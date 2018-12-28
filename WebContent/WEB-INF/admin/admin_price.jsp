@@ -37,7 +37,7 @@
 	$(function() {
 		var data=[${requestScope.outList}.length];
 		var a="";
-			for (var i = 0; i < ${requestScope.outList}.length; i++) {
+			for (var i = 0; i <${requestScope.outList}.length; i++){
 				if(i==0){
 					a='#8658a5';
 				}else if(i==1){
@@ -99,7 +99,7 @@
 				grid_color : '#676a73',
 				striped_factor : 0.06,
 				height : '84%',
-				width : '90%',
+				width : '84%',
 				scale : [ {
 					position : 'left',
 					start_scale : 0,
@@ -171,7 +171,7 @@
 								//在左侧的位置，渲染说明文字。
 								chart.target.textAlign('center').textBaseline(
 										'middle').textFont('600 13px Verdana')
-										.fillText('sale', x - 50,
+										.fillText('', x - 20,
 												y + H / 2, false, '#6d869f',
 												false, false, false, -90);
 
@@ -181,6 +181,9 @@
 		chart.draw();
 	});
 </script>
+<style type="text/css">
+input{width:200px;height:30px;border:0.5px solid #E6E6FA; border-radius: 3px 3px 3px 3px;}
+</style>
 </head>
 <body>
 	<h1>渠道量统计</h1>
@@ -191,7 +194,7 @@
 		<input type="text" id="from" name="from"
 			value="${requestScope.startDate}" required> <label for="to">至</label>
 		<input type="text" id="to" name="to" value="${requestScope.endDate}"
-			required> <input type="submit" value="查询"> <input
+			required> <input class="layui-btn" style="width:80px"  type="submit" value="查询" > <input
 			type="hidden" name="method" value="statByAdmin">
 	</form>
 	<div id='canvasDiv'></div>

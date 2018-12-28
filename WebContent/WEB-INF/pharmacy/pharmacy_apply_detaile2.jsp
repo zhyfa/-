@@ -78,7 +78,7 @@
 		</c:forEach>
 	</tbody>
 </table>
-	<input type="button" onclick='submit("${requestScope.ic}")' value="确认">
+	<input type="button" class="layui-btn" onclick='submit("${requestScope.ic}")' value="确认">
 </body>
 <script type="text/javascript">
 	function exportTable(ic) {

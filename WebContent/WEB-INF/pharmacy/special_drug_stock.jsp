@@ -22,24 +22,29 @@
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-
 <script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 </head>
 <style>
-
+#myForm input{width:180px;height:35px;border:0.5px solid #E6E6FA;margin-top:20px}
+#con{margin-top:30px}
 </style>
 <body>
-<br />
+<div id="con">
+<h2>特殊药品库存表</h2>
 <form id="myForm" action="<%=basePath%>/specialDrugs/inventory.action" method="post">
 药品名字：<input type="text" name="drug_name" id="drug_name" value='${requestScope.drug_name}'>&nbsp;
-<input type="submit" value="搜索"><br />
+<input class="layui-btn" type="submit" value="搜索" style="width:80px; margin-bottom:20px" ><br />
 </form>
-<table class="table table-bordered">
-<caption>特殊药品库存表</caption>
+</div>
+<table class="layui-table">
+<%-- <caption>特殊药品库存表</caption> --%>
 	<thead>
 		<tr>
 			<th>序号</th>

@@ -10,25 +10,35 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
-
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
 <script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
+<script src="<%=basePath%>/js/jquery.serializejson.js"></script>
+<script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 
 <style type="text/css">
-#page {
-	position: absolute;
-	left: 200px;
-	top: 350px;
-}
+
 </style>
 </head>
+<style type="text/css">
+#tb1{margin-top:30px;width:100%}
+#td1{text-align:left;font-size:24px}
+#td2{text-align:right;padding-right:15px}
+</style>
 <body>
-<button onclick="javascript:history.back(-1);">返回</button>
-	<table border="1" width="80%" align="center" class="table">
-		<caption>报损详情</caption>
+<table id="tb1">
+	<tr>
+		<td id="td1">报损详情</td>
+		<td id="td2"><button class="layui-btn" onclick="createReturnBackForm()" ${reimburse.state==1?'hidden':'' }><i class="layui-icon" >&#xe609;</i>导出</button>
+		<button class="layui-btn" onclick="javascript:history.back(-1);"> <i class="layui-icon">&#xe65c;</i>返回</button></td>
+	</tr>
+</table>
+	
+	<table class="layui-table">
+		<%-- <caption>报损详情</caption> --%>
 		<thead>
 			<tr>
 				<th>序号</th>
@@ -55,8 +65,7 @@
 					<td>${reimburse.illustrate }</td>
 					<td>${reimburse.parameter_name }</td>
 					<td>
-						<button onclick="revoke(${reimburse.reimburse_id },${reimburse.inventory_id },${reimburse.reimburse_num })" ${reimburse.state!=1?'hidden':'' }>撤回申请</button>
-						<button onclick="createReturnBackForm()" ${reimburse.state==1?'hidden':'' }>生成水印单</button>
+						<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="revoke(${reimburse.reimburse_id },${reimburse.inventory_id },${reimburse.reimburse_num })" ${reimburse.state!=1?'hidden':'' }> <i class="layui-icon">&#x1006;</i>撤回申请</button>
 					</td>
 				</tr>
 			</c:forEach>

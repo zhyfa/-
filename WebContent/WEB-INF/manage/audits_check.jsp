@@ -100,7 +100,7 @@ function PurchaseDetail(auditsdetail_id){
   function returnPurchase(auditsdetail_id){
 	  if(confirm("是否驳回该采购申请？")){
 	  $.ajax({
-			url:"<%=basePath%>/stock/returnPurchase.action",
+			url:"<%=basePath%>/stock/deleteDetail.action",
 			type: "POST",
 			data:{
 				"auditsdetail_id":auditsdetail_id,

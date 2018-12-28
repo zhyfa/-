@@ -99,6 +99,7 @@ public class AuditsManagement {
 			Map<String, Object> drug = drugService.queryById(drug_id);
 			return drug;
 		}
+		
 		//添加明细
 		@Transactional
 		@RequestMapping(value = "/addOrder.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
@@ -118,6 +119,8 @@ public class AuditsManagement {
 			System.out.println(orders);
 			return orders;
 		}
+		
+		
 		//菜单进入审批明细列表
 		@RequestMapping(value = "/purchaseDetail.action",method=RequestMethod.GET,produces="application/json;charset=utf-8")
 		 public ModelAndView PurchaseDetail(HttpServletRequest request,Integer pageIndex,String auditsdetail_id) {

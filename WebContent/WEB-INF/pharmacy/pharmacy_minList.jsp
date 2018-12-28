@@ -18,7 +18,7 @@
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 
 <style type="text/css">
-
+caption{font-size:24px}
 </style>
 </head>
 <body>
@@ -50,7 +50,7 @@
 					<td>${drug.drug_size }${drug.drug_unit}/${drug.spec==1?'盒':'瓶' }</td>
 					<td>${drug.price }元/盒</td>
 					<td>${drug.inventory_min }${drug.spec==1?'盒':'瓶' }</td>
-					<td><button onclick="updateStockMinBefore(${drug.drug_id })">设置最低库存</button></td>
+					<td><button class="layui-btn layui-btn-xs" onclick="updateStockMinBefore(${drug.drug_id })"> <i class="layui-icon">&#xe642;</i>设置最低库存</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -87,15 +87,6 @@ layer.open({
   ,maxmin: true
   
   ,content: '<%=basePath%>/earlyWaring/updatePharmacyMinBefore.action?drug_id='+drug_id
- /*  ,btn: ['关闭本页'] 
-  ,btn2: function(){
-    layer.closeAll();
-  } */
-  
-  /* ,zIndex: layer.zIndex //重点1
-  ,success: function(layero){
-    layer.setTop(layero); //重点2
-  } */
 });
 }
 </script>

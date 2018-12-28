@@ -9,60 +9,97 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 <meta charset="UTF-8">
 <script src="<%=basePath%>/js/jquery.min.js"></script>
-<style type="text/css">
-body{font-size:12px}
-        #demo{overflow:hidden; height:80px; width:280px; margin:90px auto; position:relative;}
-        #demo1{height:auto; text-align:left;}
-        #demo2{height:auto; text-align:left;}
-        #demo1 li, #demo2 li{list-style-type:none; height:22px; text-align:left; }
-</style>
-</head>
 <script type="text/javascript">
-$(document).ready(function(){
+ $(document).ready(function(){
 	$.ajax({
 		type : "post",
 		url : "<%=basePath%>/stock/stockList.action",
 		dataType : "JSON",
+		async: false,
 		success : function(data) {
-			var str = "";
-			for(var i=0;i<data.length;i++){
-				var stock = data[i];
-				if(stock.msg!=null){
-					str+="<li><a href='#' target='_blank'>"+stock.drug_name+":"+stock.msg+"</a></li>"
+			if(data.stocks!=null){
+				var str = "";
+				for(var i=0;i<data.stocks.length;i++){
+					var stock = data.stocks[i];
+					if(stock.msg!=null){
+						str+="<a href='#' class='tagc2'>"+stock.drug_name+":"+stock.msg+"</a>"
+					}
 				}
+				$("#hovertreetags").append(str);
 			}
-			$("#demo1").html(str);
+			if(data.unsalables!=null){
+				var str = "";
+				for(var i=0;i<data.unsalables.length;i++){
+					var unsalable = data.unsalables[i];
+					if(unsalable.msg!=null){
+						str+="<a href='#' class='tagc1'>"+unsalable.inventory_id+":"+unsalable.drug_name+":"+unsalable.msg+"</a>"
+					}
+				}
+				$("#hovertreetags").append(str);
+			}
+			if(data.overdues!=null){
+				var str = "";
+				for(var i=0;i<data.overdues.length;i++){
+					var overdue = data.overdues[i];
+					if(overdue.msg!=null){
+						str+="<a href='#' class='tagc5'>"+overdue.inventory_id+":"+overdue.drug_name+":"+overdue.msg+"</a>"
+					}
+				}
+				$("#hovertreetags").append(str);
+			}
 		}
 	});
-});
+ });
 </script>
+<script src='<%=basePath%>/js/hovertreetags.js' type="text/javascript"></script>
+<link href="<%=basePath%>/css/hovertreetags.css" rel="stylesheet" type="text/css" />
+</head>
+<style>
+#hovertreetags{
+position: absolute;
+left: 10px;
+top:10px;
+width: 1000px;}
+#color1{
+position: absolute;
+top:300px;
+left:20px;
+width: 10px;
+height: 10px;
+background: #F16E50;}
+#color2{
+position: absolute;
+top:300px;
+left:100px;
+width: 10px;
+height: 10px;
+background: #666;}
+#color3{
+position: absolute;
+top:300px;
+left:210px;
+width: 10px;
+height: 10px;
+background: #006633;}
+#text1{
+position: absolute;
+top:290px;
+left:30px;
+font-size: 10px;}
+#text2{
+position: absolute;
+top:290px;
+left:110px;
+font-size: 10px;}
+#text3{
+position: absolute;
+top:290px;
+left:220px;
+font-size: 10px;}
+</style>
 <body>
-<div id="demo">
-    <ul id="demo1">
-    </ul>
-    <div id="demo2"></div>
-</div>
+<div id="hovertreetags"></div>
+<div id="color1"></div><p id="text1">药量不足提示</p> <div id="color2"></div><p id="text2">药房药品滞销提示</p> <div id="color3"></div><p id="text3">药房药品过期提示</p> 
 </body>
 
-<script type="text/javascript">
-var speed = 40;
-window.onload=function(){
-    var demo=document.getElementById("demo");
-    var demo2=document.getElementById("demo2");
-    var demo1=document.getElementById("demo1");
-    demo2.innerHTML = demo1.innerHTML;
-    function Marquee(){if(demo.scrollTop>=demo1.offsetHeight){
-            demo.scrollTop=0;
-        }
-        else{
-            demo.scrollTop=demo.scrollTop+1;
-        }
-    }
-    var MyMar=setInterval(Marquee,speed);
-    demo.onmouseover=function(){clearInterval(MyMar)};
-    demo.onmouseout=function(){MyMar=setInterval(Marquee,speed); };
-
-}
-
-</script>
 </html>

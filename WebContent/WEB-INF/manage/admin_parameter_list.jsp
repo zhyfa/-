@@ -39,7 +39,7 @@ caption{font-size:24px}
 				</td>
 				<td calss="td">参数值：</td>
 				<td colspan="2"><input type="text" name="parameter_value" id="parameter_value" value="${param.parameter_value}"> 
-					<input type="submit" value="<i class="搜索" class="layui-btn" id="btnSearch"> 
+					<input type="submit" value="搜索" class="layui-btn" id="btnSearch"> 
 					<input type="button" id="addButton"  class="layui-btn" onclick="parameterAdd()" value="新增参数"> 
 				</td>
 			</tr>
@@ -61,7 +61,7 @@ caption{font-size:24px}
 				<tr class="success">
 					<td >${st.count }</td>
 					<td >${parameter.parameter_id }</td>
-					<td>${parameter.parameter_name }</td>
+					<td >${parameter.parameter_name }</td>
 					<td >${parameter.parameter_type }</td>
 					<td >${parameter.parameter_value }</td>
 					<td >

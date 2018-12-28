@@ -1,9 +1,15 @@
 package com.great.action;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +25,23 @@ import com.great.bean.Admin;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
+import com.great.bean.Overdue;
 import com.great.bean.ReturnGood;
 import com.great.bean.Stock;
+import com.great.bean.Unsalable;
+import com.great.service.InventoryService;
 import com.great.service.StockService;
+import com.great.service.UnsalableService;
 
 @Controller
 @RequestMapping("/stock")
 public class StockAction {
 	@Autowired
 	private StockService stockService;
-
+	@Autowired
+	private UnsalableService unsalableService;
+	@Autowired
+	private InventoryService inventoryService;
 	// 通过drug_id，factory_id,birthday查询药库库存表中该药品的库存总量
 	@RequestMapping(value = "/getDrugNum.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody Map<String, Object> getDrugNum(int factory_id,int drug_id,String birthday) {
@@ -82,18 +95,24 @@ public class StockAction {
 		List<Map<String, Object>> meg = stockService.getMegByDrugId(drug_id);
 		return meg;
 	}
-
+	
+	
+	
 	/**
 	 * jyf
 	 * 
 	 * @return 登陆后 效验 药库 库存是否 低于最低限量
+	 * @throws ParseException 
 	 */
 	// stockList.action
 	@RequestMapping(value = "/stockList.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public List getStocks(HttpSession session) {
+	public Map<String,Object> getStocks(HttpSession session) throws ParseException {
+		Map<String,Object> map = new HashMap<>();
+		
 		Admin admin = (Admin) session.getAttribute("admin");
 		if (admin.getRole_id() == 2) {
+//判断   是否低于最低限量====================================================================
 			List<Stock> stocks = stockService.checkStockNum();
 			for (Stock stock : stocks) {
 				if (stock.getStock_number() == null) {
@@ -103,7 +122,9 @@ public class StockAction {
 					stock.setMsg("不足！");
 				}
 			}
-			return stocks;
+			map.put("stocks", stocks);
+
+			
 		} else if (admin.getRole_id() == 3) {
 			List<Inventory> inventorys = stockService.checkInventoryNum();
 			for(Inventory inventory:inventorys) {
@@ -114,9 +135,53 @@ public class StockAction {
 					inventory.setMsg("不足！");
 				}
 			}
-			return inventorys;
+			map.put("stocks", inventorys);
+//判断   是否  滞销=========================================================================
+			List<Inventory> ainventorys = unsalableService.getInventorys();
+			Unsalable unsalable = unsalableService.getUnsalableRule();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//设置 日期格式
+			Date now = new Date();//获取当前时间
+			Calendar rightNow = Calendar.getInstance();
+			rightNow.setTime(now);
+			rightNow.add(Calendar.DAY_OF_YEAR,-unsalable.getUnsalable_day());//日期-规则天数天
+			Date now1=rightNow.getTime(); // 得到 当前时间  -  滞销时间    判断药品插入时间小于这个时间的卖出了多少规格药
+		   
+			List<Inventory> inventoryss = new ArrayList();
+			for(int i =0;i<ainventorys.size();i++) {
+				Inventory inventory = ainventorys.get(i);
+				Integer drug_id = inventory.getDrug_id();
+				String cdate = inventory.getCdate();
+				Date parse = sdf.parse(cdate);//获取所有 的 记录的 插入时间
+				if(parse.before(now1)) {
+					Integer soldNum = unsalableService.getSoldNum(inventory.getDrug_id());
+					if(soldNum==null) {
+						soldNum=0;
+					}
+					if(soldNum<unsalable.getUnsalable_number()) {
+						inventory.setMsg("滞销了");
+					}
+					inventoryss.add(inventory);
+				}
+			}
+			map.put("unsalables", inventoryss);
+//判断是否过期=================================================================================================
+			DateFormat  df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+	        Date date = new Date();//df.format(new Date());// new Date()为获取当前系统时间
+	        
+	       // PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+			List<Overdue> overdues = inventoryService.getOverdues();
+			//InfoPage page = new InfoPage(overdues);
+			List<Overdue> overduess = new ArrayList<>();
+			for(Overdue overdue:overdues) {
+				if(overdue.getNowDate().getTime()<=date.getTime()) {
+					overdue.setMsg("过期了");
+					overduess.add(overdue);
+				}
+			}
+			map.put("overdues", overduess);
+			
 		}
-		return null;
+		return map;
 	}
 
 	/**

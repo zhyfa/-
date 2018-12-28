@@ -126,14 +126,14 @@ public class InventoryService {
 	}
 
 	// 报损申请 通过
-	public int badDrugPass(Integer reimburse_id) {
-		return inventoryMapper.badDrugPass(reimburse_id);
+	public int badDrugPass(Reimburse reimburse) {
+		return inventoryMapper.badDrugPass(reimburse);
 
 	};
 
 	// 报损申请 不通过
-	public int badDrugNotPass(Integer inventory_id) {
-		return inventoryMapper.badDrugNotPass(inventory_id);
+	public int badDrugNotPass(Reimburse reimburse) {
+		return inventoryMapper.badDrugNotPass(reimburse);
 
 	};
 

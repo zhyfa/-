@@ -61,9 +61,9 @@ public interface InventoryMapper {
 	public int badDrugRequest(Reimburse reimburse);
 	public int updateBadInventoryNum(Reimburse reimburse);//更新数量
 	
-	public int badDrugPass(Integer reimburse_id);
+	public int badDrugPass(Reimburse reimburse);
 
-	public int badDrugNotPass(Integer reimburse_id);
+	public int badDrugNotPass(Reimburse reimburse);
 
 	public List<Reimburse> getReimburses(Reimburse reimburse);
 	

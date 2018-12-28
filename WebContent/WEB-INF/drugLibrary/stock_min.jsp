@@ -9,19 +9,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%-- <script src="<%=basePath%>/js/jquery.min.js"></script>
-<link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
-<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
+<link rel="shortcut icon" href="<%=basePath%>/assets/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath%>/assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
 <link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
-<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script> --%>
+<script src="<%=basePath%>/js/jquery.serializejson.js"></script>
+<script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <style type="text/css">
 caption{font-size:24px}
 </style>
 </head>
 <body>
-	<table>
+	<table class="layui-table">
 		<caption>药库设置药品最低库存量</caption>
 		<thead>
 			<tr>
@@ -39,7 +40,7 @@ caption{font-size:24px}
 		<tbody>
 			<c:forEach items="${requestScope.drugs }" var="drug" varStatus="st">
 				<!-- var demo = {"active","success","warning","danger"}; -->
-				<tr class="warning">
+				<tr>
 					<td>${st.count }</td>
 					<td>${drug.drug_id }</td>
 					<td>${drug.drug_name }</td>
@@ -48,7 +49,7 @@ caption{font-size:24px}
 					<td>${drug.drug_size }${drug.drug_unit}/${drug.spec==1?'盒':'瓶' }</td>
 					<td>${drug.price }元/盒</td>
 					<td>${drug.stock_min }${drug.spec==1?'盒':'瓶' }</td>
-					<td><button onclick="updateStockMinBefore(${drug.drug_id })" class="layui-btn layui-btn-xs"><i class="layui-icon ">&#xe642;</i>设置最低库存</button></td>
+					<td><button class="layui-btn"  onclick="updateStockMinBefore(${drug.drug_id })"><i class="layui-icon ">&#xe642;</i>设置最低库存</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -84,7 +85,7 @@ function updateStockMinBefore(drug_id){
 		  ,area: ['600px', '450px']
 		  ,shade: 0
 		  ,maxmin: true
-		  ,content: '<%=basePath%>/drug/updateStockMinBefore.action?drug_id='+drug_id
+		  ,content:'<%=basePath%>/drug/updateStockMinBefore.action?drug_id='+drug_id
 		});
 	}
 </script>

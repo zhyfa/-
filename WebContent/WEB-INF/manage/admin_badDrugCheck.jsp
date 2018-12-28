@@ -36,34 +36,35 @@ caption{font-size:24px}
 	
 	<thead>
 		<th>序号</th>
+		<th>报损id</th>
 		<th>药房库存id</th>
-		<th>药品id</th>
 		<th>药品名字</th>
-		<th>生产日期</th>
-		<th>数量</th>
-		<th>状态</th>
+		<th>报损说明</th>
+		<th>报损数量</th>
 		<th>创建日期</th>
+		<th>状态</th>
 		<th>操作</th>
 	</thead>
 	<tbody>
-			<c:forEach items="${requestScope.inventorys }" var="inventory" varStatus="st">
+			<c:forEach items="${requestScope.reimburses }" var="reimburse" varStatus="st">
 				<!-- var demo = {"active","success","warning","danger"}; -->
 				<tr class="success">
 					<td>${st.count }</td>
-					<td>${inventory.inventory_id }</td>
-					<td>${inventory.drug_id }</td>
-					<td>${inventory.drug_name }</td>
-					<td>${inventory.production_date }</td>
-					<td>${inventory.inventory_number }${inventory.spec==1?'盒':'瓶' }</td>
-					<td>${inventory.parameter_name }</td>
-					<td>${inventory.cdate }</td>
+					<td>${reimburse.reimburse_id }</td>
+					<td>${reimburse.inventory_id }</td>
+					<td>${reimburse.drug_name }</td>
+					<td>${reimburse.illustrate }</td>
+					<td>${reimburse.reimburse_num }</td>
+					<td>${reimburse.cdate }</td>
+					<td>${reimburse.parameter_name }</td>
 					<td>
-						<button class="layui-btn layui-btn-xs" onclick="badDrugPass(${inventory.inventory_id },${inventory.drug_id },${inventory.admin_id },${inventory.inventory_number },'${inventory.production_date }')" ${inventory.state!=6?'hidden':'' }><i class="layui-icon ">&#xe605;</i>同意</button>
-						<button class="layui-btn layui-btn-xs layui-btn-danger" onclick="badDrugNotPass(${inventory.inventory_id })"  ${inventory.state!=6?'hidden':''}><i class="layui-icon ">&#x1006;</i>驳回</button>
+						<input type="button" value="同意" class="layui-btn layui-btn-xs" onclick="badDrugPass(${reimburse.reimburse_id },${reimburse.inventory_id },${reimburse.reimburse_num })" ${reimburse.state!=1?'hidden':'' } >
+						<input type="button" value="驳回" class="layui-btn layui-btn-xs layui-btn-danger" onclick="badDrugNotPass(${reimburse.reimburse_id },${reimburse.inventory_id },${reimburse.reimburse_num })"  ${reimburse.state!=1?'hidden':''} >
 					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
+		
 </table>
 <div id="page">
 		一共有：${requestScope.page.count }条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -84,14 +85,14 @@ caption{font-size:24px}
 <%-- ${requestScope.page } --%>
 </body>
 <script type="text/javascript">
-function badDrugPass(inventory_id,drug_id,admin_id,inventory_number,production_date){
+function badDrugPass(reimburse_id,inventory_id,reimburse_num){
 	if(confirm("确认同意报损嘛？")){
 		$.ajax({
 			type : "post",
 			url : "<%=basePath%>/daily/badDrugPass.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"inventory_id":inventory_id,"drug_id":drug_id,"admin_id":admin_id,"inventory_number":inventory_number,"production_date":production_date},
+			data : {"inventory_id":inventory_id,"reimburse_id":reimburse_id,"reimburse_num":reimburse_num},
 			success : function(res) {
 				if(res==1){
 					alert("通过报损");
@@ -104,14 +105,14 @@ function badDrugPass(inventory_id,drug_id,admin_id,inventory_number,production_d
 	}
 	
 }
-function badDrugNotPass(inventory_id){
+function badDrugNotPass(reimburse_id,inventory_id,reimburse_num){
 	if(confirm("确认驳回申请嘛？")){
 		$.ajax({
 			type: "post",
 			url : "<%=basePath%>/daily/badDrugNotPass.action",
 			//contentType : "application/json;charset=utf-8",
 			dataType : "JSON",
-			data : {"inventory_id":inventory_id},
+			data : {"inventory_id":inventory_id,"reimburse_id":reimburse_id,"reimburse_num":reimburse_num},
 			success : function(res) {
 				if(res==1){
 					alert("驳回成功");
