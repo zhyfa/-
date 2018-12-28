@@ -44,7 +44,7 @@
 	
 <body>
 	<br />
-		<button class="layui-btn" onclick="exportTable(${requestScope.ic})"><i class="layui-icon">&#xe609;</i>导出Excel表格</button>
+	<button class="layui-btn" onclick="exportTable(${requestScope.ic})"><i class="layui-icon">&#xe609;</i>导出Excel表格</button>
 	<table class="table table-bordered">
 	<caption style="text-align:center"><h4>药房申请药品的待确认页面</h4></caption>
 	<thead>
@@ -79,6 +79,7 @@
 	</tbody>
 </table>
 	<input type="button" class="layui-btn" onclick='submit("${requestScope.ic}")' value="确认">
+	<input type="button" onclick="javascript:history.back(-1);" value="返回" class="layui-btn" style="width:80px;">
 </body>
 <script type="text/javascript">
 	function exportTable(ic) {

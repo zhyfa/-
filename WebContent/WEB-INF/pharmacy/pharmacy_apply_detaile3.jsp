@@ -79,6 +79,7 @@
 		</c:forEach>
 	</tbody>
 </table>
+<input type="button" onclick="javascript:history.back(-1);" value="返回" class="layui-btn" style="width:80px;">
 </body>
 <script type="text/javascript">
 	function exportTable(ic) {
