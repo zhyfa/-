@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.aop.Log;
 import com.great.bean.InfoPage;
 import com.great.service.FactoryService;
 import com.great.service.InventoryService;
@@ -21,6 +22,7 @@ public class InventoryAction {
 	@Resource
 	private FactoryService factoryService;
 	//进入药房药品列表页
+	@Log(thing = "药房列表查询")
 	@RequestMapping(value = "/toInventoryJSP.action")
 	public ModelAndView toInventoryJSP(Integer pageIndex, String drug_name,Integer factory_id) {
 		ModelAndView andView = new ModelAndView();

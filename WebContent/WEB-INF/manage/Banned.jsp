@@ -336,7 +336,7 @@ function  change(){
 	str+="<td>"+drugname+"</td>";
 	str+="<td>"+drugid1+"</td>";
 	str+="<td>"+drugname1+"</td>";
-	str+="<td><input type='button' value='删除'  onclick='del()'></td></tr>";
+	str+="<td><button class='layui-btn layui-btn-danger layui-btn-xs' 'del()'><i class='layui-icon'>&#xe640;</i>删除</button></td></td></tr>";
 	$("#bannedbeforbody").append(str);
 	$("#drug1").val("");
 	$("#drug2").val("");

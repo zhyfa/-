@@ -82,6 +82,7 @@
 </body>
 <script type="text/javascript">
 	function exportTable(ic) {
+		console.log("ic3:"+ic)
     		window.location.href="<%=basePath%>/Printing/detaile3.action?ic="+ic
 	}
 	
