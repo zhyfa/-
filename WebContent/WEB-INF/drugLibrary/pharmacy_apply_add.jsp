@@ -58,8 +58,13 @@
 <a href="<%=basePath%>/pharmacyApply/stoct_pharmacy_apply_list3.action">前往已确认列表页</a> --%>
 <body>
 	<div id="con">
-	<h2>请输入此次申请表的编号:</h2><br />
-	<input type="text" name="ic" id="ic"  style="border:1px solid red;">
+	选择IC编号：<select name="ic" id="ic">
+		<option value="">请选择</option> 
+		<c:forEach items="${requestScope.applyList}" var="a">
+			<option value="${a.IC}">${a.IC}</option>
+		</c:forEach>
+	</select>
+<!-- 	<input type="text" name="ic" id="ic"  style="border:1px solid red;"> -->
 	<br />
 	<form id="myForm">
 		<table class="infoTb" cellspacing="1">
@@ -232,6 +237,12 @@
 			}else{
 				allow="库存不足！";
 			}
+			
+			if(total==""|| factory_name=='请选择' || birthday== '请选择'){
+				alert("请把数据输入完整");
+				return;
+			}
+			
 			
 			var newRowNumber = $("#tab1>tbody>tr").length+1;
             $("#tab1>tbody").append(

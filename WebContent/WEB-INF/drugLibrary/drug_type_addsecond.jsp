@@ -67,6 +67,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 //检查该二级类别名是否可用
 $("#smalltype_name").blur(function checkSecondTypeName(){
+	if($("#smalltype_name").val() == ''){
+		return;
+	}
 	$.ajax({
 		url:"<%=basePath%>/drugType/checkSecondTypeName.action",
 		type: "POST",
@@ -82,6 +85,10 @@ $("#smalltype_name").blur(function checkSecondTypeName(){
 });
 
 function add() {
+	if($("#smalltype_name").val() == ''){
+		alert("类别名称不能为空！")
+		return;
+	}
 	$.ajax({
 			url:"<%=basePath%>/drugType/addSecondType.action",
 			type: "POST",
@@ -89,11 +96,11 @@ function add() {
 			success : function(res){
 				if(res=='0'){
 					alert("添加成功");
+				//跳回药品种类列表页
+				parent.window.location.href="<%=basePath%>/drugType/toJSP.action";
 				}else{
 					alert("添加失败");
 				}
-				//跳回药品种类列表页
-				parent.window.location.href="<%=basePath%>/drugType/toJSP.action";
 			}
 		});
 }

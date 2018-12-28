@@ -84,8 +84,6 @@ function secondType() {
 			<th>药品名称</th>
 			<th>药品所属类别</th>
 			<th>规格（包装）</th>
-			<th>单位</th>
-			<th>总量</th>
 			<th>单价（元）</th>
 			<th>折扣（100%）</th>
 			<th>是否特殊药</th>
@@ -101,11 +99,7 @@ function secondType() {
 					<td>${st.count }</td>
 					<td>${d.DRUG_NAME }</td>
 					<td>${d.SMALLTYPE_NAME }</td>
-					<td>
-						${d.SPEC==1?'盒':'瓶'}
-					</td>
-					<td>${d.DRUG_UNIT}</td>
-					<td>${d.DRUG_SIZE}</td>
+					<td>${d.DRUG_SIZE}${d.DRUG_UNIT}/${d.SPEC==1?'盒':'瓶'}</td>
 					<td>${d.PRICE}</td>
 					<td>${d.DISCOUNT}</td>
 					<td>${d.PSYCHOTROPICS}</td>

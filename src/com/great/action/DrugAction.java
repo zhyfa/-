@@ -44,11 +44,19 @@ public class DrugAction {
 	Page page;
 
 	// 修改药品信息,先查看药品名是否可用
+	/*
+	 * 1，获取drug_id，通过它获取本来的drug_name; 2,判断名字是否可用时，忽略本来的名字
+	 */
 	@RequestMapping(value = "/updateDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody String updateDrug(@RequestBody Drug drug) {
-		Integer result1 = drugService.checkDrugName(drug.getDrug_name());
-		if (result1 != null) {
-			return "1";
+		int drug_id = drug.getDrug_id();
+		Map<String, Object> map = drugService.queryById(drug_id);
+		String drug_name = map.get("DRUG_NAME").toString();
+		if (!drug_name.equals(drug.getDrug_name())) {
+			Integer result1 = drugService.checkDrugName(drug.getDrug_name());
+			if (result1 != null) {
+				return "1";
+			}
 		}
 		int result = drugService.updateDrug(drug);
 		String str = result > 0 ? "0" : "1";
