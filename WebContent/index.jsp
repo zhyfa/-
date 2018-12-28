@@ -83,9 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							window.location.href = "<%=basePath%>/main.jsp";
 						}
 						if (data == '2') {
-							
 							 mizhu.alert('提示', '验证码错误！','alert_red'); 
-							
 						}
 						if (data == '3') {
 							
