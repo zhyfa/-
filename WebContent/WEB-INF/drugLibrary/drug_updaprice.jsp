@@ -31,13 +31,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
 <h1 style="text-align: center;">药品售价修改</h1>
-<input  id="drug1" list="druglist" name="drug" type="text" class="form-control">
+<table><tr><td>
+<label class="input-group">请在下列输入（选择）药品</label> 
+</td></tr>
+<tr><td>
+<input  id="drug1" list="druglist" name="drug" type="text" class="form-control" style="width:200px">
 			<datalist id="druglist">
 				<c:forEach items="${requestScope.drugs}" var="drug">
 			  			<option data-id="${drug.DRUG_ID}">${drug.DRUG_NAME}</option>
 			  	</c:forEach>
-			</datalist>
+			</datalist></td><td>
     	<input class="layui-btn" type="button" value="确定" onclick="inputSelect()">
+      </tr></table> 	
 <table class="table table-hover">
   <caption>药品价格</caption>
   <thead>

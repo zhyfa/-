@@ -21,6 +21,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/assets/x-admin/js/jquery.md5.js"></script>
 <script type="text/javascript" src="<%=basePath%>/assets/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/assets/js/messages_zh.min.js"></script>
+<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
 </head>
 <style>
 
@@ -129,9 +131,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	});
 	function checkForm(){
 		var checkPwd = document.getElementById("checkPwd").innerText;
-		console.log(checkPwd);
 		if(checkPwd=="×"){
-			alert("请输入正确的原密码，如忘记密码请联系管理员修改密码");
+			/* alert("请输入正确的原密码，如忘记密码请联系管理员修改密码"); */
+			mizhu.alert('提示', '请输入正确的原密码，如忘记密码请联系管理员修改密码！','alert_red');
 			return false;
 		}
 		

@@ -20,6 +20,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 
 <script src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.validate.min.js"></script>
+<script src="<%=basePath%>/js/messages_zh.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
 <script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
@@ -28,6 +30,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
 <style>
 
 #myForm input{width:200px;height:35px; border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;margin-top:10px}
@@ -37,9 +41,84 @@ caption{font-size:24px}
 #tb1 th{text-align:right}
 #con{margin-left:10%}
 </style>
+
 <script>
 $(document).ready(function(){
-	//显示所有的一级类别
+	$.validator.setDefaults({
+	    submitHandler: function() {
+	    	submitForm();
+	    }
+	});
+	
+	
+	
+	$("#myForm").validate({
+	    rules: {
+	      drug_name: {
+	        required: true,
+	        minlength: 1
+	      },
+	      drug_size: {
+	        required: true,
+	        digits:true,
+	        minlength: 1
+	      },
+	      price: {
+	        required: true,
+	        number:true
+	      },
+	      discount: {
+	    	  required: true,
+		      digits:true,
+		      max:100
+	      },
+	      use_method: {
+	    	  required: true,
+	    	  minlength:5
+	      },
+	      illustrate: {
+	    	  required: true,
+	    	  minlength:5
+	      },
+	      irradiated: {
+	    	  required: true,
+		      digits:true,
+		      max:100
+	      }
+	    },
+	    messages: {
+	       drug_name: {
+	        required: "请输入药品名字",
+	        minlength: "药品至少有一个字"
+	      },
+	      drug_size: {
+	        required: "请输入规格大小",
+	        digits:"只能是正整数",
+	        minlength: "规格至少是个一位数"
+	      },
+	      price: {
+		        required: "请输入价格",
+		        number:"价格是个数字"
+		      },
+		      discount: {
+		    	  required: "请输入折扣",
+			      digits:"折扣是个正整数",
+			      max:"折扣最大值不超过100"
+		      },
+		      use_method: {
+		    	  required: "请输入用量",
+		    	  minlength:"至少5个字母"
+		      },
+		      illustrate: {
+		    	  required: "请输入症状描述",
+		    	  minlength:"至少5个字母"
+		      },
+		      irradiated: {
+		    	  required: "请输入保质期",
+			      digits:"保质期是个正整数"
+		      }
+	    }
+	  })
 });
 
 
@@ -113,8 +192,8 @@ $(document).ready(function(){
 		<tr>
 			<th></th>
 			<td>
-				<button class="layui-btn" onclick="submitForm()"><i class="layui-icon ">&#xe605;</i>确认添加</button>
-				<button class="layui-btn" onclick="javascript:history.back(-1);"><i class="layui-icon ">&#xe65c;</i>返回</button>
+				<input type="submit" class="layui-btn" style="width:80px;">
+				<input type="button" onclick="javascript:history.back(-1);" value="返回" class="layui-btn" style="width:80px;">
 			</td>
 		</tr>
 		</table>
@@ -148,12 +227,14 @@ function submitForm(){
 			dataType:"json",
 			success : function(res) {
 				if(res==0){
-					alert("添加成功");
+					/* alert("添加成功"); */
+					mizhu.alert('提示', '添加成功！','alert_green');
 					//添加成功或是失败都需要跳回列表页
 					parent.window.location.href="<%=basePath%>/drug/toDrugJSP.action";
 				}
 				if(res==1){
-					alert("添加失败");
+					/* alert("添加失败"); */
+					mizhu.alert('提示', '添加失败！','alert_red');
 				}
 			}
 		});

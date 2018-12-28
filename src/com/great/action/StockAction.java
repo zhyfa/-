@@ -30,6 +30,7 @@ import com.great.bean.ReturnGood;
 import com.great.bean.Stock;
 import com.great.bean.Unsalable;
 import com.great.service.InventoryService;
+import com.great.service.PharmacyApplyService;
 import com.great.service.StockService;
 import com.great.service.UnsalableService;
 
@@ -42,6 +43,8 @@ public class StockAction {
 	private UnsalableService unsalableService;
 	@Autowired
 	private InventoryService inventoryService;
+	@Autowired
+	private PharmacyApplyService pharmacyApplyService;
 	// 通过drug_id，factory_id,birthday查询药库库存表中该药品的库存总量
 	@RequestMapping(value = "/getDrugNum.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody Map<String, Object> getDrugNum(int factory_id,int drug_id,String birthday) {
@@ -73,8 +76,8 @@ public class StockAction {
 	@RequestMapping("/auditing.action")
 	public ModelAndView toPharmacyApplyJSP() {
 		ModelAndView andView = new ModelAndView();
-		//List<Map<String, Object>> drugNames = stockService.getAllDrugName();
-		//andView.addObject("drugNames", drugNames);
+		List<Map<String, Object>> applyList = pharmacyApplyService.applyList();
+		andView.addObject("applyList", applyList);
 		andView.setViewName("drugLibrary/pharmacy_apply_add");
 		return andView;
 	}
@@ -125,7 +128,7 @@ public class StockAction {
 			map.put("stocks", stocks);
 
 			
-		} else if (admin.getRole_id() == 3) {
+		} else if (admin.getRole_id() == 3 || admin.getRole_id() == 1) {
 			List<Inventory> inventorys = stockService.checkInventoryNum();
 			for(Inventory inventory:inventorys) {
 				if(inventory.getInventory_number()==null) {
@@ -234,6 +237,64 @@ public class StockAction {
 		} else {
 			return 0;
 		}
-
+	}
+	//returnGoodsInfo.action
+	@RequestMapping("/returnGoodsInfo.action")
+	public ModelAndView returnGoodsInfo(Integer pageIndex) {
+		if(pageIndex==null){
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<ReturnGood> returnGoods = stockService.getReturns(null);
+		InfoPage page = new InfoPage(returnGoods);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("returnGoods", returnGoods);
+		andView.addObject("page", page);
+		andView.setViewName("drugLibrary/returnGoodsInfo");
+		return andView;
+	};
+	//revokeReturnGood
+	@RequestMapping(value = "/revokeReturnGood.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int revokeReturnGood(ReturnGood returnGood) {
+		int result = stockService.revokeReturnGood(returnGood);
+		if (result == 1) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+	//returnFactoryReviewList.action
+	@RequestMapping("/returnFactoryReviewList.action")
+	public ModelAndView returnFactoryReviewList(Integer pageIndex) {
+		if(pageIndex==null){
+			pageIndex=1;
+		}
+		PageHelper.startPage(pageIndex, InfoPage.NUMBER);
+		List<ReturnGood> returnGoods = stockService.getReturns(null);
+		InfoPage page = new InfoPage(returnGoods);
+		ModelAndView andView = new ModelAndView();
+		andView.addObject("returnGoods", returnGoods);
+		andView.addObject("page", page);
+		andView.setViewName("manage/admin_returnFactoryReviewList");
+		return andView;
+	};
+	//ReturnGoodPass.action
+	@RequestMapping(value = "/ReturnGoodPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int ReturnGoodPass(ReturnGood returnGood) {
+		int result = stockService.ReturnGoodPass(returnGood);
+		if (result == 1) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
+	@RequestMapping(value = "/ReturnGoodNotPass.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody int ReturnGoodNotPass(ReturnGood returnGood) {
+		int result = stockService.ReturnGoodNotPass(returnGood);
+		if (result == 1) {
+			return 1;
+		} else {
+			return 2;
+		}
 	}
 }

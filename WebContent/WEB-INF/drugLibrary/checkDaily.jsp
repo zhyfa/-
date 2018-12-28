@@ -33,7 +33,6 @@ $('#upLoad').click(function(){
             data:{'cacheVersion':cacheVersion},
             dataType: 'text',
             success:function(data){
-            	alert(data);
             	window.location.href="<%=basePath%>/creditInfo/checkDaily.action?dqPage=1&pageTwo=1";
             }
         });   
@@ -45,11 +44,12 @@ function checkData(){
    var fileDir = $("#upfile").val();  
    var suffix = fileDir.substr(fileDir.lastIndexOf("."));  
    if("" == fileDir){  
-       alert("选择需要导入的Excel文件！");  
+       mizhu.alert('提示', '选择需要导入的Excel文件！','alert_red');
        return false;  
    }  
    if(".xls" != suffix && ".xlsx" != suffix ){  
-       alert("选择Excel格式的文件导入！");  
+      /*  alert("选择Excel格式的文件导入！");  */
+       mizhu.alert('提示', '选择Excel格式的文件导入！','alert_red');
        return false;  
    }  
    return true;  

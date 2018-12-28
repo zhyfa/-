@@ -30,6 +30,8 @@
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
 </head>
 <style>
 #myForm input{width:180px;height:35px;border:0.5px solid #E6E6FA;margin-top:20px}

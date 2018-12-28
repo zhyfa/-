@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.aop.Log;
 import com.great.bean.Banned;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
@@ -44,11 +45,19 @@ public class DrugAction {
 	Page page;
 
 	// 修改药品信息,先查看药品名是否可用
+	/*
+	 * 1，获取drug_id，通过它获取本来的drug_name; 2,判断名字是否可用时，忽略本来的名字
+	 */
 	@RequestMapping(value = "/updateDrug.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody String updateDrug(@RequestBody Drug drug) {
-		Integer result1 = drugService.checkDrugName(drug.getDrug_name());
-		if (result1 != null) {
-			return "1";
+		int drug_id = drug.getDrug_id();
+		Map<String, Object> map = drugService.queryById(drug_id);
+		String drug_name = map.get("DRUG_NAME").toString();
+		if (!drug_name.equals(drug.getDrug_name())) {
+			Integer result1 = drugService.checkDrugName(drug.getDrug_name());
+			if (result1 != null) {
+				return "1";
+			}
 		}
 		int result = drugService.updateDrug(drug);
 		String str = result > 0 ? "0" : "1";
@@ -228,6 +237,7 @@ public class DrugAction {
 	}
 
 	// 增加禁忌
+	@Log(thing = "添加禁忌药")
 	@RequestMapping(value = "/addbanned.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody String addbanned(@RequestParam String data, Object HashMap) {
 //					List<Map<String,Object>> result = drugService.querybannedDrug(drugid);

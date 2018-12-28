@@ -4,6 +4,8 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				for(var i=0;i<data.stocks.length;i++){
 					var stock = data.stocks[i];
 					if(stock.msg!=null){
-						str+="<a href='#' class='tagc2'>"+stock.drug_name+":"+stock.msg+"</a>"
+						str+="<a href='<c:if test='${sessionScope.admin.role_id==2 }'><%=basePath%>/stock/purchase.action</c:if><c:if test='${sessionScope.admin.role_id==3 }'><%=basePath%>/pharmacyApply/toPharmacyApplyJSP.action</c:if>' class='tagc2'>"+stock.drug_name+":"+stock.msg+"</a>"
 					}
 				}
 				$("#hovertreetags").append(str);
@@ -32,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				for(var i=0;i<data.unsalables.length;i++){
 					var unsalable = data.unsalables[i];
 					if(unsalable.msg!=null){
-						str+="<a href='#' class='tagc1'>"+unsalable.inventory_id+":"+unsalable.drug_name+":"+unsalable.msg+"</a>"
+						str+="<a href='<%=basePath%>/daily/returnBack.action' class='tagc1'>"+unsalable.inventory_id+":"+unsalable.drug_name+":"+unsalable.msg+"</a>"
 					}
 				}
 				$("#hovertreetags").append(str);
@@ -42,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				for(var i=0;i<data.overdues.length;i++){
 					var overdue = data.overdues[i];
 					if(overdue.msg!=null){
-						str+="<a href='#' class='tagc5'>"+overdue.inventory_id+":"+overdue.drug_name+":"+overdue.msg+"</a>"
+						str+="<a href='<%=basePath%>/daily/returnBack.action' class='tagc5'>"+overdue.inventory_id+":"+overdue.drug_name+":"+overdue.msg+"</a>"
 					}
 				}
 				$("#hovertreetags").append(str);
@@ -100,6 +102,7 @@ font-size: 10px;}
 <body>
 <div id="hovertreetags"></div>
 <div id="color1"></div><p id="text1">药量不足提示</p> <div id="color2"></div><p id="text2">药房药品滞销提示</p> <div id="color3"></div><p id="text3">药房药品过期提示</p> 
+
 </body>
 
 </html>

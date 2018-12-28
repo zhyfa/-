@@ -51,6 +51,9 @@ function getHalfYear(){
 		url:"<%=basePath%>/stock/getHalfYear.action",
 		data:{"method":"getQuarterStatistics"},
 		success:function(data){
+			if(data==''){
+				alert("近半年没有任何采购记录！");
+			}
 		var datalist=[];
 		var total=0;
 		for(var i=0;i<data.length;i++){
@@ -74,16 +77,19 @@ function getMonth(){
 		url:"<%=basePath%>/stock/getMonth.action",
 		data:{"method":"getQuarterStatistics"},
 		success:function(data){
-		var datalist=[];
-		var total=0;
-		for(var i=0;i<data.length;i++){
-			if(data[i].COUNT>total){
-				total=data[i].COUNT;
+			if(data==''){
+				alert("近一个月没有任何采购记录！");
 			}
-			datalist[i]={
-			name:data[i].DRUG_NAME,
-			value:data[i].COUNT,
-			color:'#a5c2d5',
+			var datalist=[];
+			var total=0;
+			for(var i=0;i<data.length;i++){
+				if(data[i].COUNT>total){
+					total=data[i].COUNT;
+				}
+				datalist[i]={
+				name:data[i].DRUG_NAME,
+				value:data[i].COUNT,
+				color:'#a5c2d5',
 			};	
 		}
 		var title="近一个月的药品采购";
@@ -97,16 +103,19 @@ function getWeek(){
 		url:"<%=basePath%>/stock/getWeek.action",
 		data:{"method":"getQuarterStatistics"},
 		success:function(data){
-		var datalist=[];
-		var total=0;
-		for(var i=0;i<data.length;i++){
-			if(data[i].COUNT>total){
-				total=data[i].COUNT;
+			if(data==''){
+				alert("近一周没有任何采购记录！");
 			}
-			datalist[i]={
-			name:data[i].DRUG_NAME,
-			value:data[i].COUNT,
-			color:'#a5c2d5',
+			var datalist=[];
+			var total=0;
+			for(var i=0;i<data.length;i++){
+				if(data[i].COUNT>total){
+					total=data[i].COUNT;
+				}
+				datalist[i]={
+				name:data[i].DRUG_NAME,
+				value:data[i].COUNT,
+				color:'#a5c2d5',
 			};	
 		}
 		var title="近一周的药品采购";

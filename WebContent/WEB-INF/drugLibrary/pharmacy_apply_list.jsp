@@ -55,6 +55,7 @@
 			<h3>暂无申请药品基准表</h3>
 		</c:otherwise>
 	</c:choose>
+	<input type="button" onclick="javascript:history.back(-1);" value="返回" class="layui-btn" style="width:80px;">
 </body>
 <script type="text/javascript">
 //进入该IC编号的具体申请明细

@@ -10,24 +10,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
+<script src="<%=basePath%>/js/jquery.min.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/js/bootstrap/bootstrap.min.css">
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/bootstrap/bootstrap.min.js"></script>
-
-<script src="<%=basePath%>/assets/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 
 <style type="text/css">
-#page {
-	position: absolute;
-	left: 200px;
-	top: 800px;
-}
+
 </style>
 </head>
 <body>
 <form id="applyInfo">
-	<table border="1" width="80%" align="center" class="table">
+	<table class="layui-table">
 		<caption>入库单明细</caption>
 			<tbody>
 			<tr>
@@ -53,7 +50,7 @@
 			</tbody>
 		</table>
 	</form>
-		<table border="1" width="80%" align="center" class="table">
+		<table class="layui-table">
 			<thead>
 				<tr>
 					<th>序号</th>
@@ -94,14 +91,14 @@
 					<input type="hidden" name="plantobuy_number" id="plantobuy_number" value="${detail.PLANTOBUY_NUMBER}">
 					<td><input type="hidden" id="storge_number" value="${detail.STORGE_NUMBER}">${detail.STORGE_NUMBER}</td>
 					<c:if test="${detail.STAT==2}">
-						<td><input type="text" name="real_storgeno" id="real_storgeno" style="width:50px"></td>
+						<td><input type="text" name="real_storgeno" id="real_storgeno" style="width:50px;border:0px" onblur="storgeIn(${detail.STORGEDETAIL_ID})"></td>
 						<td>${detail.PARAMETER_NAME}</td>
-						<td><textarea cols="10" type="text" name="reasonfor_varity" id="reasonfor_varity"></textarea></td>
-						<td><textarea cols="10" type="text" name="notes" id="notes"></textarea></td>
-						<td>	
+						<td><textarea cols="10" style="border:0px" type="text" name="reasonfor_varity" id="reasonfor_varity"></textarea></td>
+						<td><textarea cols="10" style="border:0px" type="text" name="notes" id="notes"></textarea></td>
+						<%-- <td>	
 								<input type="button" value="入库" onclick="storgeIn(${detail.STORGEDETAIL_ID})" >
 								<input type="button" value="驳回" onclick="storgeReturn(${detail.STORGEDETAIL_ID})" >
-						</td>
+						</td> --%>
 					</c:if>
 					<c:if test="${detail.STAT!=2}">
 						<td>${detail.REAL_STORGENO}</td>
@@ -112,7 +109,7 @@
 					</c:if>
 				</tr>
 			</c:forEach>
-			<tr><input type="submit" value="入库完成"></tr>
+			<tr><button class="layui-btn" onclick="submitStock(${requestScope.storgeApply.STORGE_ID})">入库完成</button></tr>
 			</tbody>
 	</table>
 	</form>
@@ -159,32 +156,30 @@ function storgeIn(storgedetail_id){
 			}else{
 				alert("入库失败");
 			}
-			var storge_id = $("#storge_id").val();
-			window.location.href="<%=basePath%>/storge/storgeApplyDetail.action?storge_id="+storge_id
+			<%-- var storge_id = $("#storge_id").val();
+			window.location.href="<%=basePath%>/storge/storgeApplyDetail.action?storge_id="+storge_id --%>
 				
 		}
 	});
 }
- 
-function storgeReturn(storge_id){
-	$.ajax({
-		url:"<%=basePath%>/storge/checkAndReturn.action",
-		type: "POST",
-		data:{
-			"storgedetail_id":storgedetail_id,
-			"real_storgeno":$("#real_storgeno").val(),
-			"reasonfor_varity":$("#reasonfor_varity").val(),
-			"notes":$("#notes").val(),
-			
-			},
-			success : function(res){
-			if(res=='0'){
-				alert("驳回成功");
-			}else{
-				alert("驳回失败");
+ function submitStock(storge_id){
+	 $.ajax({
+			url:"<%=basePath%>/storge/submitStock.action",
+			type: "POST",
+			data:{
+				"storge_id":storge_id,
+				},
+				success : function(res){
+				if(res=='0'){
+					alert("提交成功");
+				}else{
+					alert("提交失败");
+				}
+				var storge_id = $("#storge_id").val();
+				window.location.href="<%=basePath%>/storge/drugStorge.action"
 			}
-		}
-	});
-} 
+		});
+ }
+
 </script>
 </html>

@@ -16,16 +16,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 <title>登录</title>
-<link href="${pageContext.request.contextPath}/assets/css/login.css"
-	type="text/css" rel="stylesheet">
-	<link href="${pageContext.request.contextPath}/css/style.css"
-	type="text/css" rel="stylesheet">
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-	<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/ui.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/assets/x-admin/js/jquery.md5.js"></script>
+<link href="<%=basePath%>/assets/css/login.css" type="text/css" rel="stylesheet">
+<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/jqueryUI/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/x-admin/js/jquery.md5.js"></script>
 </head>
 <body>
 	<div class="login">
@@ -45,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				onclick="changeImage()"> <a href="#" onclick="changeImage()">看不清</a><br>
 			<input type="button" value="登录" onclick="login()">
 			<hr class="hr20">
-			帮助 <a onClick="alert('请联系管理员')">忘记密码</a>
+			帮助 <a onClick="mizhu.alert('提示','请联系管理员！','alert_red')">忘记密码</a>
 		</form>
 	</div>
 </body>
@@ -62,15 +58,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var pwd = document.getElementById("pwd").value.trim();
 		var code = document.getElementById("code").value.trim();
 		if (adminName == "" || adminName == undefined) {
-			window.alert("请输入用户名");
+			/* window.alert("请输入用户名"); */
+			mizhu.alert('提示', '请输入用户名！','alert_red'); 
 			return false;
 		}
 		if (pwd == "" || pwd == undefined) {
-			window.alert("请输入密码");
+			/* window.alert("请输入密码"); */
+			mizhu.alert('提示', '请输入密码！','alert_red'); 
 			return false;
 		}
 		if (code == "" || code == undefined) {
-			window.alert("请输入验证码");
+			/* window.alert("请输入验证码"); */
+			mizhu.alert('提示', '请输入验证码！','alert_red'); 
 			return false;
 		}
 		$.ajax({
@@ -84,13 +83,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							window.location.href = "<%=basePath%>/main.jsp";
 						}
 						if (data == '2') {
-							mizhu.alert('', '验证码错误','alert_red');
+							 mizhu.alert('提示', '验证码错误！','alert_red'); 
 						}
 						if (data == '3') {
-							window.alert("用户名或密码错误");
+							
+							 mizhu.alert('提示', '用户名或密码错误！','alert_red'); 
 						}
 						if (data == '4') {
-							alert("该用户已删除，请联系管理员");
+							
+							 mizhu.alert('提示', '该用户已删除，请联系管理员！','alert_red'); 
 						}
 					}
 				});

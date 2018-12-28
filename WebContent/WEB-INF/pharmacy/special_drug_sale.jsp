@@ -31,6 +31,8 @@
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
 </head>
 <script>
 $(document).ready(function(){
@@ -120,6 +122,7 @@ $("#end").blur(function () {
     	var end=new Date(endTime.replace("-", "/").replace("-", "/"));
     	if(end<start){
     		alert("终止时间应该在开始时间之后");
+    		 mizhu.alert('提示','该用户已删除，请联系管理员！','alert_red');
     		$("#end").val("");
     	}
     }

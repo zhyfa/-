@@ -127,7 +127,10 @@
 				alert("申请总量大于库存总量！");
 				return;
 			}
-			
+			if(total==""){
+				alert("请输入申请数量");
+				return;
+			}
 			var newRowNumber = $("#tab1>tbody>tr").length+1;
             $("#tab1>tbody").append(
             		"<tr><td><input type='checkbox' class='checkBox' name='dateItem' /></td><td>"
