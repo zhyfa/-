@@ -7,13 +7,9 @@ public class ReturnGood {
 	private String  return_date ;// date --退药日期
 	private String  birthday ;//生产日期
 	private String  cdate ;//入库日期
-	private Integer factory_id;//工厂id
-	private Integer state;//工厂id
-	
 	private String  drug_name ;//药品名称
 	private String  admin_name ;//添加药库的人员
 	private String  factory_name;//工厂名称
-	private String  parameter_name;//工厂名称
 	@Override
 	public String toString() {
 		return "ReturnGood [stock_id=" + stock_id + ", drug_id=" + drug_id + ", stock_number=" + stock_number
@@ -33,26 +29,6 @@ public class ReturnGood {
 		this.drug_name = drug_name;
 		this.admin_name = admin_name;
 		this.factory_name = factory_name;
-	}
-	
-	
-	public Integer getState() {
-		return state;
-	}
-	public void setState(Integer state) {
-		this.state = state;
-	}
-	public String getParameter_name() {
-		return parameter_name;
-	}
-	public void setParameter_name(String parameter_name) {
-		this.parameter_name = parameter_name;
-	}
-	public Integer getFactory_id() {
-		return factory_id;
-	}
-	public void setFactory_id(Integer factory_id) {
-		this.factory_id = factory_id;
 	}
 	public Integer getStock_id() {
 		return stock_id;
