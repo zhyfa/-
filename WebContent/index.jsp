@@ -18,8 +18,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>登录</title>
 <link href="${pageContext.request.contextPath}/assets/css/login.css"
 	type="text/css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/css/style.css"
+	type="text/css" rel="stylesheet">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+	<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/ui.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/assets/x-admin/js/jquery.md5.js"></script>
 </head>
@@ -80,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							window.location.href = "<%=basePath%>/main.jsp";
 						}
 						if (data == '2') {
-							window.alert("验证码错误");
+							mizhu.alert('', '验证码错误','alert_red');
 						}
 						if (data == '3') {
 							window.alert("用户名或密码错误");

@@ -1,7 +1,5 @@
 package com.great.action;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -88,7 +85,6 @@ public class AdminLoginAction {
 	}
  }
 	//登录用户修改密码
-	@Log(thing = "用户修改密码")
 	@RequestMapping("/alterPwd.action")
 	public ModelAndView login(HttpServletRequest request, HttpSession session, String admin_pwd) {
 		ModelAndView mav = new ModelAndView();
