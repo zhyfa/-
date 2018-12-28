@@ -284,6 +284,7 @@
     				success : function(res){
     				if(res=='0'){
     					alert("提交成功，请联系管理员进行审核");
+    					window.alert.href="http://www.baidu.com";
     				}else{
     					alert("提交失败失败");
     				}

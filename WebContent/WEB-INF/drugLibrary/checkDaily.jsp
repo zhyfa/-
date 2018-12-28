@@ -15,6 +15,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>assets/lib/layui/layui.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/assets/lib/layui/css/layui.css"  media="all">
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
+<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
 <script>
 function a(){
 	window.location.href="<%=basePath%>/creditInfo/dailyexcel.action"
@@ -56,11 +58,13 @@ function checkData(){
    var fileDir = $("#upfile").val();  
    var suffix = fileDir.substr(fileDir.lastIndexOf("."));  
    if("" == fileDir){  
-       alert("选择需要导入的Excel文件！");  
+       /* alert("选择需要导入的Excel文件！");  */
+       mizhu.alert('提示', '选择需要导入的Excel文件！','alert_red');
        return false;  
    }  
    if(".xls" != suffix && ".xlsx" != suffix ){  
-       alert("选择Excel格式的文件导入！");  
+      /*  alert("选择Excel格式的文件导入！");  */
+       mizhu.alert('提示', '选择Excel格式的文件导入！','alert_red');
        return false;  
    }  
    return true;  

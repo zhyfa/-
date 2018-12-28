@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
+import com.great.bean.Admin;
 import com.great.bean.AuditsDetail;
 import com.great.bean.InfoPage;
 import com.great.bean.Purchase;
@@ -180,7 +182,7 @@ public class StorgeAction {
 		//核对入库
 		@Transactional
 		@RequestMapping(value = "/checkAndStorge.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-		public @ResponseBody String checkAndStorge(int storgedetail_id,int real_storgeno,String reasonfor_varity, String notes,int real_storgetotal,int real_storgetype) {
+		public @ResponseBody String checkAndStorge(HttpSession session,int storgedetail_id,int real_storgeno,String reasonfor_varity, String notes,int real_storgetotal,int real_storgetype) {
 			Storge storge = new Storge();
 			storge.setStorgedetail_id(storgedetail_id);
 			storge.setReal_storgeno(real_storgeno);
@@ -196,85 +198,79 @@ public class StorgeAction {
 		String auditsdetail_id = (String) mStorge.get("AUDITSDETAIL_ID");
 		BigDecimal bDrug_id = (BigDecimal) mStorge.get("DRUG_ID");
 		Timestamp production_date = (Timestamp) mStorge.get("PRODUCTION_DATE");
+		BigDecimal bPlantobuy_number = (BigDecimal) mStorge.get("PLANTOBUY_NUMBER");
+		int plantobuy_number = bPlantobuy_number.intValue();
 		String sBirthday = production_date.toString();
 		String[] b=sBirthday.split("\\.");
 		String a=b[0];
 		System.out.println(a);
 		String factory_name = (String) mStorge.get("FACTORY_NAME");
 		int drug_id = bDrug_id.intValue();
-		//根据入库单编号查询入库单信息
-		Map<String,Object> mStorgeApply = storgeApplyService.queryApplyDetail(storge_id);
-		System.out.println("mStorgeApply="+mStorgeApply);
-		BigDecimal bType_total = (BigDecimal) mStorgeApply.get("TYPE_TOTAL");
-		int type_total = bType_total.intValue();
-		
-		int realStorgetotal = real_storgetotal+real_storgeno;
-		int realStorgeType = real_storgetype+1;
-		System.out.println("realStorgeType="+realStorgeType);
-		StorgeApply storgeApply = new StorgeApply();
-		storgeApply.setStorge_id(storge_id);
-		storgeApply.setReal_storgetotal(realStorgetotal);
-		storgeApply.setReal_storgetype(realStorgeType);
-		Purchase purchase = new Purchase();
-		purchase.setAuditsdetail_id(auditsdetail_id);
-		if(realStorgeType==type_total){
-			storgeApply.setStat(4);
-			purchase.setStat(5);
-		}else {
-			storgeApply.setStat(3);
-			purchase.setStat(4);
-		}
-		int result2 = storgeApplyService.updateStorgeApply(storgeApply);
-		int result3 = purchaseService.updateStock(purchase);
+		//更新采购明细表对应药品入库信息
 		AuditsDetail auditsDetail = new AuditsDetail();
 		auditsDetail.setAuditsdetail_id(auditsdetail_id);
+		auditsDetail.setStock_num(real_storgeno);
 		auditsDetail.setDrug_id(drug_id);
-		//根据明细id和药品id查询明细
-		Map<String,Object> detail = auditsDetailService.getdetailInfo(auditsDetail);
-		System.out.println("detail="+detail);
-		BigDecimal bTotal = (BigDecimal) detail.get("TOTAL");
-		int total = bTotal.intValue();
-		BigDecimal bStockNum = (BigDecimal) detail.get("STOCK_NUM");
-		BigDecimal bAdminId = (BigDecimal) detail.get("ADMIN_ID");
-		int admin_id = bAdminId.intValue();
-		int stock_num = bStockNum.intValue();
-		int stockNum= real_storgeno+stock_num;
-		auditsDetail.setStock_num(stockNum);
-		if(stockNum>=total) {
-			auditsDetail.setStat(5);
-		}else {
+		if(real_storgeno<plantobuy_number) {
 			auditsDetail.setStat(4);
+		}else {
+			auditsDetail.setStat(5);
 		}
-		int result4 = auditsDetailService.updateStock(auditsDetail);
-		//添加库存表实际库存
-		int factory_id = factoryService.getFactoryId(factory_name);
-		Stock stock = new Stock();
+		int result2 = auditsDetailService.updateStock(auditsDetail);
+		//查询对应入库申请单明细
+		Map<String,Object> mStorgeApply = storgeApplyService.queryApplyDetail(storge_id);
+		BigDecimal bTypetotal = (BigDecimal) mStorgeApply.get("TYPE_TOTAL");
+		int typeTotal = bTypetotal.intValue();
+		BigDecimal bType_real = (BigDecimal) mStorgeApply.get("REAL_STORGETYPE");
+		int type_real = bType_real.intValue();
+		int realStorgeType = type_real+1;
+		BigDecimal bStorge_real = (BigDecimal) mStorgeApply.get("REAL_STORGETOTAL");
+		int storge_real = bStorge_real.intValue();
 		
+		int realStorgetotal = storge_real+real_storgeno;
+		//更新入库申请单入库数量和种类
+		StorgeApply storgeApply = new StorgeApply();
+		storgeApply.setReal_storgetype(realStorgeType);
+		storgeApply.setReal_storgetotal(realStorgetotal);
+		storgeApply.setStorge_id(storge_id);
+		if(realStorgeType<typeTotal) {
+			storgeApply.setStat(3);
+		}else {
+			storgeApply.setStat(4);
+		}
+		int result3 = storgeApplyService.updateRealStorge(storgeApply);
+		//添加对应药品库存表库存
+		Stock stock = new Stock();
+		int factory_id = factoryService.getFactoryId(factory_name);
+		Admin admin = (Admin) session.getAttribute("admin");
+		int admin_id = admin.getAdmin_id();
 		stock.setAdmin_id(admin_id);
 		stock.setDrug_id(drug_id);
 		stock.setFactory_id(factory_id);
 		stock.setBirthday(a);
 		stock.setStock_number(real_storgeno);
-		int result5 = stockService.addStockNum(stock);
+		int result4 = stockService.addStockNum(stock);
 		
-		String str = result4 > 0 ? "0" : "1";
+		
+		String str = result3 > 0 ? "0" : "1";
 		return str;
 		}
 	
+		
 		//驳回核对入库
 		@Transactional
-		@RequestMapping(value = "/checkAndReturn.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
-		public @ResponseBody String checkAndReturn(int storgedetail_id,int real_storgeno,String reasonfor_varity, String notes) {
-			Storge storge = new Storge();
-			storge.setStorgedetail_id(storgedetail_id);
-			storge.setReal_storgeno(real_storgeno);
-			storge.setReasonfor_varity(reasonfor_varity);
-			storge.setNotes(notes);
-			storge.setStat(6);
-			int result = storgeService.updateStorge(storge);
+		@RequestMapping(value = "/submitStock.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
+		public @ResponseBody String submitStock(String storge_id) {
+			StorgeApply storgeApply = new StorgeApply();
+			storgeApply.setStorge_id(storge_id);
+			storgeApply.setStat(4);
+			int result = storgeApplyService.updateStorgeApply(storgeApply);
+			//更新对应药品的采购明细入库数量
+			
 			String str = result > 0 ? "0" : "1";
 			return str;
 			}
+		
 		//审核入库申请
 		@Transactional
 		@RequestMapping(value = "/passStorgeApply.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")

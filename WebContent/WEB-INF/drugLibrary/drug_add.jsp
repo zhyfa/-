@@ -28,6 +28,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=basePath%>/assets/js/xadmin.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.js"></script>
 <script src="<%=basePath%>/js/jquery.serializejson.min.js"></script>
+<link href="<%=basePath%>/assets/alert/css/style.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="<%=basePath%>/assets/alert/js/ui.js"></script>
 <style>
 
 #myForm input{width:200px;height:35px; border:0.5px solid #E6E6FA;border-radius: 3px 3px 3px 3px;margin-top:10px}
@@ -148,12 +150,14 @@ function submitForm(){
 			dataType:"json",
 			success : function(res) {
 				if(res==0){
-					alert("添加成功");
+					/* alert("添加成功"); */
+					mizhu.alert('提示', '添加成功！','alert_green');
 					//添加成功或是失败都需要跳回列表页
 					parent.window.location.href="<%=basePath%>/drug/toDrugJSP.action";
 				}
 				if(res==1){
-					alert("添加失败");
+					/* alert("添加失败"); */
+					mizhu.alert('提示', '添加失败！','alert_red');
 				}
 			}
 		});
