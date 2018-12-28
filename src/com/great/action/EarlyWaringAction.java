@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
+import com.great.aop.Log;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
 import com.great.bean.Inventory;
@@ -72,6 +73,7 @@ public class EarlyWaringAction {
 	/**
 	 * 预警  过期
 	 */
+	@Log(thing = "过期预警")
 	@RequestMapping("/overdue.action") 
 	public ModelAndView overdue(Integer pageIndex) {
 		if(pageIndex==null) {

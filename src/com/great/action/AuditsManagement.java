@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.PageHelper;
+import com.great.aop.Log;
 import com.great.bean.AuditsDetail;
 import com.great.bean.InfoPage;
 import com.great.bean.Purchase;
@@ -70,6 +71,7 @@ public class AuditsManagement {
 			return mav;
 		}
 		//提交审批单
+		@Log(thing = "提交审批单")
 		@Transactional
 		@RequestMapping(value = "/submitAudits.action",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 		public @ResponseBody String submitAudits(String auditsdetail_id, int admin_id) {

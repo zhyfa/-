@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.aop.Log;
 import com.great.bean.InfoPage;
 import com.great.service.SpecialDrugService;
 
@@ -18,6 +19,7 @@ public class SpecialDrugAction {
 	@Resource
 	private SpecialDrugService specialDrugService;
 	// 特殊药品入库记录
+	@Log(thing = "特殊药品入库记录")
 	@RequestMapping("/warehousing.action")
 	public ModelAndView toSpecialDrugJSP(Integer pageIndex, String drug_name, String start, String end) {
 		if (pageIndex == null) {

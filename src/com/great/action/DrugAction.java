@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.great.aop.Log;
 import com.great.bean.Banned;
 import com.great.bean.Drug;
 import com.great.bean.InfoPage;
@@ -228,6 +229,7 @@ public class DrugAction {
 	}
 
 	// 增加禁忌
+	@Log(thing = "添加禁忌药")
 	@RequestMapping(value = "/addbanned.action", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public @ResponseBody String addbanned(@RequestParam String data, Object HashMap) {
 //					List<Map<String,Object>> result = drugService.querybannedDrug(drugid);

@@ -65,6 +65,7 @@ public class PharmacyApplyAction {
 		ModelAndView andView = new ModelAndView();
 		List<Map<String, Object>> applyList = pharmacyApplyService.applyListByIc(ic);
 		andView.addObject("applyList", applyList);
+		andView.addObject("ic", ic);
 		andView.setViewName("drugLibrary/pharmacy_apply_detaile");
 		return andView;
 	}
@@ -261,6 +262,7 @@ public class PharmacyApplyAction {
 		ModelAndView andView = new ModelAndView();
 		List<Map<String, Object>> applyList = pharmacyApplyService.applyListByIc(ic);
 		andView.addObject("applyList", applyList);
+		andView.addObject("ic", ic);
 		andView.setViewName("pharmacy/pharmacy_apply_detaile");
 		return andView;
 	}

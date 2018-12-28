@@ -42,6 +42,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="info">
 				<table>
 				<tr>
+					<label class="input-group">请在下列输入（选择）查询条件</label> 
+					</tr>
+				<tr>
 					<td class="td">姓名： </td>
 					<td> <input type="text"  placeholder="请输入需要查询的姓名" name="admin_name" id="adminname"></td>
 					<td class="td">操作： </td>
@@ -50,10 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<td><input   type="text" id="datepicker" name="startdata"></td>
 					<td class="td">结束日期： </td>
 					<td><input  type="text" id="datepickerend" name="enddata">
-					<button class="layui-btn "  onclick="queryadmin()"><i class="layui-icon ">&#xe615;</i>搜索</button></td>
-				</tr>
-				<!--<tr>
-				<td> <input type="button"  data-toggle="button" value="查询"> -->
+						<td><input type="button"   value="查询" class="layui-btn "  onclick="queryadmin()" style="width:80px"></td>
 				
 				</table>
 			</div>
